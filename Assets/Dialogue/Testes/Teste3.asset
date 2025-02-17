@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6c6a1cf6b566d4199a8683094c88b4, type: 3}
+  m_Name: Teste3
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
+  speakerSprite: {fileID: 0}
+  sentence: 
+  dialogues:
+  - actorName: Alpaca Dev
+    profile: {fileID: 0}
+    sentences:
+      portuguese: "Essa \xE9 a terceira posi\xE7\xE3o programada para esse pc quadrado
+        que ta melhor que o filme do minecraft."
+      english: 
+      spanish: 
+  - actorName: Alpaca Dev
+    profile: {fileID: 0}
+    sentences:
+      portuguese: A camera ainda ta parada mas voce deve ficar ligado pois...
+      english: 
+      spanish: 
+  - actorName: Alpaca Dev
+    profile: {fileID: 0}
+    sentences:
+      portuguese: "Assim que apertar em next...se liga s\xF3 no que...<sh> VAI ACONTECER...</sh>."
+      english: 
+      spanish: 
+  postDialogueEvent:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7805636990576212065, guid: 0a4d92bf78cfc774d8b51dfbd2ce6a93, type: 3}
+        m_TargetAssemblyTypeName: CutsceneCaller, Assembly-CSharp
+        m_MethodName: CallerFunction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7805636990576212065, guid: 0a4d92bf78cfc774d8b51dfbd2ce6a93, type: 3}
+        m_TargetAssemblyTypeName: CutsceneCaller, Assembly-CSharp
+        m_MethodName: CameraChangerPosition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

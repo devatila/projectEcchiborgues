@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6c6a1cf6b566d4199a8683094c88b4, type: 3}
+  m_Name: NPC Teste 1
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
+  speakerSprite: {fileID: 0}
+  sentence: 
+  dialogues:
+  - actorName: "Cidad\xE3o 1"
+    profile: {fileID: 0}
+    sentences:
+      portuguese: "Ol\xE1 amigo. Como voc\xEA est\xE1?"
+      english: 
+      spanish: 
+  - actorName: Tyler
+    profile: {fileID: 0}
+    sentences:
+      portuguese: Ah eu estou muito bem, obrigado.
+      english: 
+      spanish: 
+  - actorName: "Cidad\xE3o"
+    profile: {fileID: 0}
+    sentences:
+      portuguese: "N\xE3o se esque\xE7a de pegar seu equipamento, e tamb\xE9m pratique
+        um pouco antes de ir."
+      english: 
+      spanish: 
+  postDialogueEvent:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -3320268362785680025, guid: dff2304c7db88af47897c2525c4fea08, type: 3}
+        m_TargetAssemblyTypeName: ChoiceCaller, Assembly-CSharp
+        m_MethodName: CallerChoice
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

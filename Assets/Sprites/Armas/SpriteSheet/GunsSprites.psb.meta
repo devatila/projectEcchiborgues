@@ -1,0 +1,923 @@
+fileFormatVersion: 2
+guid: 48a81202e347912409620637080135f1
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  mosaicSpriteImportData:
+  - name: Revolver
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1653
+      y: 1200
+      width: 658
+      height: 334
+    spriteID: ca66e740b941cb5488cfa59c87e86415
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1653, y: 1200}
+    spritePosition: {x: 53, y: 1693}
+  - name: Uzi
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1071
+      y: 1200
+      width: 574
+      height: 546
+    spriteID: cd9586584ce33ac4c94c65fd764f4b4d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1071, y: 1200}
+    spritePosition: {x: 903, y: 1493}
+  - name: Scar
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 1332
+      height: 416
+    spriteID: 6b4e6c1f4ff46d243820b8addaae8258
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 2387, y: 1251}
+  - name: Shotgun_01
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 914
+      width: 1320
+      height: 278
+    spriteID: f6e4421f2d1ae1c4ea983c636d8abeb6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 914}
+    spritePosition: {x: 1645, y: 1635}
+  - name: Pistol
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1554
+      width: 556
+      height: 448
+    spriteID: 5467bf2a61155e941ae730ac3ec6ae55
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 1554}
+    spritePosition: {x: 99, y: 953}
+  - name: OldRifle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 2004
+      y: 428
+      width: 1270
+      height: 338
+    spriteID: 9d8d814a03a533441bb9f750f4b50236
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 2004, y: 428}
+    spritePosition: {x: 2497, y: 561}
+  - name: Shotgun_02
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1344
+      y: 4
+      width: 1216
+      height: 344
+    spriteID: d550a0ac95773be4895899f737f526b8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1344, y: 4}
+    spritePosition: {x: 1687, y: 833}
+  - name: Submachine
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 428
+      width: 1002
+      height: 478
+    spriteID: 033ecdf5d0e51704cba84318e5b358c6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 428}
+    spritePosition: {x: 685, y: 849}
+  - name: GoldEagle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 3282
+      y: 428
+      width: 662
+      height: 392
+    spriteID: ce682a2845e3eb74d9f2dab3d1dc8e6d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 3282, y: 428}
+    spritePosition: {x: 15, y: 233}
+  - name: Shotgun_03
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 2568
+      y: 4
+      width: 1316
+      height: 304
+    spriteID: 7faa4b556c1c1174eaccd36f60102e9f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 2568, y: 4}
+    spritePosition: {x: 1585, y: 215}
+  - name: M4A1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1200
+      width: 1059
+      height: 346
+    spriteID: aeb75a02f86f50745bf3ef2a5a38a2b6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 1200}
+    spritePosition: {x: 2780, y: 35}
+  - name: Kriss
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1014
+      y: 428
+      width: 982
+      height: 439
+    spriteID: e48cf0fe09bf45243b4d238b3b3ff141
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1014, y: 428}
+    spritePosition: {x: 695, y: 320}
+  rigSpriteImportData:
+  - name: Revolver
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1653
+      y: 1200
+      width: 658
+      height: 334
+    spriteID: 0b47bce25058315499a7c1665d750f0f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1653, y: 1200}
+    spritePosition: {x: 53, y: 1693}
+  - name: Uzi
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1071
+      y: 1200
+      width: 574
+      height: 546
+    spriteID: 1c5597380359d654281f4ac867608cfc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1071, y: 1200}
+    spritePosition: {x: 903, y: 1493}
+  - name: Scar
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 1332
+      height: 416
+    spriteID: 7da2ef9b52920104685bc4839da82e73
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 2387, y: 1251}
+  - name: Shotgun_01
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 914
+      width: 1320
+      height: 278
+    spriteID: ae9a65c2daa7119459d73aa71c1aa3d2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 914}
+    spritePosition: {x: 1645, y: 1635}
+  - name: Pistol
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1554
+      width: 556
+      height: 448
+    spriteID: ac9f024fb85f79142b8f9c9a7f1bbb8c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 1554}
+    spritePosition: {x: 99, y: 953}
+  - name: OldRifle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 2004
+      y: 428
+      width: 1270
+      height: 338
+    spriteID: 0f15be8b57eba2a4abb16c1e4d2090dd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 2004, y: 428}
+    spritePosition: {x: 2497, y: 561}
+  - name: Shotgun_02
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1344
+      y: 4
+      width: 1216
+      height: 344
+    spriteID: 3968993809d0a8c43862acae31490809
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1344, y: 4}
+    spritePosition: {x: 1687, y: 833}
+  - name: Submachine
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 428
+      width: 1002
+      height: 478
+    spriteID: 25e90cc11810b0c42a1bfb311c5a4572
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 428}
+    spritePosition: {x: 685, y: 849}
+  - name: GoldEagle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 3282
+      y: 428
+      width: 662
+      height: 392
+    spriteID: 19f0373d9f59de94288312f103bfe2eb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 3282, y: 428}
+    spritePosition: {x: 15, y: 233}
+  - name: Shotgun_03
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 2568
+      y: 4
+      width: 1316
+      height: 304
+    spriteID: 7a6ac61467f9ce945b20ca4e787b229a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 2568, y: 4}
+    spritePosition: {x: 1585, y: 215}
+  - name: M4A1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 1200
+      width: 1059
+      height: 346
+    spriteID: 325778bf00bf5a240afd59d623cc4152
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 1200}
+    spritePosition: {x: 2780, y: 35}
+  - name: Kriss
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1014
+      y: 428
+      width: 982
+      height: 439
+    spriteID: fc311f896eb5327419337b405ea1fd42
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1014, y: 428}
+    spritePosition: {x: 695, y: 320}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  mosaicLayers: 1
+  characterMode: 0
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 1
+  skeletonAssetReferenceID: 
+  pipeline: {instanceID: 0}
+  pipelineVersion: 
+  padding: 4
+  spriteSizeExpand: 0
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers:
+  - name: Revolver
+    spriteName: Revolver
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ca66e740b941cb5488cfa59c87e86415
+    layerID: 3
+    mosaicPosition: {x: 1653, y: 1200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Uzi
+    spriteName: Uzi
+    isGroup: 0
+    parentIndex: -1
+    spriteID: cd9586584ce33ac4c94c65fd764f4b4d
+    layerID: 5
+    mosaicPosition: {x: 1071, y: 1200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Scar
+    spriteName: Scar
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 6b4e6c1f4ff46d243820b8addaae8258
+    layerID: 16
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Shotgun_01
+    spriteName: Shotgun_01
+    isGroup: 0
+    parentIndex: -1
+    spriteID: f6e4421f2d1ae1c4ea983c636d8abeb6
+    layerID: 6
+    mosaicPosition: {x: 4, y: 914}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Pistol
+    spriteName: Pistol
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 5467bf2a61155e941ae730ac3ec6ae55
+    layerID: 8
+    mosaicPosition: {x: 4, y: 1554}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: OldRifle
+    spriteName: OldRifle
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 9d8d814a03a533441bb9f750f4b50236
+    layerID: 9
+    mosaicPosition: {x: 2004, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Shotgun_02
+    spriteName: Shotgun_02
+    isGroup: 0
+    parentIndex: -1
+    spriteID: d550a0ac95773be4895899f737f526b8
+    layerID: 10
+    mosaicPosition: {x: 1344, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Submachine
+    spriteName: Submachine
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 033ecdf5d0e51704cba84318e5b358c6
+    layerID: 11
+    mosaicPosition: {x: 4, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: GoldEagle
+    spriteName: GoldEagle
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ce682a2845e3eb74d9f2dab3d1dc8e6d
+    layerID: 12
+    mosaicPosition: {x: 3282, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Shotgun_03
+    spriteName: Shotgun_03
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 7faa4b556c1c1174eaccd36f60102e9f
+    layerID: 13
+    mosaicPosition: {x: 2568, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: M4A1
+    spriteName: M4A1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: aeb75a02f86f50745bf3ef2a5a38a2b6
+    layerID: 14
+    mosaicPosition: {x: 4, y: 1200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Kriss
+    spriteName: Kriss
+    isGroup: 0
+    parentIndex: -1
+    spriteID: e48cf0fe09bf45243b4d238b3b3ff141
+    layerID: 1
+    mosaicPosition: {x: 1014, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  rigPSDLayers:
+  - name: Revolver
+    spriteName: Revolver
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 0b47bce25058315499a7c1665d750f0f
+    layerID: 3
+    mosaicPosition: {x: 1653, y: 1200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Uzi
+    spriteName: Uzi
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 1c5597380359d654281f4ac867608cfc
+    layerID: 5
+    mosaicPosition: {x: 1071, y: 1200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Scar
+    spriteName: Scar
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 7da2ef9b52920104685bc4839da82e73
+    layerID: 16
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Shotgun_01
+    spriteName: Shotgun_01
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ae9a65c2daa7119459d73aa71c1aa3d2
+    layerID: 6
+    mosaicPosition: {x: 4, y: 914}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Pistol
+    spriteName: Pistol
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ac9f024fb85f79142b8f9c9a7f1bbb8c
+    layerID: 8
+    mosaicPosition: {x: 4, y: 1554}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: OldRifle
+    spriteName: OldRifle
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 0f15be8b57eba2a4abb16c1e4d2090dd
+    layerID: 9
+    mosaicPosition: {x: 2004, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Shotgun_02
+    spriteName: Shotgun_02
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 3968993809d0a8c43862acae31490809
+    layerID: 10
+    mosaicPosition: {x: 1344, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Submachine
+    spriteName: Submachine
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 25e90cc11810b0c42a1bfb311c5a4572
+    layerID: 11
+    mosaicPosition: {x: 4, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: GoldEagle
+    spriteName: GoldEagle
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 19f0373d9f59de94288312f103bfe2eb
+    layerID: 12
+    mosaicPosition: {x: 3282, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Shotgun_03
+    spriteName: Shotgun_03
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 7a6ac61467f9ce945b20ca4e787b229a
+    layerID: 13
+    mosaicPosition: {x: 2568, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: M4A1
+    spriteName: M4A1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 325778bf00bf5a240afd59d623cc4152
+    layerID: 14
+    mosaicPosition: {x: 4, y: 1200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Kriss
+    spriteName: Kriss
+    isGroup: 0
+    parentIndex: -1
+    spriteID: fc311f896eb5327419337b405ea1fd42
+    layerID: 1
+    mosaicPosition: {x: 1014, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 638625365215610284
+  spriteSizeExpandChanged: 0
+  generateGOHierarchy: 0
+  textureAssetName: 
+  prefabAssetName: 
+  spriteLibAssetName: 
+  skeletonAssetName: 
+  secondarySpriteTextures: []

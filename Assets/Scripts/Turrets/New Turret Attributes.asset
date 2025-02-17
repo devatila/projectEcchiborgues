@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 970cdf33edc0c3c4299a894af554e177, type: 3}
+  m_Name: New Turret Attributes
+  m_EditorClassIdentifier: 
+  basicAttribute:
+    levelCost: 0
+    turretHealth: 5000
+    turretDamage: 35
+    turretCadency: 1.3
+    burstAmmount: 1
+    burstFirerate: 0
+  turretUpgradeStats:
+  - levelCost: 840
+    turretHealth: 7545
+    turretDamage: 48
+    turretCadency: 0.8
+    burstAmmount: 1
+    burstFirerate: 0
+  - levelCost: 2450
+    turretHealth: 1050
+    turretDamage: 56
+    turretCadency: 1.3
+    burstAmmount: 3
+    burstFirerate: 0.2

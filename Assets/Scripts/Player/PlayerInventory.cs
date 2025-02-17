@@ -1,0 +1,600 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+//using static UnityEngine.RuleTile.TilingRuleOutput;
+
+public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
+{
+    public delegate void StopReloadOnSwitch();
+    public event StopReloadOnSwitch OnStopRelaod;
+
+    public delegate void Reloaded(int mag, int ammoValue);
+    public event Reloaded OnReloaded;
+
+    public delegate void SwapingWeapon();
+    public event SwapingWeapon OnSwapWeapon;
+
+    public event Action OnCanSwapWeapon;
+
+    public delegate void GetWeapon();
+    public event GetWeapon OnGetWeapon;
+
+    public event Action<int> OnChangeCash;
+
+
+    [Header("Arma Equipada")]
+    public int numeroMaximoDeArmasEmMao = 2;
+
+    public enum ammoTypeOfGunEquipped
+    {
+        AR,
+        Sub,
+        Shotgun,
+        Pistol,
+        Granade_Launcher,
+        Rocket_Launcher,
+        FlameThrower
+    }
+    public ammoTypeOfGunEquipped AmmoType;
+
+    public GameObject gunEquipped;
+
+    public int ARammount, subAmmount, shotgunAmmount, pistolAmmount, granadeLauncherAmmount, rocketLauncherAmmount, flamethrowerAmmount;
+
+    [Header("Organizador de Arma")]
+    public int weaponIndex;
+    public GameObject[] objectsFromSingleton;
+    public List<GameObject> weaponsOnHold = new List<GameObject> ();
+
+
+    public float CollectRange;
+    public LayerMask CollectableLayer;
+
+    public bool canSwitchWeapon;
+    public Transform gunPosition;
+
+    public GameObject gunWindowAttributes;
+
+    [Header("Itens de Inventário")]
+    public int metalCash;
+
+    private bool facingRight;
+    [SerializeField]private AnimPlayer animPlayer;
+    private bool isVisible;
+
+    private UI_BuySystem buySystem;
+    private bool isBuilding = false;
+    private bool _isBuilding {
+        get {return isBuilding; } 
+        set { if (isBuilding != value && value == true) { ShowBuidingSet(); } isBuilding = value; } 
+    }
+    private GameObject objectToTransport;
+
+    private Player_Movement pMovement;
+    private AnimPlayer pAnim;
+    public MouseTrackerForNewPlayer pTracker;
+
+    public Transform dropPosition;
+
+    private bool canCollect = false;
+    [SerializeField] private bool isCollected;
+
+    // Start is called before the first frame update
+    void Awake()
+    {
+        canSwitchWeapon = true;
+        isVisible = false;
+        animPlayer = GetComponent<AnimPlayer>();
+
+        try
+        {
+            objectsFromSingleton = GunsInfosBetweenScenes.instance.ImaginaUmaArmaAqui?.ToArray();
+        }
+        catch
+        {
+            Debug.Log("Não tem Singleton aqui");
+            if(objectsFromSingleton.Length == 0) objectsFromSingleton = null;
+        }
+
+        // Verificação de null e tamanho
+        if (objectsFromSingleton != null && objectsFromSingleton.Length > 0)
+        {
+            //Debug.Log((objectsFromSingleton.Length > 1 ? objectsFromSingleton[1] == null : "Sem segundo objeto"));
+
+            for (int i = 0; i < objectsFromSingleton.Length; i++)
+            {
+                if (objectsFromSingleton[i] != null)
+                {
+                    GameObject instantiatedObject = Instantiate(objectsFromSingleton[i]) as GameObject;
+                    if (instantiatedObject != null)
+                    {
+                        
+                        GetOrChangeWeaponSelected(instantiatedObject, false);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Falha ao instanciar o objeto no índice {i}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Objeto no índice {i} é null");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Array objectsFromSingleton é null ou está vazio");
+        }
+    }
+
+    private void Start()
+    {
+        canCollect = false;
+
+        buySystem = FindObjectOfType<UI_BuySystem>();
+        buySystem.OnBuyItem += BuyingTraps;
+
+        gunWindowAttributes.SetActive(false);
+        pMovement = GetComponent<Player_Movement>();
+    }
+
+    public event Action OnBuildPlaced;
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && canSwitchWeapon)
+        {
+            SwitchWeapon();
+        }
+
+        if (canCollect && Input.GetKeyDown(KeyCode.F))
+        {
+            currentCollectable.Collect();
+            canCollect = false;
+            if(currentCollectable != null)
+            {
+                currentCollectable.ShowInfos(gunWindowAttributes, gunEquipped?.GetComponent<Gun_Attributes>());
+                canCollect = true;
+            }
+        }
+
+        if (_isBuilding)
+        {
+            objectToTransport.transform.position = dropPosition.position;
+            if (Input.GetKeyDown(KeyCode.F) && objectToTransport.GetComponent<PlaceableObject>()._canBePlaced)
+            {
+                objectToTransport.GetComponent<PlaceableObject>().SetColorOnPlaced();
+                objectToTransport = null;
+                OnBuildPlaced?.Invoke();
+                _isBuilding = false;
+            }
+        }
+        //gunEquipped.transform.position = new Vector3( gunPosition.position.x + gunEquipped.GetComponent<Gun_Attributes>().offsetX, gunPosition.position.y + gunEquipped.GetComponent<Gun_Attributes>().offsetY, 0);
+    }
+
+    private void FixedUpdate()
+    {
+        CheckObjectsInRange();
+    }
+
+    #region AllAboutGun
+
+    public void ReloadDesiredGun(int Magazine)
+    {
+        Debug.Log("Recarregou!");
+        Gun_Attributes gun = gunEquipped.GetComponent<Gun_Attributes>();
+        int maxMag = gun.magazine;
+        int faltaParaPenteCheio = maxMag - gun.actual_magazine;
+
+        Debug.Log(maxMag);
+
+        if (gun.typeOfAmmo != AmmoType)
+            return; // Se o tipo de munição da arma não for o mesmo do jogador, não recarrega
+
+        // Determina qual variável de munição usar
+        ref int ammoAmount = ref GetAmmoRef(gun.typeOfAmmo);
+
+        // Recarrega a arma
+        SetReloadValues(gun, ref ammoAmount, faltaParaPenteCheio);
+
+        // Atualiza o HUD
+        OnReloaded?.Invoke(gun.actual_magazine, ammoAmount);
+    }
+
+    // Método auxiliar para retornar a referência correta da munição
+    private ref int GetAmmoRef(ammoTypeOfGunEquipped type)
+    {
+        switch (type)
+        {
+            case ammoTypeOfGunEquipped.AR:
+                return ref ARammount;
+            case ammoTypeOfGunEquipped.Sub:
+                return ref subAmmount;
+            case ammoTypeOfGunEquipped.Shotgun:
+                return ref shotgunAmmount;
+            case ammoTypeOfGunEquipped.Pistol:
+                return ref pistolAmmount;
+            case ammoTypeOfGunEquipped.Granade_Launcher:
+                return ref granadeLauncherAmmount;
+            case ammoTypeOfGunEquipped.Rocket_Launcher:
+                return ref rocketLauncherAmmount;
+            case ammoTypeOfGunEquipped.FlameThrower:
+                return ref flamethrowerAmmount;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), $"Tipo de munição desconhecido: {type}");
+        }
+    }
+
+
+    void SetReloadValues(Gun_Attributes gunDesired, ref int desiredTypeAmmount, int ammountToReload)
+    {
+        int quantidadeParaRecarregar = Mathf.Min(desiredTypeAmmount, ammountToReload); // Pega o mínimo entre o necessário e o disponível
+
+        gunDesired.actual_magazine += quantidadeParaRecarregar; // Adiciona a munição ao pente
+        desiredTypeAmmount -= quantidadeParaRecarregar; // Remove a munição usada do total disponível
+    }
+
+
+    #region SwitchGunProccess
+    public void SwitchWeapon()
+    {
+        if (weaponsOnHold.Count <= 1) return;
+
+        if(OnStopRelaod != null && gunEquipped.GetComponent<Gun_Attributes>().isReloading == true)
+        {
+            OnStopRelaod(); //Agora que vi que escrevi errado kkkkkkkk
+        }
+
+        //
+        // Incrementa o índice da arma
+        weaponIndex = (weaponIndex + 1) % weaponsOnHold.Count;
+        Debug.Log(weaponIndex);
+
+        // Isso aqui vai desequipar a arma atual
+        SwitchOffEquippedGun();
+
+        // Isso aqui vai EQUIPAR a proxima arma
+        EquipNextGun(weaponsOnHold[weaponIndex]);
+
+        Gun_Attributes ga = gunEquipped.GetComponent<Gun_Attributes>();
+        animPlayer.AttachShotgun(1, ga.isShotgun);
+        AmmoType = ga.typeOfAmmo;
+        
+        OnSwapWeapon();
+        if(OnCanSwapWeapon != null && isVisible) OnCanSwapWeapon();
+    }
+    private void SwitchOffEquippedGun()
+    {
+        Gun_Attributes g_Attributes = gunEquipped.GetComponent<Gun_Attributes>();
+        g_Attributes.OnReload -= ReloadDesiredGun;
+
+        if (g_Attributes.flameThrowerVFX != null) g_Attributes.flameThrowerVFX.Stop();
+
+        gunEquipped.SetActive(false);
+    }
+    private void EquipNextGun(GameObject nextGun)
+    {
+        // Define a nova arma equipada e ativa
+        gunEquipped = nextGun;
+        gunEquipped.SetActive(true);
+
+        // Adiciona o evento de recarregamento da nova arma
+        gunEquipped.GetComponent<Gun_Attributes>().OnReload += ReloadDesiredGun;
+        
+
+    }
+    #endregion
+
+    #region CheckingObjectsInRange
+
+    ICollectable currentCollectable = null;
+    IUpgradeable currentUpgradeable = null;
+    IBuyableInScene currentBuyable = null;
+    private void CheckObjectsInRange()
+    {
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, CollectRange, CollectableLayer);
+
+        if (hit != null)
+        {
+            HandleUpgradeable(hit);
+            HandleCollectable(hit);
+            HandleBuyable(hit);
+        }
+        else
+        {
+            HandleExit();
+        }
+    }
+
+    private void HandleUpgradeable(Collider2D hit)
+    {
+        IUpgradeable upgradeable = hit.GetComponent<IUpgradeable>();
+
+        if (upgradeable != null && upgradeable != currentUpgradeable)
+        {
+            OnUpgradeableEnter(upgradeable);
+        }
+    }
+
+    private void HandleCollectable(Collider2D hit)
+    {
+        ICollectable collectable = hit.GetComponent<ICollectable>();
+
+        if (collectable != null && collectable != currentCollectable)
+        {
+            OnCollectableEnter(collectable);
+        }
+        else if (collectable == null && currentCollectable != null)
+        {
+            OnCollectableExit();
+        }
+    }
+
+    private void HandleBuyable(Collider2D hit)
+    {
+        IBuyableInScene buyable = hit.GetComponent<IBuyableInScene>();
+
+        if (buyable != null && buyable != currentBuyable)
+        {
+            OnBuyableEnter(buyable);
+        }
+        else if (buyable == null && currentBuyable != null)
+        {
+            OnBuyableExit();
+        }
+    }
+
+    private void HandleExit()
+    {
+        if (currentUpgradeable != null)
+        {
+            OnUpgradeableExit();
+        }
+
+        if (currentCollectable != null)
+        {
+            OnCollectableExit();
+        }
+
+        if (currentBuyable != null)
+        {
+            OnBuyableExit();
+        }
+    }
+
+    private void OnUpgradeableEnter(IUpgradeable upgradeable)
+    {
+        Debug.Log("Upgradeable entrou no alcance!");
+        currentUpgradeable = upgradeable;
+        currentUpgradeable.ShowInputCondition(this);
+    }
+
+    private void OnUpgradeableExit()
+    {
+        Debug.Log("Upgradeable saiu do alcance!");
+        currentUpgradeable.HideInputCondition();
+        currentUpgradeable = null;
+    }
+
+    private void OnCollectableEnter(ICollectable collectable)
+    {
+        Debug.Log("Coletável entrou no alcance!");
+        currentCollectable = collectable;
+        gunWindowAttributes.SetActive(true);
+        canCollect = true;
+        Gun_Attributes gunPlayer = null;
+        if(gunEquipped != null) gunPlayer = gunEquipped.GetComponent<Gun_Attributes>();
+        currentCollectable.ShowInfos(gunWindowAttributes, gunPlayer);
+    }
+
+    private void OnCollectableExit()
+    {
+        Debug.Log("Coletável saiu do alcance!");
+        canCollect = false;
+        gunWindowAttributes.SetActive(false);
+        currentCollectable = null;
+    }
+
+    private void OnBuyableEnter(IBuyableInScene buyable)
+    {
+        Debug.Log("Comprável entrou no alcance!");
+        currentBuyable = buyable;
+        currentBuyable.ShowStatsAndInfos();
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            currentBuyable.Buy(metalCash);
+        }
+    }
+
+    private void OnBuyableExit()
+    {
+        Debug.Log("Comprável saiu do alcance!");
+        currentBuyable = null;
+    }
+
+    #endregion
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, CollectRange);
+    }
+    public void GetOrChangeWeaponSelected(GameObject gun, bool DoesAlreadyCollectedThisGunBefore)
+    {
+        facingRight = GetComponent<Player_Movement>().facingRight;
+
+        if(gunEquipped != null)
+        {
+            gunEquipped.GetComponent<Gun_Attributes>().OnReload -= ReloadDesiredGun;
+            gunEquipped.SetActive(false);
+        }
+
+        if (weaponsOnHold.Count < numeroMaximoDeArmasEmMao && weaponsOnHold.Count > 0)
+        {
+            weaponIndex++;
+        }else if (weaponsOnHold.Count == numeroMaximoDeArmasEmMao)
+        {
+            
+            
+            weaponsOnHold.Remove(gunEquipped);
+        }
+
+        weaponsOnHold.Add(gun);
+        
+        Gun_Attributes ga = gun.GetComponent<Gun_Attributes>();
+        Vector3 mirrored = new Vector3(gunPosition.localScale.x * -1, gunPosition.localScale.y, gunPosition.localScale.z);
+        if (!facingRight) gunPosition.localScale = mirrored;
+
+        if (DoesAlreadyCollectedThisGunBefore == false)
+        {
+            gun.transform.parent = gunPosition; gun.transform.position = gunPosition.position;
+
+            if (ga.correctX != 0 || ga.correctY != 0) gun.transform.localPosition = new Vector3(ga.correctX, ga.correctY, gun.transform.localPosition.z);
+            
+        }
+
+        gun.transform.rotation = gunPosition.rotation;
+
+        gunEquipped = gun;
+        gunEquipped.SetActive(true);
+        //gunEquipped.GetComponent<AlignParentToChild>().GetFixedPosition(gunPosition, facingRight);
+
+        AmmoType = ga.typeOfAmmo; //gunEquipped.GetComponent<Gun_Attributes>().typeOfAmmo;
+        
+        ga.OnReload += ReloadDesiredGun;
+        if (OnGetWeapon != null) OnGetWeapon();
+
+        
+        animPlayer.AttachShotgun(1, ga.isShotgun);
+
+        //animPlayer.AnimSwitchGun();
+        
+        if (!facingRight) gunPosition.localScale = new Vector3(gunPosition.localScale.x * -1, gunPosition.localScale.y, gunPosition.localScale.z);
+    }
+
+    void DropGun()
+    {
+
+    }
+    #endregion
+
+    public bool CheckDesiredAmmoAmmount(ammoTypeOfGunEquipped typeAmmo)
+    {
+        switch (typeAmmo)
+        {
+            case ammoTypeOfGunEquipped.AR:
+                return ARammount > 0;
+
+            case ammoTypeOfGunEquipped.Sub:
+                return subAmmount > 0;
+                
+            case ammoTypeOfGunEquipped.Shotgun:
+                return shotgunAmmount > 0;
+
+            case ammoTypeOfGunEquipped.Pistol:
+                return pistolAmmount > 0;
+
+            case ammoTypeOfGunEquipped.FlameThrower:
+                return flamethrowerAmmount > 0;
+                
+            case ammoTypeOfGunEquipped.Granade_Launcher:
+                return granadeLauncherAmmount > 0;
+
+            case ammoTypeOfGunEquipped.Rocket_Launcher:
+                return rocketLauncherAmmount > 0;
+                
+        }
+        return false;
+    }
+
+    public void AddCash(int valueToAdd)
+    {
+        metalCash += valueToAdd;
+        Debug.Log("Ganhou");
+        if (OnChangeCash != null) OnChangeCash(metalCash); //Evento de quando o player obtiver Cash...Se necessário, apenas criar msm
+    }
+    public void DecreaseCash(int valueToDescrease)
+    {
+        metalCash -= valueToDescrease;
+        if (OnChangeCash != null) OnChangeCash(metalCash);
+    }
+
+    void BuyingTraps(int itemID)
+    {
+        _isBuilding = true;
+        string path = $"test/{itemID}";
+        GameObject obj = Resources.Load<GameObject>(path);
+        objectToTransport = Instantiate(obj, dropPosition.position, Quaternion.identity);
+        
+    }
+
+    void ShowBuidingSet()
+    {
+        //Debug.Log("Mostrou O bixo prestes a ser comprado");
+    }
+
+    public void StopAllPlayerMovement()
+    {
+        
+        pMovement.StopPlayerMovement();
+        animPlayer.StopOrContinueAnimations(false);
+        
+        pTracker.SwitchTrackAble(false);
+
+        if (gunEquipped != null) { gunEquipped.GetComponent<Gun_Shoot>().SwitchAbleGunShoot(false); }
+    }
+
+    public void ContinueAllPlayerMovement()
+    {
+        
+        pTracker.SwitchTrackAble(true);
+        animPlayer.StopOrContinueAnimations(true);
+        pMovement.ContinuePlayerMovement();
+
+        if (gunEquipped != null) { gunEquipped.GetComponent<Gun_Shoot>().SwitchAbleGunShoot(true); }
+    }
+
+    public void OnSuccefullBuy(int price)
+    {
+        metalCash -= price;
+    }
+
+}
+
+public interface ICollectable
+{
+    void Collect();
+    void ShowInfos(GameObject uiWindowManager, Gun_Attributes attributesToCompare);
+}
+
+public interface IDamageable
+{
+    void TakeDamage(int damage, bool shouldPlayDamageAnim = true);
+    void SetStun(float timeStunned);
+}
+
+public interface IBuyableInScene
+{
+    void Buy(int playerCash);
+    void ShowStatsAndInfos();
+}
+
+public interface IUpgradeable
+{
+    void ShowInputCondition(PlayerInventory pInventory);
+    void HideInputCondition();
+}
+
+public interface IThrowable
+{
+    void ThrowObject(Vector3 mousePosition, Vector3 launchPos);
+    void SetDamage(int newDamage);
+    void OnHitObject();
+}
+
+public interface IThrowableEffect
+{
+    void ApplyEffect(Vector3 position, int damage);
+}

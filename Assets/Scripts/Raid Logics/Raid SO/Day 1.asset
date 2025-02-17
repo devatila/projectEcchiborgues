@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce12fe322e0acd4ab09daaf49c6f1b5, type: 3}
+  m_Name: Day 1
+  m_EditorClassIdentifier: 
+  startEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  enemiesToSpawn:
+  - {fileID: 3493864131247642199, guid: ceba017a7e194cc47bbb8db14da6c4e2, type: 3}
+  raidsOfTheDay:
+  - onRaidPerformances:
+    - awaitsEveryoneIsDead: 0
+      delayToSpawn: 3
+      howMany: 3
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 86
+        enemyIndex: 0
+    - awaitsEveryoneIsDead: 1
+      delayToSpawn: 5
+      howMany: 2
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+    - awaitsEveryoneIsDead: 1
+      delayToSpawn: 10
+      howMany: 2
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+    - awaitsEveryoneIsDead: 0
+      delayToSpawn: 10
+      howMany: 10
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+  - onRaidPerformances:
+    - awaitsEveryoneIsDead: 0
+      delayToSpawn: 3
+      howMany: 7
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+    - awaitsEveryoneIsDead: 0
+      delayToSpawn: 5
+      howMany: 9
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+    - awaitsEveryoneIsDead: 1
+      delayToSpawn: 10
+      howMany: 15
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+  - onRaidPerformances:
+    - awaitsEveryoneIsDead: 0
+      delayToSpawn: 3
+      howMany: 5
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+    - awaitsEveryoneIsDead: 0
+      delayToSpawn: 5
+      howMany: 8
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+    - awaitsEveryoneIsDead: 0
+      delayToSpawn: 10
+      howMany: 4
+      doesThemComeFromTheAir: 0
+      desiredEnemies:
+      - probability: 100
+        enemyIndex: 0
+  finishEvent:
+    m_PersistentCalls:
+      m_Calls: []

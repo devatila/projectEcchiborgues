@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6c6a1cf6b566d4199a8683094c88b4, type: 3}
+  m_Name: DialogoTeste
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
+  speakerSprite: {fileID: 0}
+  sentence: 
+  dialogues:
+  - actorName: Shupacul
+    profile: {fileID: 0}
+    sentences:
+      portuguese: "Ol\xE1<pause=1> Mundo!"
+      english: Hello, World!
+      spanish: Hola, Mundo
+  - actorName: Comecul
+    profile: {fileID: 0}
+    sentences:
+      portuguese: "Testando <ts=0,02>a nova mecanica de di\xE1logo</ts> que eu fiz"
+      english: Testing the new mechanic of dialogue that i made
+      spanish: Testnado la nova mecanica de dialogos que yo fiz
+  - actorName: Exterminador de Furos
+    profile: {fileID: 0}
+    sentences:
+      portuguese: "E <color=#FF0000>espero que d\xEA</color> <sh>super bomm</sh>."
+      english: And i hope that will be success
+      spanish: Y creo que seja bueno
+  - actorName: "Esbaga\xE7ador de B\xF3gas"
+    profile: {fileID: 0}
+    sentences:
+      portuguese: <color=#FF0000> <sh>Velocidade Normal</color></sh>. Texto Mais
+        Normal
+      english: Normal Speed
+      spanish: velocidad normal
+  postDialogueEvent: []

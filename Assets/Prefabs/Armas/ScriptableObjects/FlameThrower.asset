@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309e481a30ecfe8468c6005316c286c1, type: 3}
+  m_Name: FlameThrower
+  m_EditorClassIdentifier: 
+  gunSprite: {fileID: -5384336408815577181, guid: 0d852b885bea82246a63c470cba0c872, type: 3}
+  gunName: Torradeira
+  gunId: 2
+  gunDamage: 1
+  cadency: 1
+  minSpread: 0
+  maxSpread: 0
+  decreaseSpreadSpeed: 0
+  SpreadForce: 0
+  actualSpread: 0
+  reloadable: 1
+  magazine: 200
+  reloadTime: 3
+  isShotgun: 0
+  shotgunFragmentsQuantitative: 10
+  MaxDistance: 0
+  damageReductionRate: 0.5
+  isSpecialProjectile: 0
+  customProjectile: {fileID: 0}
+  instantiatedProjectile: 0
+  AmmoCostPerTick: 4
+  ammoType: 6
