@@ -13,4 +13,6 @@ public class ThrowablesSO : ScriptableObject
 
     // Região de Explosivos
     public float delayToExplode; // Se for Impact Granade, é só por = 0
+
+    // Aahhh eu vou delirar como o nego bamm heheheh
 }
