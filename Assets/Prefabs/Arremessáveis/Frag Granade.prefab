@@ -829,11 +829,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207ec6524ff092b478c00a53fc91abaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwableData: {fileID: 11400000, guid: 4be67652c3471ff4288f720c589d1049, type: 2}
+  canBeShooted: 1
   damage: 2500
   speed: 25
   delayToExplode: 1
   rb: {fileID: 3027345776133940482}
-  lifetime: 1
   layerToCollide:
     serializedVersion: 2
     m_Bits: 1280

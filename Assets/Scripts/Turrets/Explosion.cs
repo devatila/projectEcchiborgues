@@ -8,6 +8,7 @@ public class Explosion : MonoBehaviour, IThrowableEffect
 
     private CustomProjectileScript customProj;
     private TurretProjectileBehavior turretBehavior;
+    private ThrowablesSO m_throwableData;
     private void Start()
     {
         
@@ -80,10 +81,15 @@ public class Explosion : MonoBehaviour, IThrowableEffect
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
-    public void ApplyEffect(Vector3 position, int damage)
+    public void ApplyEffect(GameObject hitObject, int damage)
     {
         TriggerExplosionManual(damage);
         // VFX_Manager.Instance.PlayExplosionEffect(position);
         // SFX_Manager.Instance.PlayExplosionSoundEffect();
+    }
+
+    public void SetThrowableData(ThrowablesSO throwableData)
+    {
+        m_throwableData = throwableData;
     }
 }

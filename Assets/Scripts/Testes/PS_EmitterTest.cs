@@ -7,6 +7,8 @@ public class PS_EmitterTest : MonoBehaviour
 {
     public ParticleSystem pSystem;
     public bool isEquipped;
+
+    public float effectProbability;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,8 @@ public class PS_EmitterTest : MonoBehaviour
         IStateable stateable = other.GetComponent<IStateable>();
         if (stateable != null)
         {
+            bool canEffect = (Random.Range(0f,1f) <= effectProbability) ? true : false;
+            if (!canEffect) return;
             stateable.SetState(NaturalStates.Fire);
         }
     }

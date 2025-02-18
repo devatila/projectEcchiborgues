@@ -32,9 +32,12 @@ public class ThrowablesSO : ScriptableObject
 
     // Região de Outros Arremessaveis
     public bool canApplySomeEffectOnHit;
+    public int ninjaStarQuantities = 3;
 
     
 }
+
+#if UNITY_EDITOR
 
 [CustomEditor(typeof(ThrowablesSO))]
 public class ThrowableDataEditor: Editor
@@ -44,6 +47,8 @@ public class ThrowableDataEditor: Editor
         // Isso deve pegar as referencias da classe que eu quero
         ThrowablesSO data = (ThrowablesSO)target;
 
+        EditorGUILayout.LabelField("Basics Settings", EditorStyles.boldLabel);
+
         // Mostrando as variáveis genéricas
         data.damage = EditorGUILayout.IntField("Damage", data.damage);
         data.speed = EditorGUILayout.FloatField("Damage", data.speed);
@@ -51,6 +56,8 @@ public class ThrowableDataEditor: Editor
         data.rotationSpeed = EditorGUILayout.FloatField("Rotation Speed", data.rotationSpeed);
         data.isContinuous = EditorGUILayout.Toggle(new GUIContent("Is Continuous?", "Marque se o objeto deve parar proximo a posição do mouse"), data.isContinuous);
 
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Specifics Settings", EditorStyles.boldLabel);
         // Hora da verdadeira brincadeira
         data.throwableType = (ThroableObjects)EditorGUILayout.EnumPopup("Throwable Type", data.throwableType);
 
@@ -90,8 +97,44 @@ public class ThrowableDataEditor: Editor
                 data.effectProbability = EditorGUILayout.FloatField("Eletricity Probability", data.effectProbability);
                 data.explosionRadius = EditorGUILayout.FloatField("Effect Range", data.explosionRadius);
                 break;
-            // Continuar o resto amanhã
+            case ThroableObjects.Molotov:
+                data.delayToExplode = 0f;
+                data.effectProbability = EditorGUILayout.FloatField("Fire Probability", data.effectProbability);
+                data.explosionRadius = EditorGUILayout.FloatField("Effect Range", data.explosionRadius);
+
+                break;
+
+            case ThroableObjects.ThrowingKnife:
+                data.canBounce = EditorGUILayout.Toggle("Can Bounce", data.canBounce);
+                if (data.canBounce)
+                {
+                    EditorGUI.indentLevel++;
+                    data.maxBounces = EditorGUILayout.IntField("Max Bounces", data.maxBounces);
+                    EditorGUI.indentLevel--;
+                }
+
+                break;
+            case ThroableObjects.Dynamite:
+                data.explosionForce = EditorGUILayout.FloatField("Explosion Force", data.explosionForce);
+                data.explosionRadius = EditorGUILayout.FloatField("Explosion Radius", data.explosionRadius);
+                data.delayToExplode = EditorGUILayout.FloatField("Delay To Explode", data.delayToExplode);
+                break;
+
+            case ThroableObjects.NinjaStar:
+                data.ninjaStarQuantities = EditorGUILayout.IntField("Ninja Stars Ammount", data.ninjaStarQuantities);
+                data.canBounce = EditorGUILayout.Toggle("Can Bounce", data.canBounce);
+                if (data.canBounce)
+                {
+                    EditorGUI.indentLevel++;
+                    data.maxBounces = EditorGUILayout.IntField("Max Bounces", data.maxBounces);
+                    EditorGUI.indentLevel--;
+                }
+                break;
+
         }
+
+        if(EditorGUI.EndChangeCheck()) EditorUtility.SetDirty(data);
 
     }
 }
+#endif

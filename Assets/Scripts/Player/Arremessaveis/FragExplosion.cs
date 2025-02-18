@@ -17,6 +17,7 @@ public class FragExplosion : MonoBehaviour, IThrowableEffect
 
     private FragBehaviors[] fragsDamage;
     private GameObject fragParent;
+    private ThrowablesSO m_throwableData;
 
     private void Start()
     {
@@ -27,8 +28,13 @@ public class FragExplosion : MonoBehaviour, IThrowableEffect
             fragsDamage[i] = fragsObject[i].GetComponent<FragBehaviors>();
             fragsObject[i].SetActive(false);
         }
+        if (m_throwableData != null)
+        {
+            impulseForce = m_throwableData.explosionForce;
+             
+        }
     }
-    public void ApplyEffect(Vector3 position, int damage)
+    public void ApplyEffect(GameObject hitObject, int damage)
     {
         CameraShake.instance.Shake(shakeForce);
         if (fragParent.activeSelf)
@@ -81,5 +87,10 @@ public class FragExplosion : MonoBehaviour, IThrowableEffect
     float RandomAngle()
     {
         return Random.Range(0,360);
+    }
+
+    public void SetThrowableData(ThrowablesSO throwableData)
+    {
+        m_throwableData = throwableData;
     }
 }

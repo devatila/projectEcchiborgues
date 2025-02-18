@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4143684283883369833}
   - component: {fileID: 3027345776133940482}
   - component: {fileID: -8180681653096676720}
-  - component: {fileID: 3407126787801251040}
+  - component: {fileID: 6507567389066922175}
   m_Layer: 9
-  m_Name: PEM Granade
+  m_Name: ThrowableKnife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.210505, y: 0.16839434, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.2144, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.89649296, g: 0, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.84666413, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,7 +104,10 @@ MonoBehaviour:
   canBeShooted: 1
   damage: 120
   speed: 25
-  delayToExplode: 1
+  delayToExplode: 0
+  isContinuous: 1
+  isBounceable: 1
+  maxBounce: 3
   rb: {fileID: 3027345776133940482}
   layerToCollide:
     serializedVersion: 2
@@ -122,8 +125,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.0001
-  m_LinearDrag: 0.9
-  m_AngularDrag: 0.05
+  m_LinearDrag: 0
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -131,7 +134,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 264
+    m_Bits: 8
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -168,10 +171,10 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.009402156, y: -0.010904815}
   serializedVersion: 2
-  m_Radius: 0.5
---- !u!114 &3407126787801251040
+  m_Radius: 0.12520564
+--- !u!114 &6507567389066922175
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,12 +183,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7590213659886105250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c7ab38b9cc58f84cb1efd74eb16176c, type: 3}
+  m_Script: {fileID: 11500000, guid: 29a07b30c8312a841a4bc33362b124dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectRadius: 6
-  stunTime: 5
-  stunProbability: 0.5
+  isExplosive: 0
   cullingMask:
     serializedVersion: 2
     m_Bits: 256

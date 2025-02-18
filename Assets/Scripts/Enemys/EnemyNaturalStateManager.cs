@@ -43,15 +43,7 @@ public class EnemyNaturalStateManager : MonoBehaviour, IStateable
     #region FireStateSection
     public void SetFireState()
     {
-        float rng = Random.Range(0f, 1f);
-        bool canSetState = rng < probabilityToTakeState;
         
-        
-        if (!canSetState)
-        {
-            actualState = NaturalStates.None;
-            return;
-        }
 
         if (stateLoop != null) return;
         foreach (var enemy in enemyParties)
@@ -92,15 +84,6 @@ public class EnemyNaturalStateManager : MonoBehaviour, IStateable
     #region EletricStateSection
     void SetEletricState()
     {
-        float rng = Random.Range(0f, 1f);
-        bool canSetState = rng < probabilityToTakeState * 10f;
-
-
-        if (!canSetState)
-        {
-            actualState = NaturalStates.None;
-            return;
-        }
 
         if (stateLoop != null) return;
         foreach (var enemy in enemyParties)
@@ -152,3 +135,25 @@ public class EnemyNaturalStateManager : MonoBehaviour, IStateable
         stateCountdown = null;
     }
 }
+/*
+ *  float rng = Random.Range(0f, 1f);
+        bool canSetState = rng < probabilityToTakeState * 10f;
+
+
+        if (!canSetState)
+        {
+            actualState = NaturalStates.None;
+            return;
+        }
+
+float rng = Random.Range(0f, 1f);
+        bool canSetState = rng < probabilityToTakeState;
+        
+        
+        if (!canSetState)
+        {
+            actualState = NaturalStates.None;
+            return;
+        }
+ * 
+ */

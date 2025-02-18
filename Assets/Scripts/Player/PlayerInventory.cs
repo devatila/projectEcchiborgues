@@ -596,5 +596,6 @@ public interface IThrowable
 
 public interface IThrowableEffect
 {
-    void ApplyEffect(Vector3 position, int damage);
+    void SetThrowableData(ThrowablesSO throwableData);
+    void ApplyEffect(GameObject hitObject, int damage);
 }

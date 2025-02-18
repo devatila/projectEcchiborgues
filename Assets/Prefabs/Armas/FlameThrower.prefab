@@ -3832,7 +3832,7 @@ ParticleSystem:
     m_Bounce:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -3941,7 +3941,7 @@ ParticleSystem:
     collidesWith:
       serializedVersion: 2
       m_Bits: 1281
-    maxCollisionShapes: 5
+    maxCollisionShapes: 50
     quality: 0
     voxelSize: 0.5
     collisionMessages: 1
@@ -4992,6 +4992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pSystem: {fileID: 8517009848258492415}
   isEquipped: 1
+  effectProbability: 0.005
 --- !u!1 &3159513242499228312
 GameObject:
   m_ObjectHideFlags: 0

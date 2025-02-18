@@ -6,11 +6,14 @@ public class PEM_Explosion : MonoBehaviour, IThrowableEffect
 {
     public float effectRadius;
     public float stunTime;
+    [Range(0f,1f)]
+    [SerializeField] private float stunProbability;
 
     public LayerMask cullingMask;
-    public void ApplyEffect(Vector3 position, int damage)
+    private ThrowablesSO m_throwableData;
+    public void ApplyEffect(GameObject hitObject, int damage)
     {
-        VFX_PoolManager.instance.PlayPEM_Effect(position, stunTime);
+        VFX_PoolManager.instance.PlayPEM_Effect(transform.position, stunTime);
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, effectRadius, cullingMask);
 
         foreach (Collider2D hitCollider in hitColliders)
@@ -26,10 +29,17 @@ public class PEM_Explosion : MonoBehaviour, IThrowableEffect
             IStateable stateable = hitCollider.GetComponent<IStateable>();
             if (stateable != null)
             {
+                bool canStun = (Random.Range(0f, 1f) <= stunProbability) ? true : false;
+                if (!canStun) return;
                 stateable.SetState(NaturalStates.Eletric);
             }
             
         }
+    }
+
+    public void SetThrowableData(ThrowablesSO throwableData)
+    {
+        m_throwableData = throwableData;
     }
 
     private void OnDrawGizmosSelected()
