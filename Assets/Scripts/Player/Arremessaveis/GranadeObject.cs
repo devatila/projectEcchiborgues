@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
+
 
 //                                                            -- A T E N Ç Ã O --                                                           //
 // ESSA CLASSE ENGLOBA O BEHAVIOR DE GRANADE, IMPACT GRANADE, FRAG GRANADE, PEM GRANADE E MOLOTOV //
@@ -16,6 +14,8 @@ public class GranadeObject : MonoBehaviour, IThrowable
     public float speed;
     public float delayToExplode; // Se for Impact Granade, é só por = 0
 
+    public bool autoDeactivate = true;
+    public bool instaActivate;
     public bool isContinuous;
     public bool isBounceable;
     public int maxBounce = 3;
@@ -122,11 +122,12 @@ public class GranadeObject : MonoBehaviour, IThrowable
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Tocou em algo");
+        if (instaActivate) return;
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
             throwableEffect.ApplyEffect(collision.gameObject, damage);
-            HandThrowablePoolSystem.instance.ReturnObject(this.gameObject);
+            if (autoDeactivate) HandThrowablePoolSystem.instance.ReturnObject(this.gameObject);
         }
 
         if (!isBounceable) arrived = true;
@@ -166,14 +167,15 @@ public class GranadeObject : MonoBehaviour, IThrowable
         yield return new WaitForSeconds(timer);
  
         throwableEffect.ApplyEffect(null ,damage); // Chama a interface mandando a posição e a quantidade de dano aplicado
-        HandThrowablePoolSystem.instance.ReturnObject(this.gameObject); // Desativa o objeto
+        if (autoDeactivate) HandThrowablePoolSystem.instance.ReturnObject(this.gameObject); // Desativa o objeto
         yield break;
     }
 
     private void OnEnable()
     {
         // Certifica que a variavel volte ao seu estado normal quando o objeto aparecer
-        arrived = false;
+        arrived = instaActivate;
+        
 
         if (isContinuous) bounceCount = 0;
     }

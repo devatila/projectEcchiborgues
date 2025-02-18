@@ -80,7 +80,7 @@ public class EnemyNaturalStateManager : MonoBehaviour, IStateable
         }
     }
     #endregion
-
+    
     #region EletricStateSection
     void SetEletricState()
     {
@@ -133,6 +133,11 @@ public class EnemyNaturalStateManager : MonoBehaviour, IStateable
         yield return new WaitForSeconds(timer);
         actualState = NaturalStates.None;
         stateCountdown = null;
+    }
+
+    private void OnDisable()
+    {
+        CancelAllStates();
     }
 }
 /*
