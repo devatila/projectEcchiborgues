@@ -90,6 +90,8 @@ public class Explosion : MonoBehaviour, IThrowableEffect
 
     public void SetThrowableData(ThrowablesSO throwableData)
     {
-        m_throwableData = throwableData;
+        
+        explosionRadius = throwableData.explosionRadius;
+        explosionForce = throwableData.explosionForce;
     }
 }

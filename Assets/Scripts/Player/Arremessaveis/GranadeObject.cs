@@ -47,7 +47,8 @@ public class GranadeObject : MonoBehaviour, IThrowable
     private void Start()
     {
         throwableEffect = GetComponent<IThrowableEffect>();
-        throwableEffect.SetThrowableData(throwableData);
+        //GetDataFromSO(throwableData);
+        //throwableEffect.SetThrowableData(throwableData);
     }
 
     // Update is called once per frame
@@ -186,8 +187,17 @@ public class GranadeObject : MonoBehaviour, IThrowable
         HandThrowablePoolSystem.instance.ReturnObject(this.gameObject);
     }
 
-    public void SetCustomValueInt(ThrowablesSO throwables)
+    void GetDataFromSO(ThrowablesSO data)
     {
-        
+        canBeShooted = data.canBeShooted;
+        damage = data.damage;
+        speed = data.speed;
+        delayToExplode = data.delayToExplode;
+
+        autoDeactivate = data.autoDeactivate;
+        instaActivate = data.instaActivate;
+        isContinuous = data.isContinuous;
+        isBounceable = data.isBounceable;
+        maxBounce = 3;
     }
 }

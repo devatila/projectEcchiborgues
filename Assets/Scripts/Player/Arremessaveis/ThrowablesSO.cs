@@ -9,11 +9,14 @@ public class ThrowablesSO : ScriptableObject
     // NÃO ESQUECER DE CHECAR OS RANGES NO OBJETOOOOO
     public ThroableObjects throwableType;
 
-    public bool canBeShooted = true;
+    public bool canBeShooted;
     public int damage;
     public float speed;
     public float rotationSpeed;
     public bool isContinuous;
+    public bool isBounceable;
+    public bool instaActivate;
+    public bool autoDeactivate;
     public LayerMask cullingMask;
 
     // Região de Explosivos
@@ -32,7 +35,7 @@ public class ThrowablesSO : ScriptableObject
 
     // Região de Outros Arremessaveis
     public bool canApplySomeEffectOnHit;
-    public int ninjaStarQuantities = 3;
+    public int ninjaStarQuantities;
 
     
 }
@@ -51,10 +54,13 @@ public class ThrowableDataEditor: Editor
 
         // Mostrando as variáveis genéricas
         data.damage = EditorGUILayout.IntField("Damage", data.damage);
-        data.speed = EditorGUILayout.FloatField("Damage", data.speed);
+        data.speed = EditorGUILayout.FloatField("Speed", data.speed);
         data.canBeShooted  = EditorGUILayout.Toggle(new GUIContent("Can Be Shot", "Marcar se algo acontecer ao atirar no objeto"), data.canBeShooted);
         data.rotationSpeed = EditorGUILayout.FloatField("Rotation Speed", data.rotationSpeed);
         data.isContinuous = EditorGUILayout.Toggle(new GUIContent("Is Continuous?", "Marque se o objeto deve parar proximo a posição do mouse"), data.isContinuous);
+        if(data.isContinuous) data.isBounceable = EditorGUILayout.Toggle(new GUIContent("Is Bounceable?", "Marque se o objeto deve ricochetear em paredes"), data.isBounceable);
+        data.instaActivate = EditorGUILayout.Toggle(new GUIContent("Insta Activate?", "Marque se o arremessavel deve aplicar seu efeito instantaneamente"), data.instaActivate);
+        data.autoDeactivate = EditorGUILayout.Toggle(new GUIContent("Auto Deactivate?", "Marque se o objeto deve parar proximo a posição do mouse"), data.autoDeactivate);
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Specifics Settings", EditorStyles.boldLabel);
@@ -121,6 +127,8 @@ public class ThrowableDataEditor: Editor
                 break;
 
             case ThroableObjects.NinjaStar:
+                data.instaActivate = true;
+                data.isContinuous = false;
                 data.ninjaStarQuantities = EditorGUILayout.IntField("Ninja Stars Ammount", data.ninjaStarQuantities);
                 data.canBounce = EditorGUILayout.Toggle("Can Bounce", data.canBounce);
                 if (data.canBounce)
