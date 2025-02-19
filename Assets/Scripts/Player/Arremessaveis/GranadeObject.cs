@@ -31,7 +31,7 @@ public class GranadeObject : MonoBehaviour, IThrowable
         if(_arrived != value)
             {
                 _arrived = value;
-                Debug.Log("Alterou para " + value);
+                //Debug.Log("Alterou para " + value);
                 if(_arrived == true) ExecuteEvent();
             }
         } }
@@ -184,5 +184,10 @@ public class GranadeObject : MonoBehaviour, IThrowable
     {
         yield return new WaitForSeconds(time);
         HandThrowablePoolSystem.instance.ReturnObject(this.gameObject);
+    }
+
+    public void SetCustomValueInt(ThrowablesSO throwables)
+    {
+        
     }
 }

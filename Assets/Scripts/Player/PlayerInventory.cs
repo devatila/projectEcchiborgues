@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 //using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código

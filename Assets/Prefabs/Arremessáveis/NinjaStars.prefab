@@ -706,6 +706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca891940494282447a2d0bc585c792f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ninjaStarsAmmount: 3
   fragParent: {fileID: 7586041649385225350}
   fragsObject:
   - {fileID: 3239111348815890667}

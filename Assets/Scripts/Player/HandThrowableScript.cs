@@ -31,6 +31,8 @@ public class HandThrowableScript : MonoBehaviour
     private Camera cam;
     private ThroableObjects[] throwableTypes;
 
+    public int NinjaStarsAmmount = 10;
+
     private void Start()
     {
         cam = Camera.main; //Camera principal
@@ -134,6 +136,7 @@ public class HandThrowableScript : MonoBehaviour
         if (throwable != null)
         {
             throwable.ThrowObject(GetMousePosition(), spawnPosition.position);
+            
         }
 
         SetAmmount[thorwableEquipped](GetAmmount[thorwableEquipped]() - 1);
