@@ -7,7 +7,6 @@ public class PerkManager : MonoBehaviour
 {
     // JÁ ADIANTO QUE ESTE CÓDIGO PODE E VAI FICAR ENORME QUANDO EU ACABAR COM TUDOO
     public static PerkManager Instance;
-    public bool debugActivate;
     public int testNewAmmountNinjaStar = 3;
     private void Awake()
     {
@@ -19,10 +18,14 @@ public class PerkManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             throwablePerks.ninjaStar.ActivateIncreaseAmmount(testNewAmmountNinjaStar);
-            throwablePerks.ninjaStar.ActivateRicocheteOnNinjaStar(true);
         }
 
-        debugActivate = throwablePerks.ninjaStar.isBounceActivated;
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            throwablePerks.ninjaStar.ActivateRicocheteOnNinjaStar(!throwablePerks.ninjaStar.isBounceActivated);
+        }
+
+        
     }
     public ThrowablePerks throwablePerks = new ThrowablePerks();
     public class ThrowablePerks
