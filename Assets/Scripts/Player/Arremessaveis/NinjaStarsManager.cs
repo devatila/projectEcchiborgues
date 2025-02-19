@@ -7,31 +7,55 @@ public class NinjaStarsManager : MonoBehaviour, IThrowableEffect
     public GameObject fragParent;
     public List<GameObject> fragsObject = new List<GameObject>();
     private NSBehavior[] nsBehaviors;
+    [SerializeField] private bool canRicochete;
     private void OnEnable()
     {
         CheckIfHasLess();
     }
-    private void Start()
+
+    void ResizeNSBehaviors()
     {
-        var perks = PerkManager.Instance.throwablePerks.ninjaStar;
-        perks.OnIncreaseAmmount += ApplyNewAmmount;
-
-        if (perks.isIncreasePerkActivated) {
-            ninjaStarsAmmount = perks.increasedAmmount;
-            CheckIfHasLess();  
-        }
-
         nsBehaviors = new NSBehavior[fragsObject.Count];
         for (int i = 0; i < fragsObject.Count; i++)
         {
             nsBehaviors[i] = fragsObject[i].GetComponent<NSBehavior>();
+            nsBehaviors[i].canBounce = canRicochete;
+        }
+    }
+    private void Start()
+    {
+        SubscribingInEventsAndCheckingSomePerksEnabled();
+        ResizeNSBehaviors();
+    }
+
+    private void SubscribingInEventsAndCheckingSomePerksEnabled()
+    {
+        var perks = PerkManager.Instance.throwablePerks.ninjaStar;
+        perks.OnIncreaseAmmount += ApplyNewAmmount;
+        perks.OnNinjaStarRicocheteAllow += ApplyRicocheteValue;
+
+        if (perks.isIncreasePerkActivated)
+        {
+            ninjaStarsAmmount = perks.increasedAmmount;
+            CheckIfHasLess();
+        }
+        Debug.Log(perks.isBounceActivated);
+        if (perks.isBounceActivated)
+        {
+            Debug.Log("Chegou nesse If e o valor é" + perks.isBounceActivated);
+            canRicochete = perks.isBounceActivated;
         }
     }
 
     void ApplyNewAmmount(int newTotalAmmount)
     {
         ninjaStarsAmmount = newTotalAmmount;
-        Debug.Log("Novo total de estrela ninjas atualizado para " + newTotalAmmount);
+        
+    }
+    void ApplyRicocheteValue(bool CanRicochete)
+    {
+        canRicochete = CanRicochete;
+        Debug.Log("Bounce foi setado para " + canRicochete);
     }
     void CheckIfHasLess()
     {
@@ -43,6 +67,7 @@ public class NinjaStarsManager : MonoBehaviour, IThrowableEffect
                 GameObject newObj = Instantiate(fragsObject[0], transform.position, Quaternion.identity, transform);
                 fragsObject.Add(newObj);
             }
+            ResizeNSBehaviors();
         }
         else if (fragsObject.Count > ninjaStarsAmmount)
         {
@@ -53,7 +78,9 @@ public class NinjaStarsManager : MonoBehaviour, IThrowableEffect
                 fragsObject.RemoveAt(fragsObject.Count - 1);
                 Destroy(objToRemove);
             }
+            ResizeNSBehaviors();
         }
+        
     }
     public void ApplyEffect(GameObject hitObject, int damage)
     {
@@ -68,7 +95,7 @@ public class NinjaStarsManager : MonoBehaviour, IThrowableEffect
         for (int i = 0; i < fragCount; i++)
         {
             fragsObject[i].SetActive(true);
-
+            nsBehaviors[i].canBounce = canRicochete;
             // Calcula o ângulo de cada fragmento baseado na direção do mouse
             float angleOffset = spreadAngle * ((float)i / (fragCount - 1) - 0.5f);
             Vector2 fragDirection = Quaternion.Euler(0, 0, angleOffset) * direction;

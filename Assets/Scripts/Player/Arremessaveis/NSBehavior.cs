@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NSBehavior : MonoBehaviour
 {
-    public bool canBounce { get; set; }
+    public bool canBounce;
     private void OnEnable()
     {
         transform.localPosition = Vector3.zero;
