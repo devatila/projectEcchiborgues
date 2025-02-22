@@ -18,6 +18,9 @@ MonoBehaviour:
   speed: 0
   rotationSpeed: 0
   isContinuous: 0
+  isBounceable: 0
+  instaActivate: 0
+  autoDeactivate: 0
   cullingMask:
     serializedVersion: 2
     m_Bits: 0

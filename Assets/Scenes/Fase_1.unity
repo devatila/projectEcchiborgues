@@ -23156,6 +23156,7 @@ GameObject:
   - component: {fileID: 656886421}
   - component: {fileID: 656886422}
   - component: {fileID: 656886423}
+  - component: {fileID: 656886424}
   m_Layer: 0
   m_Name: GameSceneManager
   m_TagString: Untagged
@@ -23240,6 +23241,19 @@ MonoBehaviour:
     Pool_Molotov: []
     Pool_PEM: []
     Pool_Smoke: []
+--- !u!114 &656886424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656886418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b081b10bca8331e4b98cc17245fc3e83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammount: 10
 --- !u!1 &668036657
 GameObject:
   m_ObjectHideFlags: 0
@@ -33566,6 +33580,7 @@ MonoBehaviour:
     ninjaStarAmmount: 100
   thorwableEquipped: 0
   equippedIndex: 0
+  NinjaStarsAmmount: 10
 --- !u!1 &1200824795
 GameObject:
   m_ObjectHideFlags: 0
@@ -50820,11 +50835,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca891940494282447a2d0bc585c792f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ninjaStarsAmmount: 3
   fragParent: {fileID: 8897407197934474568}
   fragsObject:
   - {fileID: 4525372811775336741}
   - {fileID: 622718130502111157}
   - {fileID: 863527067434545218}
+  canRicochete: 0
 --- !u!222 &3319642507493806891
 CanvasRenderer:
   m_ObjectHideFlags: 0

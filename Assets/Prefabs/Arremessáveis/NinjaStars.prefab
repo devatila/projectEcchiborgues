@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd18668ca41c8364f860d0bc4366949d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canBounce: 0
 --- !u!1 &1917036815341708923
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd18668ca41c8364f860d0bc4366949d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canBounce: 0
 --- !u!1 &3239111348815890667
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd18668ca41c8364f860d0bc4366949d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canBounce: 0
 --- !u!1 &7586041649385225350
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,7 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207ec6524ff092b478c00a53fc91abaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwableData: {fileID: 11400000, guid: 4be67652c3471ff4288f720c589d1049, type: 2}
+  throwableData: {fileID: 0}
   canBeShooted: 1
   damage: 2500
   speed: 0
@@ -712,3 +715,4 @@ MonoBehaviour:
   - {fileID: 3239111348815890667}
   - {fileID: 1917036815341708923}
   - {fileID: 1856931439645366668}
+  canRicochete: 0

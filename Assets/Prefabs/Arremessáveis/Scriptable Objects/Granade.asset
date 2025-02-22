@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwableType: 0
   canBeShooted: 1
-  damage: 0
-  speed: 0
+  damage: 600
+  speed: 25
   rotationSpeed: 0
   isContinuous: 0
   isBounceable: 0
   instaActivate: 0
-  autoDeactivate: 0
+  autoDeactivate: 1
   cullingMask:
     serializedVersion: 2
     m_Bits: 0
-  delayToExplode: 0
-  explosionForce: 0
-  explosionRadius: 0
+  delayToExplode: 2
+  explosionForce: 120
+  explosionRadius: 5
   howManyFrags: 0
   canBounce: 0
   maxBounces: 0

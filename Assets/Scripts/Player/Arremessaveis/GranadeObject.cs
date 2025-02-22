@@ -47,8 +47,11 @@ public class GranadeObject : MonoBehaviour, IThrowable
     private void Start()
     {
         throwableEffect = GetComponent<IThrowableEffect>();
-        //GetDataFromSO(throwableData);
-        //throwableEffect.SetThrowableData(throwableData);
+        if(throwableData != null)
+        {
+            GetDataFromSO(throwableData);
+            throwableEffect.SetThrowableData(throwableData);
+        } 
     }
 
     // Update is called once per frame
