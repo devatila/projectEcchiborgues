@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207ec6524ff092b478c00a53fc91abaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwableData: {fileID: 0}
+  throwableData: {fileID: 11400000, guid: 3ae7acb77c5d3f7408c52bd5be73af7d, type: 2}
   canBeShooted: 1
   damage: 2500
   speed: 25

@@ -95,6 +95,8 @@ public class ThrowableDataEditor: Editor
                 data.explosionForce = EditorGUILayout.FloatField("Explosion Force", data.explosionForce);
                 data.explosionRadius = EditorGUILayout.FloatField("Explosion Radius", data.explosionRadius);
                 data.delayToExplode = 0f;
+                data.isContinuous = false;
+                data.instaActivate = false;
                 
                 break;
 

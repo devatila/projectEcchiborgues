@@ -100,11 +100,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207ec6524ff092b478c00a53fc91abaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwableData: {fileID: 11400000, guid: 9f053f48e1b086343a018772bccebc71, type: 2}
+  canBeShooted: 1
   damage: 500
   speed: 25
   delayToExplode: 0
+  autoDeactivate: 1
+  instaActivate: 0
+  isContinuous: 0
+  isBounceable: 0
+  maxBounce: 3
   rb: {fileID: 3027345776133940482}
-  lifetime: 1
   layerToCollide:
     serializedVersion: 2
     m_Bits: 1280

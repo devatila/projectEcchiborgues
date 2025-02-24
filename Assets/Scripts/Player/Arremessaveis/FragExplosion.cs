@@ -30,8 +30,14 @@ public class FragExplosion : MonoBehaviour, IThrowableEffect
         }
         if (m_throwableData != null)
         {
-            impulseForce = m_throwableData.explosionForce;
-             
+            //impulseForce = m_throwableData.explosionForce;
+            if (m_throwableData.explosionForce > 0)
+            {
+                hasImpulse = true;
+                impulseForce = m_throwableData.explosionForce;
+                impulseDamage = m_throwableData.damage;
+                impulseRadius = m_throwableData.explosionRadius;
+            }
         }
     }
     public void ApplyEffect(GameObject hitObject, int damage)
@@ -49,7 +55,7 @@ public class FragExplosion : MonoBehaviour, IThrowableEffect
         for (int i = 0; i < fragsObject.Length; i++)
         {
             fragsObject[i].SetActive(true);
-            fragsDamage[i].damage = damage / fragsDamage.Length;
+            fragsDamage[i].damage = damage;
         }
         ExplosionImpulse(hasImpulse);
     }

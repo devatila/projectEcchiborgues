@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyType1 : MonoBehaviour, IDamageable
-{
+{                                   // DESCONTINUADO //
     public EnemyDataSO enemyDataSO;
 
     public bool isEnemyAlive {get; private set; }
