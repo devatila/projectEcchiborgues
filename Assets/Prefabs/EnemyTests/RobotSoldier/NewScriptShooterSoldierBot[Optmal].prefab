@@ -203,11 +203,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: f280aff2c117c8d4ebbf7f284fb79d20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.15
+      value: 12.91
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: f280aff2c117c8d4ebbf7f284fb79d20, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.32
+      value: -4.96
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: f280aff2c117c8d4ebbf7f284fb79d20, type: 3}
       propertyPath: m_LocalPosition.z
@@ -243,11 +243,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7221020487405985688, guid: f280aff2c117c8d4ebbf7f284fb79d20, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.99880046
+      value: -0.99880505
       objectReference: {fileID: 0}
     - target: {fileID: -7221020487405985688, guid: f280aff2c117c8d4ebbf7f284fb79d20, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.04896698
+      value: 0.04887366
       objectReference: {fileID: 0}
     - target: {fileID: -7177796038800571695, guid: f280aff2c117c8d4ebbf7f284fb79d20, type: 3}
       propertyPath: m_SortingOrder
@@ -625,7 +625,7 @@ MonoBehaviour:
   currentState: 0
   attackRange: 8.05
   retreatDistance: 2.31
-  circleRadius: 5.88
+  circleRadius: 8.5
   circleSpeed: 4
   health: 1500
   damageAttack: 30

@@ -116,8 +116,8 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
             Debug.Log(CircleLoop == null);
             CircleLoop = StartCoroutine(CirclingLoop(1.5f));
         }
-        
-        Vector3 direction = (transform.position - player.transform.position).normalized; // Direção radial
+
+        Vector3 direction = (transform.position - positionTracker.targetPosition.position).normalized; // Direção radial
         Vector3 perpendicularDirection = Vector3.Cross(direction, Vector3.forward); // Perpendicular para 2D
 
         // Mover o inimigo em um movimento circular ao redor do player
@@ -130,13 +130,14 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
             CurrentState = State.Retreat;
             StopCoroutine(CircleLoop);
             CircleLoop = null;
+            circleSpeed = startCircleSpeed;
         }
         if (distance > circleRadius * 1.1f)
         {
             CurrentState = State.Chase;
             StopCoroutine(CircleLoop);
             CircleLoop = null;
-            
+            circleSpeed = startCircleSpeed;
         }
     }
     IEnumerator CirclingLoop(float interludeTime)
@@ -223,12 +224,8 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
 
     void SettingAnimations()
     {
-        if (agent.isStopped || circleSpeed < 0)
-        {
-            anim.SetInteger("StateID", 1);
-        } else if (!agent.isStopped || circleSpeed > 0)
-        {
-            anim.SetInteger("StateID", 2);
-        }
+        int stateID = circleSpeed == 0 ? 1 : 2;
+        
+        anim.SetInteger("StateID", stateID);
     }
 }
