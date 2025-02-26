@@ -2,11 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SoldierBehavior : MonoBehaviour
+public class SoldierBehavior : MonoBehaviour, IDamageable
 {
     [SerializeField] private enum State { Idle, Chase, Circle, Retreat, Erratic }
     [SerializeField] private State currentState;
-    [SerializeField] private System.Action stateUpdate;
+    private System.Action stateUpdate;
 
     private NavMeshAgent agent;
     private Transform player;
@@ -20,10 +20,25 @@ public class SoldierBehavior : MonoBehaviour
     private float startCircleSpeed;
 
     private Vector3 normalScale;
+    [Space()]
+
+    // Atributos basicos
+    [Header("Atributos Basicos")]
+    [SerializeField] private int health = 1500;
+    [SerializeField] private int damageAttack = 30;
+
+    [Space()]
+
+    //References
+    [Header("Referencias")]
+    [SerializeField] private Animator anim;
+    [SerializeField] private LookPlayerPositionTracker positionTracker;
+
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -35,7 +50,8 @@ public class SoldierBehavior : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(CircleLoop == null);
+        //Debug.Log(CircleLoop != null);
+        SettingAnimations();
         CheckToFlipEnemy();
         stateUpdate?.Invoke();
     }
@@ -131,7 +147,9 @@ public class SoldierBehavior : MonoBehaviour
         {
             circleSpeed = 0;
             yield return new WaitForSeconds(interludeTime);
+            
             circleSpeed = Random.Range(0, 2) > 0 ? initialCircleSpeed * -1 : initialCircleSpeed;
+            yield return new WaitForSeconds(interludeTime);
         }
     }
 
@@ -175,14 +193,42 @@ public class SoldierBehavior : MonoBehaviour
 
     void CheckToFlipEnemy()
     {
-        bool isOnRightSide = player.gameObject.transform.position.x > transform.position.x;
-        if (isOnRightSide)
+        float isOnRightSide = player.transform.position.x > transform.position.x ? 1 : -1;
+
+        transform.localScale = new Vector3(normalScale.x * isOnRightSide, normalScale.y, normalScale.z);
+        
+    }
+
+    void Death()
+    {
+        ItemDropManager.Instance.OnEnemyDeath(transform.position);
+        EnemyIndicator.instance.OnEnemyDeath(this.gameObject);
+        RaidManager.instance.RemoveEnemyOnDeath(this.gameObject);
+        this.gameObject.SetActive(false);
+    }
+
+    public void TakeDamage(int damage, bool shouldPlayDamageAnim = true)
+    {
+        health -= damage;
+        if (health < 0)
         {
-            transform.localScale = normalScale;
+            Death();
         }
-        else
+    }
+
+    public void SetStun(float timeStunned)
+    {
+        
+    }
+
+    void SettingAnimations()
+    {
+        if (agent.isStopped || circleSpeed < 0)
         {
-            transform.localScale = new Vector3(normalScale.x * -1, normalScale.y, normalScale.z);
+            anim.SetInteger("StateID", 1);
+        } else if (!agent.isStopped || circleSpeed > 0)
+        {
+            anim.SetInteger("StateID", 2);
         }
     }
 }

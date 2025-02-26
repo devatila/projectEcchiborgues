@@ -16,7 +16,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   enemiesToSpawn:
-  - {fileID: 3493864131247642199, guid: ceba017a7e194cc47bbb8db14da6c4e2, type: 3}
+  - {fileID: 3493864131247642199, guid: 9662470afb061b049a6e754c7c6aafd1, type: 3}
   raidsOfTheDay:
   - onRaidPerformances:
     - awaitsEveryoneIsDead: 0
