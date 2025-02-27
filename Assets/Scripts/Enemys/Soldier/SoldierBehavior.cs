@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class SoldierBehavior : MonoBehaviour, IDamageable
 {
-    [SerializeField] private enum State { Chase, Circle, Retreat }
+    [SerializeField] private enum State { Idle ,Chase, Circle, Retreat }
     [SerializeField] private State currentState;
     private System.Action stateUpdate;
 
@@ -14,7 +14,7 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
     [SerializeField] private float retreatDistance = 1.5f;
     [SerializeField] private float circleRadius = 3.0f;
     [SerializeField] private float circleSpeed = 3f;
-    private Vector2 erraticDirection;
+    
 
     private Coroutine CircleLoop;
     private float startCircleSpeed;
