@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class SoldierBehavior : MonoBehaviour, IDamageable
 {
-    [SerializeField] private enum State { Idle, Chase, Circle, Retreat, Erratic }
+    [SerializeField] private enum State { Chase, Circle, Retreat }
     [SerializeField] private State currentState;
     private System.Action stateUpdate;
 
@@ -73,9 +73,6 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
     {
         switch (currentState)
         {
-            case State.Idle:
-                stateUpdate = UpdateIdle;
-                break;
             case State.Chase:
                 stateUpdate = UpdateChase;
                 break;
@@ -85,15 +82,7 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
             case State.Retreat:
                 stateUpdate = UpdateRetreat;
                 break;
-            case State.Erratic:
-                stateUpdate = UpdateErratic;
-                break;
         }
-    }
-
-    private void UpdateIdle()
-    {
-        agent.isStopped = true;
     }
 
     private void UpdateChase()
@@ -162,21 +151,6 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
 
         if (Vector2.Distance(transform.position, player.position) > retreatDistance * 2)
         {
-            CurrentState = State.Chase;
-        }
-    }
-
-    private void UpdateErratic()
-    {
-        if (erraticDirection == Vector2.zero)
-        {
-            erraticDirection = Random.insideUnitCircle.normalized;
-        }
-        transform.position += (Vector3)(erraticDirection * agent.speed * Time.deltaTime);
-
-        if (Random.value < 0.01f)
-        {
-            erraticDirection = Vector2.zero;
             CurrentState = State.Chase;
         }
     }

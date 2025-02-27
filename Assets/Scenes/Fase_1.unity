@@ -33376,6 +33376,7 @@ Transform:
   - {fileID: 1028586172}
   - {fileID: 1580818438}
   - {fileID: 726226725}
+  - {fileID: 1766790323}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1197051470
@@ -43815,17 +43816,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3193814189080123266, guid: 9662470afb061b049a6e754c7c6aafd1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.99880505
-      objectReference: {fileID: 0}
-    - target: {fileID: 3193814189080123266, guid: 9662470afb061b049a6e754c7c6aafd1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.04887366
-      objectReference: {fileID: 0}
     - target: {fileID: 3493864131247642199, guid: 9662470afb061b049a6e754c7c6aafd1, type: 3}
       propertyPath: m_Name
       value: NewScriptShooterSoldierBot[Optmal]
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493864131247642199, guid: 9662470afb061b049a6e754c7c6aafd1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -45785,6 +45782,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1806562757}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1766790322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1766790323}
+  m_Layer: 3
+  m_Name: CenterReference
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1766790323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766790322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.29, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1197051469}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1769463157
 GameObject:
