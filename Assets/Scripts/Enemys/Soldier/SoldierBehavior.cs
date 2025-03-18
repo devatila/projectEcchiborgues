@@ -117,17 +117,20 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
         if (distance < retreatDistance)
         {
             CurrentState = State.Retreat;
-            StopCoroutine(CircleLoop);
-            CircleLoop = null;
-            circleSpeed = startCircleSpeed;
+            StopCircleLoop();
         }
         if (distance > circleRadius * 1.1f)
         {
             CurrentState = State.Chase;
-            StopCoroutine(CircleLoop);
-            CircleLoop = null;
-            circleSpeed = startCircleSpeed;
+            StopCircleLoop();
         }
+    }
+
+    void StopCircleLoop()
+    {
+        StopCoroutine(CircleLoop);
+        CircleLoop = null;
+        circleSpeed = startCircleSpeed;
     }
     IEnumerator CirclingLoop(float interludeTime)
     {
