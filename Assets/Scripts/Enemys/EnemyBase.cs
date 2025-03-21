@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +11,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     protected int damageAmmount;
     protected int cashToDrop;
     protected Vector2 ultimaPosicao;
+    protected EnemyBasicsAttributes EnemyBasics = new EnemyBasicsAttributes();
 
     public virtual void SetStun(float timeStunned)
     {
@@ -37,12 +39,12 @@ public class EnemyBase : MonoBehaviour, IDamageable
     }
     public void Calcular(int x, int y)
     {
-        Debug.Log(x + y);
+        UnityEngine.Debug.Log(x + y);
     }
 
     public void AjustarDirecao(NavMeshAgent agent, Transform objectTransform, ref Vector2 lastPos)
     {
-        if (IsEnemyStopped(agent))
+        if (IsEnemyStopped())
         {
             float indexRotation = agent.destination.x > agent.transform.position.x ? 0 : 180;
 
@@ -67,9 +69,37 @@ public class EnemyBase : MonoBehaviour, IDamageable
         
     }
 
-    private bool IsEnemyStopped(NavMeshAgent agent)
+    private bool IsEnemyStopped()
     {
-        return agent.remainingDistance <= agent.stoppingDistance && agent.velocity.magnitude < 0.1f;
+        return EnemyBasics.agent.remainingDistance <= EnemyBasics.agent.stoppingDistance && EnemyBasics.agent.velocity.magnitude < 0.1f;
     }
 
+    public bool IsFacingPlayer()
+    {
+        Vector2 directionToPlayer = (EnemyBasics.agent.destination - transform.position).normalized;
+        Vector2 facingDirection = transform.right; // Direção que o inimigo está olhando
+
+        return Vector2.Dot(directionToPlayer, facingDirection) > 0;
+    }
+
+    [System.Serializable]
+    public class EnemyBasicsAttributes
+    {
+        public NavMeshAgent agent;
+        public Vector2 lastPosition;
+        public Transform objectTransform;
+
+        public void GetReferences(MonoBehaviour owner)
+        {
+            agent = owner.GetComponent<NavMeshAgent>();
+            lastPosition = owner.transform.position;
+            objectTransform = owner.transform;
+
+            
+            agent.updateRotation = false;
+            agent.updateUpAxis = false;
+
+            
+        }
+    }
 }

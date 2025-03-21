@@ -5,30 +5,32 @@ using UnityEngine.AI;
 
 public class DogBot : EnemyBase
 {
-    private NavMeshAgent agent;
+    
     private Transform playerPos;
+
+    private EnemyBasicsAttributes basicAttributes = new EnemyBasicsAttributes();
     private void Start()
     {
         playerPos = FindObjectOfType<PlayerInventory>().gameObject.transform;
-        agent = GetComponent<NavMeshAgent>();
+        EnemyBasics.GetReferences(this);
         speed = 5f;
-        ultimaPosicao = transform.position;
-        agent.speed = speed;
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+
+        EnemyBasics.agent.speed = speed;
 
     }
 
     public override void Move()
     {
-        agent.SetDestination(playerPos.position);
+        EnemyBasics.agent.SetDestination(playerPos.position);
     }
 
     private void Update()
     {
         Move();
 
-        AjustarDirecao(agent, transform,ref ultimaPosicao);
+        AjustarDirecao(EnemyBasics.agent, transform,ref ultimaPosicao);
+
+        if (Input.GetKeyDown(KeyCode.L)) Debug.Log(IsFacingPlayer());
     }
 
     public override void TakeDamage(int damage, bool shouldPlayDamageAnim = true)
