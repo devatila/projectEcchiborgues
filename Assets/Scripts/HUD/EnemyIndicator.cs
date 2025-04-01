@@ -63,8 +63,10 @@ public class EnemyIndicator : MonoBehaviour
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPos, canvas.worldCamera, out indicatorPos);
             indicator.anchoredPosition = indicatorPos;
 
-            // Calcula a direção e rotação da seta
-            Vector3 direction = enemy.position - mainCamera.transform.position;
+            // Usa o "PontoCentral" ao invés da posição do inimigo
+            Transform enemyCenter = enemy.GetComponent<EnemyBase>().centralPosition;
+            Vector3 direction = enemyCenter.position - mainCamera.transform.position;
+
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             indicator.rotation = Quaternion.Euler(0, 0, angle);
         }

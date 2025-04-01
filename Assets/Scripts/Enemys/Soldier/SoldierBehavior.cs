@@ -25,7 +25,7 @@ public class SoldierBehavior : MonoBehaviour, IDamageable
     // Atributos basicos
     [Header("Atributos Basicos")]
     [SerializeField] private int health = 1500;
-    [SerializeField] private int damageAttack = 30;
+    //[SerializeField] private int damageAttack = 30;
 
     [Space()]
 

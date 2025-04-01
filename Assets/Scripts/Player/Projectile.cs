@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) //Não esquecer de trocar para Physics2D.OverlapCircle
     {
         IDamageable dmg = collision.gameObject.GetComponent<IDamageable>();
-        if (dmg != null)
+        if (dmg != null && collision.gameObject.layer == LayerMask.NameToLayer("Hitbox"))
         {
             dmg.TakeDamage(damage);
         }

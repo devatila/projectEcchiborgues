@@ -200,8 +200,12 @@ public class TurretBehavior : MonoBehaviour, IUpgradeable
     void LookToObject()
     {
         GameObject closestEnemy = FindClosestEnemyOnRange();
-        Vector3 direction = closestEnemy.transform.position - transform.position;
+        if (closestEnemy == null) return;
 
+        // Acessa o "PontoCentral" do inimigo
+        Transform enemyCenter = closestEnemy.GetComponent<EnemyBase>().centralPosition;
+
+        Vector3 direction = enemyCenter.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         turretHead.transform.rotation = Quaternion.Euler(0, 0, angle);
     }

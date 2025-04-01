@@ -7,16 +7,20 @@ public class DogBot : EnemyBase
 {
     
     private Transform playerPos;
-
-    private EnemyBasicsAttributes basicAttributes = new EnemyBasicsAttributes();
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         playerPos = FindObjectOfType<PlayerInventory>().gameObject.transform;
         EnemyBasics.GetReferences(this);
         speed = 5f;
 
         EnemyBasics.agent.speed = speed;
 
+    }
+
+    public override void TakeDamage(int damage, bool shouldPlayDamageAnim = true)
+    {
+        Debug.Log($"tomou {damage} de dano, e o objeto tocar animação é igual a {shouldPlayDamageAnim}");
     }
 
     public override void Move()
@@ -31,11 +35,6 @@ public class DogBot : EnemyBase
         AjustarDirecao(EnemyBasics.agent, transform,ref ultimaPosicao);
 
         if (Input.GetKeyDown(KeyCode.L)) Debug.Log(IsFacingPlayer());
-    }
-
-    public override void TakeDamage(int damage, bool shouldPlayDamageAnim = true)
-    {
-        
     }
 
     
