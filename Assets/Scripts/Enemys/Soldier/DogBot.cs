@@ -6,16 +6,13 @@ using UnityEngine.AI;
 public class DogBot : EnemyBase
 {
     
-    private Transform playerPos;
+    [Space(20)]
+    public bool HasExplode;
     public override void Start()
     {
         base.Start();
-        playerPos = FindObjectOfType<PlayerInventory>().gameObject.transform;
-        EnemyBasics.GetReferences(this);
-        speed = 5f;
-
-        EnemyBasics.agent.speed = speed;
-
+        
+        
     }
 
     public override void TakeDamage(int damage, bool shouldPlayDamageAnim = true)
@@ -25,16 +22,13 @@ public class DogBot : EnemyBase
 
     public override void Move()
     {
-        EnemyBasics.agent.SetDestination(playerPos.position);
+        //EnemyBasics.agent.SetDestination(playerPos.position);
     }
 
-    private void Update()
+    public override void Update()
     {
-        Move();
+        base.Update();
 
-        AjustarDirecao(EnemyBasics.agent, transform,ref ultimaPosicao);
-
-        if (Input.GetKeyDown(KeyCode.L)) Debug.Log(IsFacingPlayer());
     }
 
     

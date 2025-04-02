@@ -11,6 +11,7 @@ TagManager:
   - UI_Manager
   - FootPos
   - UIBuyerButton
+  - PontoCentral
   layers:
   - Default
   - TransparentFX
@@ -23,9 +24,9 @@ TagManager:
   - Enemie
   - Throwable
   - StaticCollider
-  - 
-  - 
-  - 
+  - Hitbox
+  - Projectile
+  - VisibleBound
   - 
   - 
   - 

@@ -6,20 +6,31 @@ using UnityEngine.AI;
 
 public class EnemyBase : MonoBehaviour, IDamageable
 {
-    protected float speed;
-    protected int health;
-    protected int damageAmmount;
-    protected int cashToDrop;
+    [Header("Atributos Básicos")]
+    [Tooltip("Ativar movimentação basica de perseguição e parar quando se aproximar")]
+    [SerializeField] protected bool enableDefaultBehavior = true;
+
+    [SerializeField] protected float speed;
+    [SerializeField] protected int health;
+    [SerializeField] protected int damageAmmount;
+    [SerializeField] protected int cashToDrop;
+    [Space()]
+
+    [SerializeField] protected bool useAttackRangeAsStoppingDistance = true;
+    [SerializeField] protected float attackRange;
+    [SerializeField] protected Vector2 attackRangeOffset;
+
     protected Vector2 ultimaPosicao;
+    protected Transform playerPos; // Posição do player
     protected EnemyBasicsAttributes EnemyBasics = new EnemyBasicsAttributes();
 
-    protected Collider2D VisibleBoundsCollider; // Armazena o Collider2D encontrado
+    protected Collider2D VisibleBoundsCollider;    // Armazena o Collider2D encontrado
     protected string targetLayer = "VisibleBound"; // Nome da layer que é responsavel para encontrar o objeto que sera usado como limites visiveis deste inimigo
-    protected SpriteRenderer[] spriteRenderers; // Todas as partes de sprites do inimigo ficam nessa variavel
-    protected bool canAttack, isAttacking; // Valido para todos os tipos de ataques dos inimigos
+    protected SpriteRenderer[] spriteRenderers;    // Todas as partes de sprites do inimigo ficam nessa variavel
+    [SerializeField] protected bool canAttack, isAttacking;         // Valido para todos os tipos de ataques dos inimigos
 
 
-    public Transform centralPosition;
+    public Transform centralPosition { get; protected set; }
 
 
     private bool isVisible;
@@ -33,11 +44,28 @@ public class EnemyBase : MonoBehaviour, IDamageable
         } 
     }
 
+    
+
     public virtual void Start()
     {
+        EnemyBasics.GetReferences(this);
+        EnemyBasics.agent.speed = speed;
+        if(useAttackRangeAsStoppingDistance) EnemyBasics.agent.stoppingDistance = attackRange;
+        ultimaPosicao = transform.position;
+
+        playerPos = FindObjectOfType<PlayerInventory>().gameObject.transform;
+
         VisibleBoundsCollider = GetChildColliderWithLayer(gameObject, targetLayer);
+
         GetAllSprites();
         GetCentralPoint();
+    }
+
+    public virtual void Update()
+    {
+        AjustarDirecao();
+        if (enableDefaultBehavior)
+            DefaultBehavior();
     }
 
     public virtual void SetStun(float timeStunned)
@@ -64,41 +92,38 @@ public class EnemyBase : MonoBehaviour, IDamageable
     {
 
     }
-    public void Calcular(int x, int y)
-    {
-        UnityEngine.Debug.Log(x + y);
-    }
 
-    public void AjustarDirecao(NavMeshAgent agent, Transform objectTransform, ref Vector2 lastPos)
+    private void DefaultBehavior() => EnemyBasics.agent.SetDestination(playerPos.position);
+
+    public void AjustarDirecao()
     {
         _isVisible = IsVisibleOnCamera(VisibleBoundsCollider);
-        if (!objectTransform.gameObject.activeInHierarchy) return; // Evita processamento de objetos desativados
         if (!_isVisible) return; // Para o codigo se o inimigo não estiver aparecendo na camera
 
         // Se o inimigo estiver parado, verifica se precisa mudar a rotação
         if (IsEnemyStopped())
         {
-            float indexRotation = agent.destination.x > agent.transform.position.x ? 0 : 180;
+            float indexRotation = EnemyBasics.agent.destination.x > EnemyBasics.agent.transform.position.x ? 0 : 180;
 
-            if (objectTransform.eulerAngles.y != indexRotation)
+            if (transform.eulerAngles.y != indexRotation)
             {
-                objectTransform.rotation = Quaternion.Euler(0, indexRotation, 0);
+                transform.rotation = Quaternion.Euler(0, indexRotation, 0);
             }
         }
         else
         {
-            Vector2 direcaoMovimento = (Vector2)agent.transform.position - lastPos;
+            Vector2 direcaoMovimento = (Vector2)EnemyBasics.agent.transform.position - ultimaPosicao;
 
             if (Mathf.Abs(direcaoMovimento.x) > 0.001f) // Apenas atualiza se houver movimento
             {
                 float novaRotacao = direcaoMovimento.x > 0 ? 0 : 180;
 
-                if (objectTransform.eulerAngles.y != novaRotacao)
+                if (transform.eulerAngles.y != novaRotacao)
                 {
-                    objectTransform.rotation = Quaternion.Euler(0, novaRotacao, 0);
+                    transform.rotation = Quaternion.Euler(0, novaRotacao, 0);
                 }
 
-                lastPos = agent.transform.position;
+                ultimaPosicao = EnemyBasics.agent.transform.position;
             }
         }
     }
@@ -194,6 +219,12 @@ public class EnemyBase : MonoBehaviour, IDamageable
         Vector2 facingDirection = transform.right; // Direção que o inimigo está olhando
 
         return Vector2.Dot(directionToPlayer, facingDirection) > 0;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(new Vector3(transform.position.x + attackRangeOffset.x, transform.position.y + attackRangeOffset.y, 0), attackRange);
     }
 
     [System.Serializable]
