@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
@@ -7,8 +8,12 @@ using UnityEngine.AI;
 public class EnemyBase : MonoBehaviour, IDamageable
 {
     [Header("Atributos Básicos")]
+    
     [Tooltip("Ativar movimentação basica de perseguição e parar quando se aproximar")]
     [SerializeField] protected bool enableDefaultBehavior = true;
+
+    public enum EnemyTypes { DogBot, SoldierBot, ComedorDeKiev }
+    public EnemyTypes currentTypeOfEnemy;
 
     [SerializeField] protected float speed;
     [SerializeField] protected int health;
@@ -19,6 +24,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     [SerializeField] protected bool useAttackRangeAsStoppingDistance = true;
     [SerializeField] protected float attackRange;
     [SerializeField] protected Vector2 attackRangeOffset;
+    public bool isPlayerOnAttackRange { get; set; }
 
     protected Vector2 ultimaPosicao;
     protected Transform playerPos; // Posição do player
@@ -27,8 +33,6 @@ public class EnemyBase : MonoBehaviour, IDamageable
     protected Collider2D VisibleBoundsCollider;    // Armazena o Collider2D encontrado
     protected string targetLayer = "VisibleBound"; // Nome da layer que é responsavel para encontrar o objeto que sera usado como limites visiveis deste inimigo
     protected SpriteRenderer[] spriteRenderers;    // Todas as partes de sprites do inimigo ficam nessa variavel
-    [SerializeField] protected bool canAttack, isAttacking;         // Valido para todos os tipos de ataques dos inimigos
-
 
     public Transform centralPosition { get; protected set; }
 
@@ -44,7 +48,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
         } 
     }
 
-    
+    private CircleCollider2D attackZone;
 
     public virtual void Start()
     {
@@ -59,6 +63,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
 
         GetAllSprites();
         GetCentralPoint();
+        GetAttackZoneCollider();
     }
 
     public virtual void Update()
@@ -66,6 +71,12 @@ public class EnemyBase : MonoBehaviour, IDamageable
         AjustarDirecao();
         if (enableDefaultBehavior)
             DefaultBehavior();
+    }
+
+    public virtual void SetGenericAttackType<T>(T attackType, int damage) where T : Enum
+    {
+        //currentAttack = new DogBotAttacks(attackType, damage, this);
+        Debug.Log($"Ataque selecionado: {attackType} causando {damage} de dano.");
     }
 
     public virtual void SetStun(float timeStunned)
@@ -193,7 +204,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     void GetAllSprites() => spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
 
 
-    private bool IsEnemyStopped()
+    public bool IsEnemyStopped()
     {
         return EnemyBasics.agent.remainingDistance <= EnemyBasics.agent.stoppingDistance && EnemyBasics.agent.velocity.magnitude < 0.1f;
     }
@@ -210,6 +221,20 @@ public class EnemyBase : MonoBehaviour, IDamageable
         {
             Debug.LogWarning($"PontoCentral não encontrado em {gameObject.name}, usando posição padrão.");
             centralPosition = transform;
+        }
+    }
+    void GetAttackZoneCollider()
+    {
+        CircleCollider2D collider = GameObject.FindWithTag("EnemyAttackZone").GetComponent<CircleCollider2D>();
+        if(collider != null && collider.transform.IsChildOf(transform))
+        {
+            attackZone = collider;
+            attackZone.radius = attackRange * 2.174f;
+            attackZone.offset = attackRangeOffset;
+        }
+        else
+        {
+            Debug.LogError("Colisor de detecção de player não está instanciado como filho na hierarquia deste objeto");
         }
     }
 

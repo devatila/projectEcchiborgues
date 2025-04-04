@@ -12,6 +12,7 @@ TagManager:
   - FootPos
   - UIBuyerButton
   - PontoCentral
+  - EnemyAttackZone
   layers:
   - Default
   - TransparentFX
