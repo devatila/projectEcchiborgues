@@ -16,6 +16,7 @@ public class EnemyAttackZone : MonoBehaviour
 
     public string selectedAttackName; // Salva o nome do ataque no Inspector
     public Enum selectedAttack;
+    public int damage;
 
     private void Awake()
     {
@@ -54,7 +55,7 @@ public class EnemyAttackZone : MonoBehaviour
         if (enemy != null)
         {
             enemy.isPlayerOnAttackRange = true;
-            enemy.SetGenericAttackType(selectedAttack, 420);
+            enemy.SetGenericAttackType(selectedAttack, damage);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

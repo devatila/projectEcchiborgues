@@ -25878,7 +25878,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
   currentType: 0
-  selectedAttackName: RushHead
+  probability: 29
+  selectedAttackName: Bite
+  damage: 309
 --- !u!58 &931868813
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -36800,6 +36802,8 @@ MonoBehaviour:
   useAttackRangeAsStoppingDistance: 1
   attackRange: 2.87
   attackRangeOffset: {x: 0, y: 0}
+  attackZones:
+  - {fileID: 931868812}
   HasExplode: 0
 --- !u!195 &1477139734
 NavMeshAgent:

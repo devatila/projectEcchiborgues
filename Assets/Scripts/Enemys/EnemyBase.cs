@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Transactions;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,6 +31,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     protected Collider2D VisibleBoundsCollider;    // Armazena o Collider2D encontrado
     protected string targetLayer = "VisibleBound"; // Nome da layer que é responsavel para encontrar o objeto que sera usado como limites visiveis deste inimigo
     protected SpriteRenderer[] spriteRenderers;    // Todas as partes de sprites do inimigo ficam nessa variavel
+    public EnemyAttackZone[] attackZones;
 
     public Transform centralPosition { get; protected set; }
 
@@ -103,6 +102,12 @@ public class EnemyBase : MonoBehaviour, IDamageable
     public virtual void Attack()
     {
 
+    }
+
+    public void DamageMultiplier(int multiplier)
+    {
+        foreach (var zone in attackZones)
+            zone.damage *= multiplier;
     }
 
     private void DefaultBehavior() => EnemyBasics.agent.SetDestination(playerPos.position);
@@ -271,6 +276,44 @@ public class EnemyBase : MonoBehaviour, IDamageable
             agent.updateUpAxis = false;
 
             
+        }
+    }
+}
+
+[CustomEditor(typeof(EnemyBase), true)]
+public class EnemyBaseEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector(); // Refaz o inspector para não ter que repetir toda a configuração das variaveis base
+
+        EnemyBase enemyBase = (EnemyBase)target;
+        enemyBase.attackZones = enemyBase.GetComponentsInChildren<EnemyAttackZone>();
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("== Attack Zones ==", EditorStyles.boldLabel);
+
+        foreach (var zone in enemyBase.attackZones)
+        {
+            EditorGUILayout.BeginVertical("box");
+
+            // Mostra o nome do GameObject com o AttackZone
+            EditorGUILayout.LabelField("Trigger: " + zone.gameObject.name);
+
+            // Mostra o nome do ataque selecionado
+            EditorGUILayout.LabelField("Ataque: " + zone.selectedAttackName);
+
+            // Campo de dano editável direto aqui
+            zone.damage = EditorGUILayout.IntSlider("Dano", zone.damage, 0, 500);
+
+            EditorGUILayout.EndVertical();
+        }
+
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(enemyBase);
+            foreach (var zone in enemyBase.attackZones)
+                EditorUtility.SetDirty(zone);
         }
     }
 }
