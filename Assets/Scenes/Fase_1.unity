@@ -25877,8 +25877,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
-  currentType: 1
-  selectedAttackName: Shoot
+  currentType: 0
+  selectedAttackName: RushHead
 --- !u!58 &931868813
 CircleCollider2D:
   m_ObjectHideFlags: 0

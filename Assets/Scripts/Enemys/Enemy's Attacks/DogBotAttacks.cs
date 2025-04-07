@@ -21,14 +21,19 @@ public class DogBotAttacks : EnemyAttack
 
     public override void ExecuteAttack(Transform enemyTransform)
     {
+        if (!canAttack) return;
+
         switch (attackType)
         {
             case AttackTypes.Bite:
+                canAttack = false;
                 actualCoroutine = CoroutineRunner.Instance.StartCoroutine(BiteRoutine());
                 break;
 
             case AttackTypes.RushHead:
+                canAttack = false;
                 Debug.Log($"{enemyTransform.name} fez uma INVESTIDA causando {m_damage} de dano!");
+                canAttack = true;
                 break;
         }
     }
@@ -40,19 +45,11 @@ public class DogBotAttacks : EnemyAttack
 
     IEnumerator BiteRoutine()
     {
-        while (m_enemy.isPlayerOnAttackRange)
-        {
-            if (canAttack)
-            {
-                canAttack = false;
-                Debug.Log($"DogBot fez uma MORDIDA causando {m_damage} de dano!");
-                
-                yield return new WaitForSeconds(delayBetweenAttacks);
+        
+        Debug.Log($"DogBot fez uma MORDIDA causando {m_damage} de dano!");
 
-                canAttack = true;
-            }
+        yield return new WaitForSeconds(delayBetweenAttacks);
 
-            yield return null;
-        }
+        canAttack = true;
     }
 }

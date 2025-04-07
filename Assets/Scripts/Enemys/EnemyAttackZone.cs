@@ -1,13 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyAttackZone : MonoBehaviour
 {
     [SerializeField] private EnemyBase enemy;
     public EnemyBase.EnemyTypes currentType;
+    [HideInInspector] public int probability;
 
     public enum SoldierBotAttackTypes { Shoot, Punch }
 
@@ -53,7 +54,7 @@ public class EnemyAttackZone : MonoBehaviour
         if (enemy != null)
         {
             enemy.isPlayerOnAttackRange = true;
-            enemy.SetGenericAttackType(selectedAttack, 150);
+            enemy.SetGenericAttackType(selectedAttack, 420);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -78,12 +79,14 @@ public class EnemyAttackZone : MonoBehaviour
     }
 
 }
-
+        
 
 
 [CustomEditor(typeof(EnemyAttackZone))]
 public class EnemyAttackZoneEditor : Editor
 {
+    private static Dictionary<EnemyBase.EnemyTypes, Type> _attackEnumCache;
+
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -100,18 +103,49 @@ public class EnemyAttackZoneEditor : Editor
 
         if (attackEnumType != null)
         {
-            string[] attackNames = Enum.GetNames(attackEnumType);
-            int selectedIndex = Array.IndexOf(attackNames, enemyAttackZone.selectedAttackName);
+            // Pega todos os nomes do enum
+            string[] allAttackNames = Enum.GetNames(attackEnumType);
 
+            // Coleta todos os AttackZones do mesmo inimigo
+            var allZones = enemyAttackZone.GetComponentInParent<EnemyBase>()
+                .GetComponentsInChildren<EnemyAttackZone>();
+
+            // Lista de ataques já escolhidos por outros AttackZones
+            var alreadyUsed = allZones
+                .Where(z => z != enemyAttackZone && !string.IsNullOrEmpty(z.selectedAttackName))
+                .Select(z => z.selectedAttackName)
+                .ToHashSet();
+
+            // Filtra para mostrar apenas os ataques ainda não usados
+            var filteredNames = allAttackNames
+                .Where(name => !alreadyUsed.Contains(name))
+                .ToList();
+
+            // Garante que o valor atual apareça mesmo se já estiver usado
+            if (!string.IsNullOrEmpty(enemyAttackZone.selectedAttackName) &&
+                !filteredNames.Contains(enemyAttackZone.selectedAttackName))
+            {
+                filteredNames.Add(enemyAttackZone.selectedAttackName);
+            }
+
+            // Organiza alfabeticamente para não bagunçar visual
+            filteredNames.Sort();
+
+            // Define índice do selecionado
+            int selectedIndex = filteredNames.IndexOf(enemyAttackZone.selectedAttackName);
             if (selectedIndex < 0) selectedIndex = 0;
 
-            selectedIndex = EditorGUILayout.Popup("Attack Type", selectedIndex, attackNames);
+            selectedIndex = EditorGUILayout.Popup("Attack Type", selectedIndex, filteredNames.ToArray());
 
-            // Salva a escolha no nome e no Enum
-            enemyAttackZone.selectedAttackName = attackNames[selectedIndex];
-            enemyAttackZone.selectedAttack = (Enum)Enum.Parse(attackEnumType, attackNames[selectedIndex]);
+            // Atualiza campos
+            enemyAttackZone.selectedAttackName = filteredNames[selectedIndex];
+            enemyAttackZone.selectedAttack = (Enum)Enum.Parse(attackEnumType, filteredNames[selectedIndex]);
         }
-        
+
+        // Slidinho da chance (probability)
+        enemyAttackZone.probability = EditorGUILayout.IntSlider(new GUIContent("Probability", "Valor definido em porcentagem"),
+                    enemyAttackZone.probability, 0, 100);
+
         serializedObject.ApplyModifiedProperties();
 
         if (GUI.changed)
@@ -120,17 +154,30 @@ public class EnemyAttackZoneEditor : Editor
         }
     }
 
-    private Type GetAttackEnumType(EnemyBase.EnemyTypes enemyType)
+    private static Type GetAttackEnumType(EnemyBase.EnemyTypes enemyType)
     {
-        switch (enemyType)
+        if (_attackEnumCache == null)
         {
-            case EnemyBase.EnemyTypes.DogBot:
-                return typeof(DogBotAttacks.AttackTypes);
-            case EnemyBase.EnemyTypes.SoldierBot:
-                return typeof(EnemyAttackZone.SoldierBotAttackTypes);
-            default:
-                return null;
+            _attackEnumCache = new Dictionary<EnemyBase.EnemyTypes, Type>();
+
+            var typesWithAttribute = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(asm => asm.GetTypes())
+                .Where(t =>
+                    t.GetCustomAttributes(typeof(EnemyAttackEnumAttribute), false).Length > 0);
+
+            foreach (var type in typesWithAttribute)
+            {
+                var attr = (EnemyAttackEnumAttribute)type.GetCustomAttributes(typeof(EnemyAttackEnumAttribute), false)[0];
+                if (!_attackEnumCache.ContainsKey(attr.enemyType))
+                {
+                    _attackEnumCache[attr.enemyType] = attr.enumType;
+                }
+            }
         }
+
+        _attackEnumCache.TryGetValue(enemyType, out var result);
+        return result;
     }
 }
+
 

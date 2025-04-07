@@ -77,6 +77,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     {
         //currentAttack = new DogBotAttacks(attackType, damage, this);
         Debug.Log($"Ataque selecionado: {attackType} causando {damage} de dano.");
+        damageAmmount = damage;
     }
 
     public virtual void SetStun(float timeStunned)

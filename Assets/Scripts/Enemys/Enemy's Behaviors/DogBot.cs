@@ -27,7 +27,7 @@ public class DogBot : EnemyBase
         base.SetGenericAttackType(attackType, damage);
         if (attackType is DogBotAttacks.AttackTypes enumAttacks)
         {
-            SetAttackType(enumAttacks, 150);
+            SetAttackType(enumAttacks, damage);
         }
         
     }
