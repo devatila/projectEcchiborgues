@@ -7,6 +7,7 @@ using UnityEngine;
 public class EnemyAttackZone : MonoBehaviour
 {
     [SerializeField] private EnemyBase enemy;
+    [SerializeField] internal bool lastZone;
     public EnemyBase.EnemyTypes currentType;
     [HideInInspector] public int probability;
 
@@ -33,15 +34,13 @@ public class EnemyAttackZone : MonoBehaviour
             selectedAttack = GetFirstEnumValue(currentAttackEnumType);
         }
 
-        Debug.Log("Selected Attack on Awake: " + selectedAttack);
+        //Debug.Log("Selected Attack on Awake: " + selectedAttack);
     }
 
     public void SetEnemyType(EnemyBase.EnemyTypes type)
     {
-        if (type == EnemyBase.EnemyTypes.DogBot)
-            currentAttackEnumType = typeof(DogBotAttacks.AttackTypes);
-        else if (type == EnemyBase.EnemyTypes.SoldierBot)
-            currentAttackEnumType = typeof(SoldierBotAttackTypes);
+        currentAttackEnumType = EnemyAttackEnumResolver.GetAttackEnumType(type);
+        
 
         // Atualiza o nome salvo no Inspector
         if (selectedAttack != null)
@@ -55,7 +54,7 @@ public class EnemyAttackZone : MonoBehaviour
         if (enemy != null)
         {
             enemy.isPlayerOnAttackRange = true;
-            enemy.SetGenericAttackType(selectedAttack, damage);
+            enemy.SetGenericAttackType(selectedAttack, damage, probability);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -73,21 +72,42 @@ public class EnemyAttackZone : MonoBehaviour
         return values.Length > 0 ? (Enum)values.GetValue(0) : null;
     }
 
-    private void OnValidate()
-    {
-        // Garante que o tipo de ataque é coerente no editor
-        SetEnemyType(currentType);
-    }
-
 }
-        
+
+public static class EnemyAttackEnumResolver
+{
+    private static Dictionary<EnemyBase.EnemyTypes, Type> _attackEnumCache;
+
+    public static Type GetAttackEnumType(EnemyBase.EnemyTypes enemyType)
+    {
+        if (_attackEnumCache == null)
+        {
+            _attackEnumCache = new Dictionary<EnemyBase.EnemyTypes, Type>();
+
+            var typesWithAttribute = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(asm => asm.GetTypes())
+                .Where(t => t.GetCustomAttributes(typeof(EnemyAttackEnumAttribute), false).Length > 0);
+
+            foreach (var type in typesWithAttribute)
+            {
+                var attr = (EnemyAttackEnumAttribute)type.GetCustomAttributes(typeof(EnemyAttackEnumAttribute), false)[0];
+                if (!_attackEnumCache.ContainsKey(attr.enemyType))
+                {
+                    _attackEnumCache[attr.enemyType] = attr.enumType;
+                }
+            }
+        }
+
+        _attackEnumCache.TryGetValue(enemyType, out var result);
+        return result;
+    }
+}
+
 
 
 [CustomEditor(typeof(EnemyAttackZone))]
 public class EnemyAttackZoneEditor : Editor
 {
-    private static Dictionary<EnemyBase.EnemyTypes, Type> _attackEnumCache;
-
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -99,8 +119,8 @@ public class EnemyAttackZoneEditor : Editor
         {
             enemyAttackZone.currentType = enemyTypeChoosen.currentTypeOfEnemy;
         }
-
-        Type attackEnumType = GetAttackEnumType(enemyAttackZone.currentType);
+        enemyAttackZone.lastZone = EditorGUILayout.Toggle("Is Last Zone?", enemyAttackZone.lastZone);
+        Type attackEnumType = EnemyAttackEnumResolver.GetAttackEnumType(enemyAttackZone.currentType);
 
         if (attackEnumType != null)
         {
@@ -141,6 +161,7 @@ public class EnemyAttackZoneEditor : Editor
             // Atualiza campos
             enemyAttackZone.selectedAttackName = filteredNames[selectedIndex];
             enemyAttackZone.selectedAttack = (Enum)Enum.Parse(attackEnumType, filteredNames[selectedIndex]);
+
         }
 
         // Slidinho da chance (probability)
@@ -155,30 +176,7 @@ public class EnemyAttackZoneEditor : Editor
         }
     }
 
-    private static Type GetAttackEnumType(EnemyBase.EnemyTypes enemyType)
-    {
-        if (_attackEnumCache == null)
-        {
-            _attackEnumCache = new Dictionary<EnemyBase.EnemyTypes, Type>();
-
-            var typesWithAttribute = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(asm => asm.GetTypes())
-                .Where(t =>
-                    t.GetCustomAttributes(typeof(EnemyAttackEnumAttribute), false).Length > 0);
-
-            foreach (var type in typesWithAttribute)
-            {
-                var attr = (EnemyAttackEnumAttribute)type.GetCustomAttributes(typeof(EnemyAttackEnumAttribute), false)[0];
-                if (!_attackEnumCache.ContainsKey(attr.enemyType))
-                {
-                    _attackEnumCache[attr.enemyType] = attr.enumType;
-                }
-            }
-        }
-
-        _attackEnumCache.TryGetValue(enemyType, out var result);
-        return result;
-    }
+    
 }
 
 

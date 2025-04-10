@@ -9,4 +9,9 @@ public abstract class EnemyAttack
     {
         anim.SetTrigger(stateName);
     }
+
+    public bool CanAttackWithProbabilites(int actualProb)
+    {
+        return Random.Range(0, 100) < actualProb;
+    }
 }

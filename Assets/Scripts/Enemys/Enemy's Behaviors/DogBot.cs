@@ -5,29 +5,51 @@ using UnityEngine.AI;
 
 public class DogBot : EnemyBase
 {
-    
+    // FIQUE AQUIIII (STAY WITH ME)
+    // A NOITE NA SUA PORTA EU BATIII
+
     [Space(20)]
     public bool HasExplode;
+    public bool attackAllowanceByProbability;
     private DogBotAttacks currentAttack;
+    private Dictionary<EnemyAttackTypes.DogBot, DogBotAttacks> dogBotAttackCache = new();
+
     public override void Start()
     {
         base.Start();
         //SetAttackType(DogBotAttacks.AttackTypes.Bite, 150);
-        SetGenericAttackType(DogBotAttacks.AttackTypes.Bite, 150);
+        //SetGenericAttackType(EnemyAttackTypes.DogBot.Bite, 150);
         
     }
 
-    void SetAttackType(DogBotAttacks.AttackTypes attackType, int damage)
+    void SetAttackType(EnemyAttackTypes.DogBot attackType, int damage)
     {
-        currentAttack = new DogBotAttacks(attackType, damage, this);
+        if (!dogBotAttackCache.TryGetValue(attackType, out var cachedAttack))
+        {
+            cachedAttack = new DogBotAttacks(attackType, damage, this);
+            dogBotAttackCache[attackType] = cachedAttack;
+        }
+
+        // Cancela ataque atual se for diferente
+        if (currentAttack != cachedAttack) currentAttack?.CancelAttacks();
+
+        currentAttack = cachedAttack;
+        if (!currentAttack.canAttack)
+        {
+            currentAttack.canAttack = true;
+            Debug.Log("O estado de ataque foi corrigido para: " + currentAttack.canAttack);
+        }
     }
 
-    public override void SetGenericAttackType<T>(T attackType, int damage)
+
+    public override void SetGenericAttackType<T>(T attackType, int damage, int probability = 100)
     {
         base.SetGenericAttackType(attackType, damage);
-        if (attackType is DogBotAttacks.AttackTypes enumAttacks)
+        if (attackType is EnemyAttackTypes.DogBot enumAttacks)
         {
             SetAttackType(enumAttacks, damage);
+            currentAttack.currentProbability = probability;
+            attackAllowanceByProbability = currentAttack.CanAttackWithProbabilites(probability);
         }
         
     }
@@ -45,7 +67,8 @@ public class DogBot : EnemyBase
     public override void Update()
     {
         base.Update();
-        if (isPlayerOnAttackRange)
+        
+        if (isPlayerOnAttackRange && attackAllowanceByProbability && currentAttack.canAttack)
         {
             currentAttack.ExecuteAttack(transform);
         }

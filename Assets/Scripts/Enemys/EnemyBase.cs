@@ -72,7 +72,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
             DefaultBehavior();
     }
 
-    public virtual void SetGenericAttackType<T>(T attackType, int damage) where T : Enum
+    public virtual void SetGenericAttackType<T>(T attackType, int damage, int probability = 100) where T : Enum
     {
         //currentAttack = new DogBotAttacks(attackType, damage, this);
         Debug.Log($"Ataque selecionado: {attackType} causando {damage} de dano.");
@@ -234,9 +234,9 @@ public class EnemyBase : MonoBehaviour, IDamageable
         CircleCollider2D collider = GameObject.FindWithTag("EnemyAttackZone").GetComponent<CircleCollider2D>();
         if(collider != null && collider.transform.IsChildOf(transform))
         {
-            attackZone = collider;
-            attackZone.radius = attackRange * 2.174f;
-            attackZone.offset = attackRangeOffset;
+            //attackZone = collider;
+            //attackZone.radius = attackRange * 2.174f;
+            //attackZone.offset = attackRangeOffset;
         }
         else
         {
