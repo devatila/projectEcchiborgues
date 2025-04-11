@@ -42,7 +42,7 @@ public class Hitbox : MonoBehaviour, IDamageable
         
     }
 
-    public void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 0)
+    public void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 1f)
     {
         throw new System.NotImplementedException();
     }

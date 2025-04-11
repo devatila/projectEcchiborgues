@@ -127,7 +127,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     {
 
     }
-    public virtual void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 0)
+    public virtual void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 1f)
     {
         currentDOTtime = DOTtime;
 

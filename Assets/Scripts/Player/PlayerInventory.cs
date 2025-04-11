@@ -581,7 +581,7 @@ public interface IDamageable
     /// <param name="newState">Tipo de efeito que será aplicado</param>
     /// <param name="duration">Duração do efeito que será aplicado</param>
     /// <param name="DOTtime">Se houver, determina o intervalo a cada dano tomado dentro do efeito (Apenas Fire)(Recomendavel ser 1f)</param>
-    void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 0);
+    void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 1f);
 }
 
 public interface IBuyableInScene
