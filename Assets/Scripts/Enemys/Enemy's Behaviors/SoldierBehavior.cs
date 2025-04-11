@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SoldierBehavior : MonoBehaviour, IDamageable
+public class SoldierBehavior : MonoBehaviour//, IDamageable
 {
     [SerializeField] private enum State { Idle ,Chase, Circle, Retreat }
     [SerializeField] private State currentState;

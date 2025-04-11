@@ -24,7 +24,7 @@ public class PEM_Explosion : MonoBehaviour, IThrowableEffect
             {
                 // Aplica dano, se necessário // Mas é necessário
                 damageable.TakeDamage(damage);
-                damageable.SetStun(stunTime);
+                damageable.ApplyNaturalState(NaturalStates.Eletric, stunTime);
             }
             IStateable stateable = hitCollider.GetComponent<IStateable>();
             if (stateable != null)

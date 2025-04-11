@@ -8,7 +8,6 @@ public class DogBotAttacks : EnemyAttack
     private int m_damage;
     private float delayBetweenAttacks = 2f;
     public Coroutine actualCoroutine;
-    public bool canAttack = true;
     private EnemyBase m_enemy;
     public int currentProbability;
 

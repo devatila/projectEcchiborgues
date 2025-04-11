@@ -37,8 +37,13 @@ public class Hitbox : MonoBehaviour, IDamageable
         SetDamage(damage, shouldPlayDamageAnim);
     }
 
-    public void SetStun(float timeStunned)
+    public void SetStun()
     {
         
+    }
+
+    public void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 0)
+    {
+        throw new System.NotImplementedException();
     }
 }

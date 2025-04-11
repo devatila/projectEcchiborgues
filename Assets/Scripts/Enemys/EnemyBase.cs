@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,7 +10,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
     
     [Tooltip("Ativar movimentação basica de perseguição e parar quando se aproximar")]
     [SerializeField] protected bool enableDefaultBehavior = true;
-
+    protected EnemyAttack enemyAttack;
     public enum EnemyTypes { DogBot, SoldierBot, ComedorDeKiev }
     public EnemyTypes currentTypeOfEnemy;
 
@@ -47,7 +48,29 @@ public class EnemyBase : MonoBehaviour, IDamageable
         } 
     }
 
+    [SerializeField] protected NaturalStates currentState = NaturalStates.None;
+    protected Coroutine stateCoroutine;
+    private Coroutine subStateCoroutine; //Para corrotinas de DOT;
+
+    public virtual NaturalStates CurrentState
+    {
+        get => currentState;
+        protected set
+        {
+            if (currentState != value)
+            {
+                currentState = value;
+                OnStateChanged(currentState);
+            }
+        }
+    }
+
     private CircleCollider2D attackZone;
+
+    [SerializeField] protected bool runtimeAbleAttack;
+    protected bool attackAllowanceByProbability;
+    protected float currentDOTtime;
+
 
     public virtual void Start()
     {
@@ -79,9 +102,10 @@ public class EnemyBase : MonoBehaviour, IDamageable
         damageAmmount = damage;
     }
 
-    public virtual void SetStun(float timeStunned)
+    public virtual void SetStun()
     {
         // Deixar o inimigo Stunnado
+        Debug.Log("Imagina que o inimigo foi stunado aqui kkkk;-;");
     }
 
     public virtual void TakeDamage(int damage, bool shouldPlayDamageAnim = true)
@@ -103,6 +127,69 @@ public class EnemyBase : MonoBehaviour, IDamageable
     {
 
     }
+    public virtual void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 0)
+    {
+        currentDOTtime = DOTtime;
+
+        if (stateCoroutine != null)
+            StopCoroutine(stateCoroutine);
+
+        CurrentState = newState;
+        stateCoroutine = StartCoroutine(ClearStateAfterTime(duration));
+    }
+
+    protected virtual IEnumerator ClearStateAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        CurrentState = NaturalStates.None;
+    }
+    protected virtual void OnStateChanged(NaturalStates state)
+    {
+        CancelFireState();
+        switch (state)
+        {
+            case NaturalStates.Eletric:
+                SetStun(); // como o "SetStun"
+                break;
+            case NaturalStates.Fire:
+                SetFireState(); // pode dar DOT (damage over time) - Vai ser DOT heheh
+                break;
+            case NaturalStates.Cold:
+               //OnSlowStart(); // pode reduzir velocidade
+                break;
+            case NaturalStates.None:
+                //OnEffectEnd();
+                Debug.Log("Alterado Para Normal");
+                break;
+        }
+    }
+
+    protected virtual void SetFireState()
+    {
+        if(subStateCoroutine == null)
+        {
+            subStateCoroutine = StartCoroutine(ApplyDOT(currentDOTtime));
+        }
+        
+    }
+    private void CancelFireState()
+    {
+        if (subStateCoroutine != null)
+        {
+            StopCoroutine(subStateCoroutine);
+            subStateCoroutine = null;
+        }
+    }
+    private IEnumerator ApplyDOT(float time)
+    {
+        while (true)
+        {
+            Debug.Log("Tomando dano de fogo heheh"); 
+            yield return new WaitForSeconds(time);
+        }
+    }
+
+
 
     public void DamageMultiplier(int multiplier)
     {
@@ -242,6 +329,16 @@ public class EnemyBase : MonoBehaviour, IDamageable
         {
             Debug.LogError("Colisor de detecção de player não está instanciado como filho na hierarquia deste objeto");
         }
+    }
+
+    protected bool CanPerformAttack()
+    {
+        
+        if (isPlayerOnAttackRange && attackAllowanceByProbability && enemyAttack.canAttack && runtimeAbleAttack)
+        {
+            return true;
+        }
+        return false;
     }
 
     public bool IsFacingPlayer()

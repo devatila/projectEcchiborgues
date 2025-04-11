@@ -1,11 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyType1 : MonoBehaviour, IDamageable
+public class EnemyType1 : MonoBehaviour//, //IDamageable
 {                                   // DESCONTINUADO //
     public EnemyDataSO enemyDataSO;
 

@@ -10,13 +10,13 @@ public class DogBot : EnemyBase
 
     [Space(20)]
     public bool HasExplode;
-    public bool attackAllowanceByProbability;
     private DogBotAttacks currentAttack;
     private Dictionary<EnemyAttackTypes.DogBot, DogBotAttacks> dogBotAttackCache = new();
 
     public override void Start()
     {
         base.Start();
+        
         //SetAttackType(DogBotAttacks.AttackTypes.Bite, 150);
         //SetGenericAttackType(EnemyAttackTypes.DogBot.Bite, 150);
         
@@ -39,6 +39,7 @@ public class DogBot : EnemyBase
             currentAttack.canAttack = true;
             Debug.Log("O estado de ataque foi corrigido para: " + currentAttack.canAttack);
         }
+        enemyAttack = currentAttack;
     }
 
 
@@ -68,9 +69,14 @@ public class DogBot : EnemyBase
     {
         base.Update();
         
-        if (isPlayerOnAttackRange && attackAllowanceByProbability && currentAttack.canAttack)
+        if (CanPerformAttack())
         {
             currentAttack.ExecuteAttack(transform);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ApplyNaturalState(NaturalStates.Fire, 10, 1f); // isso aqui vai aplicar o efeito de "Pegar fogo bixo"
         }
     }
 

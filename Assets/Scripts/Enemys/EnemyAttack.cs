@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class EnemyAttack
 {
+    public bool canAttack = true;
     public abstract void ExecuteAttack(Transform enemyTransform);
     public abstract void CancelAttacks();
 

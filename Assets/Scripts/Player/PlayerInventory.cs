@@ -573,7 +573,15 @@ public interface ICollectable
 public interface IDamageable
 {
     void TakeDamage(int damage, bool shouldPlayDamageAnim = true);
-    void SetStun(float timeStunned);
+    void SetStun();
+
+    /// <summary>
+    /// Aplica um tipo de efeito determinado ao inimigo
+    /// </summary>
+    /// <param name="newState">Tipo de efeito que será aplicado</param>
+    /// <param name="duration">Duração do efeito que será aplicado</param>
+    /// <param name="DOTtime">Se houver, determina o intervalo a cada dano tomado dentro do efeito (Apenas Fire)(Recomendavel ser 1f)</param>
+    void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 0);
 }
 
 public interface IBuyableInScene

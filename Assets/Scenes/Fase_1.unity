@@ -25842,7 +25842,7 @@ GameObject:
   - component: {fileID: 931868811}
   - component: {fileID: 931868813}
   - component: {fileID: 931868812}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: Bitezone
   m_TagString: EnemyAttackZone
   m_Icon: {fileID: 0}
@@ -32247,7 +32247,7 @@ GameObject:
   - component: {fileID: 1043100482}
   - component: {fileID: 1043100484}
   - component: {fileID: 1043100483}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: Dashzone
   m_TagString: EnemyAttackZone
   m_Icon: {fileID: 0}
@@ -32286,7 +32286,7 @@ MonoBehaviour:
   currentType: 0
   probability: 50
   selectedAttackName: Dash
-  damage: 225
+  damage: 368
 --- !u!58 &1043100484
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -36892,8 +36892,9 @@ MonoBehaviour:
   attackZones:
   - {fileID: 931868812}
   - {fileID: 1043100483}
+  currentState: 0
+  runtimeAbleAttack: 1
   HasExplode: 0
-  attackAllowanceByProbability: 0
 --- !u!195 &1477139734
 NavMeshAgent:
   m_ObjectHideFlags: 0
