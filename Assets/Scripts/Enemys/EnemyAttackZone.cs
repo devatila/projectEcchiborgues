@@ -51,15 +51,18 @@ public class EnemyAttackZone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.CompareTag("Player")) return; // Só passa quem é player de verdade
+        Debug.Log("Chamando quando entra aqui");
         if (enemy != null)
         {
+            
             enemy.isPlayerOnAttackRange = true;
             enemy.SetGenericAttackType(selectedAttack, damage, probability);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (enemy != null)
+        if (enemy != null && lastZone)
         {
             enemy.isPlayerOnAttackRange = false;
         }

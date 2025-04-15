@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -72,6 +73,9 @@ public class EnemyBase : MonoBehaviour, IDamageable
     protected float currentDOTtime;
 
 
+    private List<EnemyEffect> activeEffects = new List<EnemyEffect>();
+    [SerializeField] protected List<string> debugEffectNames = new List<string>();
+
     public virtual void Start()
     {
         EnemyBasics.GetReferences(this);
@@ -93,6 +97,23 @@ public class EnemyBase : MonoBehaviour, IDamageable
         AjustarDirecao();
         if (enableDefaultBehavior)
             DefaultBehavior();
+
+        UpdatingEffect();
+    }
+
+    void UpdatingEffect()
+    {
+        if (activeEffects.Count == 0) return;
+        
+        float deltaTime = Time.deltaTime;
+
+        for (int i = activeEffects.Count - 1; i >= 0; i--)
+        {
+            activeEffects[i].UpdateEffect(deltaTime);
+            if (activeEffects[i].isFinished)
+                activeEffects.RemoveAt(i);
+        }
+        UpdateDebugEffectNames();
     }
 
     public virtual void SetGenericAttackType<T>(T attackType, int damage, int probability = 100) where T : Enum
@@ -102,10 +123,11 @@ public class EnemyBase : MonoBehaviour, IDamageable
         damageAmmount = damage;
     }
 
-    public virtual void SetStun()
+    public virtual void SetStun(bool hasToStun = true)
     {
         // Deixar o inimigo Stunnado
-        Debug.Log("Imagina que o inimigo foi stunado aqui kkkk;-;");
+        if (hasToStun) Debug.Log("Imagina que o inimigo foi stunado aqui kkkk;-;");
+        else Debug.Log(" O inimigo foi Desestunado");
     }
 
     public virtual void TakeDamage(int damage, bool shouldPlayDamageAnim = true)
@@ -138,6 +160,39 @@ public class EnemyBase : MonoBehaviour, IDamageable
         stateCoroutine = StartCoroutine(ClearStateAfterTime(duration));
     }
 
+    public virtual void NewApplyNaturalState(NaturalStates stateType, float duration, float DOTtime = 1f)
+    {
+        currentDOTtime = DOTtime;
+
+        EnemyEffect existingType = activeEffects.Find(e => e.stateType == stateType);
+        if (existingType != null)
+        {
+            existingType.ResetDuration(duration);
+            return;
+        }
+
+        EnemyEffect newEffect = null;
+
+        switch (stateType)
+        {
+            case NaturalStates.Eletric:
+                newEffect = new StunEffect(this, duration);
+                break;
+            case NaturalStates.Fire:
+                newEffect = new FireEffect(this, duration);
+                break;
+        }
+
+        if(newEffect != null)
+        {
+            newEffect.OnApply();
+            activeEffects.Add(newEffect);
+        }
+
+        //UpdateDebugEffectNames(); // FUi ver a Champions
+
+    }
+
     protected virtual IEnumerator ClearStateAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
@@ -164,21 +219,30 @@ public class EnemyBase : MonoBehaviour, IDamageable
         }
     }
 
-    protected virtual void SetFireState()
+    public virtual void SetFireState()
     {
         if(subStateCoroutine == null)
         {
             subStateCoroutine = StartCoroutine(ApplyDOT(currentDOTtime));
         }
+        else
+        {
+            StopCoroutine(subStateCoroutine);
+            subStateCoroutine = null;
+            subStateCoroutine = StartCoroutine(ApplyDOT(currentDOTtime));
+            Debug.Log("Corrotina Resetada");
+        }
         
     }
-    private void CancelFireState()
+    public void CancelFireState()
     {
         if (subStateCoroutine != null)
         {
             StopCoroutine(subStateCoroutine);
             subStateCoroutine = null;
         }
+
+        Debug.Log("Efeito de fogo Cancelado ou Encerrado");
     }
     private IEnumerator ApplyDOT(float time)
     {
@@ -196,6 +260,16 @@ public class EnemyBase : MonoBehaviour, IDamageable
         foreach (var zone in attackZones)
             zone.damage *= multiplier;
     }
+
+    public void UpdateDebugEffectNames()
+    {
+        debugEffectNames.Clear();
+        foreach (var effect in activeEffects)
+        {
+            debugEffectNames.Add(effect.GetType().Name);
+        }
+    }
+
 
     private void DefaultBehavior() => EnemyBasics.agent.SetDestination(playerPos.position);
 

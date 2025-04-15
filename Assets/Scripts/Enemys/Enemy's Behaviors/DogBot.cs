@@ -76,7 +76,11 @@ public class DogBot : EnemyBase
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ApplyNaturalState(NaturalStates.Fire, 10, 1f); // isso aqui vai aplicar o efeito de "Pegar fogo bixo"
+            NewApplyNaturalState(NaturalStates.Eletric, 3f); // isso aqui vai aplicar o efeito de "Stun"
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            NewApplyNaturalState(NaturalStates.Fire, 10f); // isso aqui vai aplicar o efeito de "Stun"
         }
     }
 

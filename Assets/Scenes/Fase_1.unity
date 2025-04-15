@@ -36893,7 +36893,7 @@ MonoBehaviour:
   - {fileID: 931868812}
   - {fileID: 1043100483}
   currentState: 0
-  runtimeAbleAttack: 1
+  runtimeAbleAttack: 0
   HasExplode: 0
 --- !u!195 &1477139734
 NavMeshAgent:

@@ -573,7 +573,7 @@ public interface ICollectable
 public interface IDamageable
 {
     void TakeDamage(int damage, bool shouldPlayDamageAnim = true);
-    void SetStun();
+    void SetStun(bool hasToStun = true);
 
     /// <summary>
     /// Aplica um tipo de efeito determinado ao inimigo

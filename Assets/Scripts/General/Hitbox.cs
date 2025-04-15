@@ -37,7 +37,7 @@ public class Hitbox : MonoBehaviour, IDamageable
         SetDamage(damage, shouldPlayDamageAnim);
     }
 
-    public void SetStun()
+    public void SetStun(bool hasToStun = true)
     {
         
     }
