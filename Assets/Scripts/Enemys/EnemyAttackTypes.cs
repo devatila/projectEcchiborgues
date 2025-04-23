@@ -4,7 +4,12 @@ using UnityEngine;
 
 public static class EnemyAttackTypes
 {
-    public enum DogBot { Bite, Dash, TripleBite}
+    [System.Flags]
+    public enum DogBot {
+        Bite = 1 << 0,
+        Dash = 1 << 1,
+        TripleBite = 1 << 2,
+    }
     public enum SoldierBot { Shoot, Punch }
 }
 

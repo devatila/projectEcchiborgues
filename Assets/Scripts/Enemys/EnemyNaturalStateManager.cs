@@ -6,6 +6,7 @@ public interface IStateable
 {
     void SetState(NaturalStates State);
 }
+[System.Serializable]
 public enum NaturalStates
 {
     None,

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,7 +16,6 @@ public class EnemyBase : MonoBehaviour, IDamageable
     protected EnemyAttack enemyAttack;
     public enum EnemyTypes { DogBot, SoldierBot, ComedorDeKiev }
     public EnemyTypes currentTypeOfEnemy;
-
     [SerializeField] protected float speed;
     [SerializeField] protected int health;
     [SerializeField] protected int damageAmmount;
@@ -33,6 +34,8 @@ public class EnemyBase : MonoBehaviour, IDamageable
     protected Collider2D VisibleBoundsCollider;    // Armazena o Collider2D encontrado
     protected string targetLayer = "VisibleBound"; // Nome da layer que é responsavel para encontrar o objeto que sera usado como limites visiveis deste inimigo
     protected SpriteRenderer[] spriteRenderers;    // Todas as partes de sprites do inimigo ficam nessa variavel
+    [Space()]
+
     public EnemyAttackZone[] attackZones;
 
     public Transform centralPosition { get; protected set; }
@@ -76,6 +79,10 @@ public class EnemyBase : MonoBehaviour, IDamageable
     private List<EnemyEffect> activeEffects = new List<EnemyEffect>();
     [SerializeField] protected List<string> debugEffectNames = new List<string>();
 
+    protected List<EnemyAttackZone> activeZones = new List<EnemyAttackZone>();
+    public bool isRunningAttack;
+
+
     public virtual void Start()
     {
         EnemyBasics.GetReferences(this);
@@ -96,9 +103,95 @@ public class EnemyBase : MonoBehaviour, IDamageable
     {
         AjustarDirecao();
         if (enableDefaultBehavior)
+        {
             DefaultBehavior();
+        }
+
+
+        if (CanPerformAttack())
+        {
+            if (enemyAttack == null)
+            {
+                SelectAndExecuteAttack();
+            }
+            else
+            {
+                if (!enemyAttack.isRunning)
+                {
+                    SelectAndExecuteAttack();
+                }
+            }
+        }
 
         UpdatingEffect();
+    }
+
+    public void PlayerEnteredZone(EnemyAttackZone zone)
+    {
+        if (!activeZones.Contains(zone))
+        {
+            activeZones.Add(zone);
+            isPlayerOnAttackRange = true;
+        }
+    }
+
+    public void PlayerExitedZone(EnemyAttackZone zone)
+    {
+        activeZones.Remove(zone);
+        if (activeZones.Count == 0)
+        {
+            isPlayerOnAttackRange = false;
+            if (enemyAttack != null)
+            {
+                enemyAttack.CancelAttacks();
+                enemyAttack = null;
+            }
+        }
+    }
+
+    protected virtual void SelectAndExecuteAttack()
+    {
+        if (!isPlayerOnAttackRange || activeZones.Count == 0) return;
+        if (enemyAttack != null && enemyAttack.isRunning == true) return;
+
+        // Coleta todos os ataques possíveis
+        List<EnemyAttackZone.AttackConfig> possibleAttacks = new List<EnemyAttackZone.AttackConfig>();
+        foreach (var zone in activeZones)
+        {
+            possibleAttacks.AddRange(zone.GetAttacks());
+        }
+
+        if (possibleAttacks.Count == 0) return;
+
+        // Seleciona um ataque com base na probabilidade
+        var selectedAttack = SelectAttackBasedOnProbability(possibleAttacks);
+        if (selectedAttack != null)
+        {
+            ExecuteAttack(selectedAttack);
+        }
+    }
+
+    private EnemyAttackZone.AttackConfig SelectAttackBasedOnProbability(List<EnemyAttackZone.AttackConfig> attacks)
+    {
+        int totalProbability = attacks.Sum(a => a.probability);
+        int randomValue = UnityEngine.Random.Range(0, totalProbability);
+        int cumulative = 0;
+
+        foreach (var attack in attacks)
+        {
+            cumulative += attack.probability;
+            if (randomValue < cumulative)
+            {
+                return attack;
+            }
+        }
+        return null;
+    }
+
+    protected virtual void ExecuteAttack(EnemyAttackZone.AttackConfig attackConfig)
+    {
+        // Subclasses devem implementar isso
+        Debug.LogWarning($"Ataque {attackConfig.attackType} não implementado em {name}");
     }
 
     void UpdatingEffect()
@@ -253,14 +346,6 @@ public class EnemyBase : MonoBehaviour, IDamageable
         }
     }
 
-
-
-    public void DamageMultiplier(int multiplier)
-    {
-        foreach (var zone in attackZones)
-            zone.damage *= multiplier;
-    }
-
     public void UpdateDebugEffectNames()
     {
         debugEffectNames.Clear();
@@ -407,8 +492,8 @@ public class EnemyBase : MonoBehaviour, IDamageable
 
     protected bool CanPerformAttack()
     {
-        
-        if (isPlayerOnAttackRange && attackAllowanceByProbability && enemyAttack.canAttack && runtimeAbleAttack)
+
+        if (isPlayerOnAttackRange &&  runtimeAbleAttack)
         {
             return true;
         }
@@ -451,6 +536,8 @@ public class EnemyBase : MonoBehaviour, IDamageable
     }
 }
 
+/*
+ * 
 [CustomEditor(typeof(EnemyBase), true)]
 public class EnemyBaseEditor : Editor
 {
@@ -488,3 +575,5 @@ public class EnemyBaseEditor : Editor
         }
     }
 }
+ * 
+ * */

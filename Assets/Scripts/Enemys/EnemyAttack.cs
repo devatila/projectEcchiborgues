@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class EnemyAttack
 {
     public bool canAttack = true;
+    public bool isRunning = false;
     public abstract void ExecuteAttack(Transform enemyTransform);
     public abstract void CancelAttacks();
 
