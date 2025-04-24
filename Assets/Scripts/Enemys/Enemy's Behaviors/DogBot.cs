@@ -27,15 +27,15 @@ public class DogBot : EnemyBase
         {
             zones[0].GetAttacks().AddRange(new[]
             {
-                new EnemyAttackZone.AttackConfig { attackType = "Bite", damage = 10, probability = 80 },
-                new EnemyAttackZone.AttackConfig { attackType = "TripleBite", damage = 20, probability = 20 }
+                new EnemyAttackZone.AttackConfig { attackType = "Bite", damage = 10, probability = 70 },
+                new EnemyAttackZone.AttackConfig { attackType = "TripleBite", damage = 20, probability = 30 }
             });
         }
 
         // Zona 2: Dash (raio maior, baixa probabilidade)
         if (zones.Length > 1)
         {
-            zones[1].GetAttacks().Add(new EnemyAttackZone.AttackConfig { attackType = "Dash", damage = 15, probability = 100, isSingleUsePerEntry = true });
+            zones[1].GetAttacks().Add(new EnemyAttackZone.AttackConfig { attackType = "Dash", damage = 15, probability = 20, isSingleUsePerEntry = true });
         }
 
         // Inicializa o cache de ataques
@@ -62,13 +62,18 @@ public class DogBot : EnemyBase
                 enemyAttack = currentAttack;
                 attack.ExecuteAttack(transform);
 
-                if(attackConfig.isSingleUsePerEntry) attackConfig.hasBeenTriggered = true;
+                if (attackConfig.isSingleUsePerEntry) attackConfig.hasBeenTriggered = true;
+            }
+            else
+            {
+                if (attackConfig.isSingleUsePerEntry) attackConfig.hasBeenTriggered = true;
             }
         }
         else
         {
             Debug.LogWarning($"Ataque {attackConfig.attackType} não encontrado no cache do DogBot!");
         }
+        
     }
 
     void SetAttackType(EnemyAttackTypes.DogBot attackType, int damage)

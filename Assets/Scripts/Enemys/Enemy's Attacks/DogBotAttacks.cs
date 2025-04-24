@@ -77,7 +77,7 @@ public class DogBotAttacks : EnemyAttack
         for (int i = 0; i < 3; i++)
         {
             Debug.Log("Atacando com MORDIDA TRIPLA, o ataque index é de: " + (i + 1));
-            yield return new WaitForSeconds(delayBetweenAttacks / 2); 
+            yield return new WaitForSeconds(delayBetweenAttacks / 4); 
         }
         // Debug.Log("Todos os ataques triplos performados");
 

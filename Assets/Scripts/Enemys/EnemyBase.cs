@@ -2,59 +2,86 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyBase : MonoBehaviour, IDamageable
 {
-    [Header("Atributos Básicos")]
-    
-    [Tooltip("Ativar movimentação basica de perseguição e parar quando se aproximar")]
-    [SerializeField] protected bool enableDefaultBehavior = true;
-    protected EnemyAttack enemyAttack;
+    #region - Identidade e Tipo do Inimigo -
+
     public enum EnemyTypes { DogBot, SoldierBot, ComedorDeKiev }
     public EnemyTypes currentTypeOfEnemy;
+
+    #endregion
+
+    #region - Atributos Básicos -
+
+    [Header("Atributos Básicos")]
+
     [SerializeField] protected float speed;
     [SerializeField] protected int health;
     [SerializeField] protected int damageAmmount;
     [SerializeField] protected int cashToDrop;
-    [Space()]
 
+    [SerializeField] protected bool enableDefaultBehavior = true;
     [SerializeField] protected bool useAttackRangeAsStoppingDistance = true;
+
     [SerializeField] protected float attackRange;
     [SerializeField] protected Vector2 attackRangeOffset;
+
     public bool isPlayerOnAttackRange { get; set; }
 
-    protected Vector2 ultimaPosicao;
-    protected Transform playerPos; // Posição do player
     protected EnemyBasicsAttributes EnemyBasics = new EnemyBasicsAttributes();
 
-    protected Collider2D VisibleBoundsCollider;    // Armazena o Collider2D encontrado
-    protected string targetLayer = "VisibleBound"; // Nome da layer que é responsavel para encontrar o objeto que sera usado como limites visiveis deste inimigo
-    protected SpriteRenderer[] spriteRenderers;    // Todas as partes de sprites do inimigo ficam nessa variavel
-    [Space()]
+    #endregion
 
-    public EnemyAttackZone[] attackZones;
+    #region - Posicionamento e Visibilidade -
 
-    public Transform centralPosition { get; protected set; }
+    protected Vector2 ultimaPosicao;
+    protected Transform playerPos;
+    public Transform centralPosition;
 
+    [SerializeField] protected string targetLayer = "VisibleBound";
+    protected Collider2D VisibleBoundsCollider;
+
+    protected SpriteRenderer[] spriteRenderers;
 
     private bool isVisible;
-    private bool _isVisible { get => isVisible; 
-        set {
+    private bool _isVisible
+    {
+        get => isVisible;
+        set
+        {
             if (isVisible != value)
             {
                 isVisible = value;
                 EnemyVisiblePartsHandler();
-            }        
-        } 
+            }
+        }
     }
+
+    #endregion
+
+    #region - Sistema de Ataques e Zonas -
+
+    public EnemyAttackZone[] attackZones;
+    private CircleCollider2D attackZone;
+
+    protected EnemyAttack enemyAttack;
+    [SerializeField] protected bool runtimeAbleAttack;
+    protected bool attackAllowanceByProbability;
+    protected float currentDOTtime;
+    public bool isRunningAttack;
+
+    protected List<EnemyAttackZone> activeZones = new List<EnemyAttackZone>();
+
+    #endregion
+
+    #region - Sistema de Estados -
 
     [SerializeField] protected NaturalStates currentState = NaturalStates.None;
     protected Coroutine stateCoroutine;
-    private Coroutine subStateCoroutine; //Para corrotinas de DOT;
+    private Coroutine subStateCoroutine;
 
     public virtual NaturalStates CurrentState
     {
@@ -69,19 +96,14 @@ public class EnemyBase : MonoBehaviour, IDamageable
         }
     }
 
-    private CircleCollider2D attackZone;
+    #endregion
 
-    [SerializeField] protected bool runtimeAbleAttack;
-    protected bool attackAllowanceByProbability;
-    protected float currentDOTtime;
+    #region - Efeitos e Debug -
 
-
-    private List<EnemyEffect> activeEffects = new List<EnemyEffect>();
+    protected List<EnemyEffect> activeEffects = new List<EnemyEffect>();
     [SerializeField] protected List<string> debugEffectNames = new List<string>();
 
-    protected List<EnemyAttackZone> activeZones = new List<EnemyAttackZone>();
-    public bool isRunningAttack;
-
+    #endregion
 
     public virtual void Start()
     {
@@ -96,7 +118,6 @@ public class EnemyBase : MonoBehaviour, IDamageable
 
         GetAllSprites();
         GetCentralPoint();
-        GetAttackZoneCollider();
     }
 
     public virtual void Update()
@@ -126,6 +147,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
         UpdatingEffect();
     }
 
+    #region - Attack Zones Notifications -
     public void PlayerEnteredZone(EnemyAttackZone zone)
     {
         if (!activeZones.Contains(zone))
@@ -148,6 +170,7 @@ public class EnemyBase : MonoBehaviour, IDamageable
             }
         }
     }
+    #endregion
 
     protected virtual void SelectAndExecuteAttack()
     {
@@ -463,7 +486,8 @@ public class EnemyBase : MonoBehaviour, IDamageable
 
     void GetCentralPoint()
     {
-        GameObject centroObj = GameObject.FindWithTag("PontoCentral");
+        if (centralPosition != null) return;
+        GameObject centroObj = transform.Find("CentralPoint").gameObject;
 
         if (centroObj != null && centroObj.transform.IsChildOf(transform))
         {
@@ -473,20 +497,6 @@ public class EnemyBase : MonoBehaviour, IDamageable
         {
             Debug.LogWarning($"PontoCentral não encontrado em {gameObject.name}, usando posição padrão.");
             centralPosition = transform;
-        }
-    }
-    void GetAttackZoneCollider()
-    {
-        CircleCollider2D collider = GameObject.FindWithTag("EnemyAttackZone").GetComponent<CircleCollider2D>();
-        if(collider != null && collider.transform.IsChildOf(transform))
-        {
-            //attackZone = collider;
-            //attackZone.radius = attackRange * 2.174f;
-            //attackZone.offset = attackRangeOffset;
-        }
-        else
-        {
-            Debug.LogError("Colisor de detecção de player não está instanciado como filho na hierarquia deste objeto");
         }
     }
 
