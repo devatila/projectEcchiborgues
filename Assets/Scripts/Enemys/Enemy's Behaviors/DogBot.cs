@@ -27,15 +27,15 @@ public class DogBot : EnemyBase
         {
             zones[0].GetAttacks().AddRange(new[]
             {
-                new EnemyAttackZone.AttackConfig { attackType = "Bite", damage = 10, probability = 50 },
-                new EnemyAttackZone.AttackConfig { attackType = "TripleBite", damage = 20, probability = 50 }
+                new EnemyAttackZone.AttackConfig { attackType = "Bite", damage = 10, probability = 80 },
+                new EnemyAttackZone.AttackConfig { attackType = "TripleBite", damage = 20, probability = 20 }
             });
         }
 
         // Zona 2: Dash (raio maior, baixa probabilidade)
         if (zones.Length > 1)
         {
-            zones[1].GetAttacks().Add(new EnemyAttackZone.AttackConfig { attackType = "Dash", damage = 15, probability = 20 });
+            zones[1].GetAttacks().Add(new EnemyAttackZone.AttackConfig { attackType = "Dash", damage = 15, probability = 100, isSingleUsePerEntry = true });
         }
 
         // Inicializa o cache de ataques
@@ -54,11 +54,15 @@ public class DogBot : EnemyBase
     {
         if (attackCache.TryGetValue(attackConfig.attackType, out var attack))
         {
+            if (attackConfig.isSingleUsePerEntry && attackConfig.hasBeenTriggered) return;
+
             if (attack.canAttack && attack.CanAttackWithProbabilites(attackConfig.probability))
             {
                 currentAttack = attack;
                 enemyAttack = currentAttack;
                 attack.ExecuteAttack(transform);
+
+                if(attackConfig.isSingleUsePerEntry) attackConfig.hasBeenTriggered = true;
             }
         }
         else

@@ -8,14 +8,17 @@ public class EnemyAttackZone : MonoBehaviour
 {
     [SerializeField] private EnemyBase enemy;
     [SerializeField] private List<AttackConfig> attacks = new List<AttackConfig>();
+    
 
     // Configuração de cada ataque associado a esta zona
     [System.Serializable]
     public class AttackConfig
     {
-        public string attackType; // Nome do ataque (ex.: "Bite", "Dash")
+        public string attackType;                           // Nome do ataque (ex.: "Bite", "Dash")
         public int damage;
-        public int probability; // 0-100
+        public int probability;                             // 0-100 // Da para ser mais mas é bom manter a somatoria das probabilidades igual a 100
+        public bool isSingleUsePerEntry;                    // Só é ativado uma vez por entrada? se sim, marca isso
+        [HideInInspector] public bool hasBeenTriggered;     // Só uma forma de saber se o ataque ja foi acionado sla
     }
 
     private void Awake()
@@ -32,6 +35,10 @@ public class EnemyAttackZone : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             enemy.PlayerEnteredZone(this);
+            foreach (var attack in attacks)
+            {
+                attack.hasBeenTriggered = false;
+            }
         }
     }
 
