@@ -61,6 +61,7 @@ public class Gun_Attributes : MonoBehaviour
     public int customID { get; private set; }
     public ParticleSystem flameThrowerVFX;
     private GameObject ftTransform;
+    private RechargeEffect m_RechargeEffect;
 
     private void Awake()
     {
@@ -77,6 +78,12 @@ public class Gun_Attributes : MonoBehaviour
 
             flameThrowerVFX.transform.parent = null;
             flameThrowerVFX.transform.localScale = Vector3.one;
+        }
+
+        var c = GetComponent<CustomProjectileForGunManager>();
+        if (c != null)
+        {
+            m_RechargeEffect = GetComponentInParent<RechargeEffect>();
         }
 
         maxMagazine = magazine;
@@ -123,15 +130,44 @@ public class Gun_Attributes : MonoBehaviour
     public void stopReloadGun()
     {
         StopAllCoroutines();
+        CheckCustomProjAndHidingIt();
         Debug.Log("Parando de Recarregar");
+    }
+
+    void CheckCustomProjAndHidingIt() // Eu e meus nomes de milhões....
+    {
+        var c = GetComponent<CustomProjectileForGunManager>();
+        if(c != null)
+        {
+            if(m_RechargeEffect.lastObject != null) m_RechargeEffect.lastObject.SetActive(false);
+            else
+            {
+                StopAllCoroutines();
+                if (OnReload != null)
+                {
+                    int result = maxMagazine - actual_magazine;
+                    OnReload(result);
+
+                }
+                isReloading = false;
+                g_Shoot.isReloading = false;
+            }
+        }
     }
     private void OnEnable()
     {
         
         if (isReloading)
         {
-            Reload();
-            Debug.Log("Tentando Recarregar De novo");
+            if (actual_magazine == 0)
+            {
+                Reload();
+                Debug.Log("Tentando Recarregar De novo");
+            } else
+            {
+                isReloading = false;
+                g_Shoot.isReloading = false;
+            }
         }
     }
     void GetSOdata(WeaponDataSO WeaponSO)

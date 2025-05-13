@@ -7,7 +7,7 @@ public class RechargeEffect : MonoBehaviour
     private PlayerInventory inventory;
     public Transform leftHandTransform;
 
-    private GameObject lastObject;
+    public GameObject lastObject { get; set; }
 
     private bool previusState, currentState;
 
