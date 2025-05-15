@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d321dbb314542e4eb138471ed239594, type: 3}
-  m_Name: PlayerSpeedBoostPerk
+  m_Name: PlayerSpeedBoostPerk 4
   m_EditorClassIdentifier: 
-  perkName: SpeedBoost3x
+  perkName: SpeedBoost25x
   perkSprite: {fileID: 0}
   localizedTexts:
   - language: 0
-    LocalizedName: Melhoria de Velocidade 3x
-    LocalizedDescription: Aumenta a velocidade de movimento em 3 vezes
+    LocalizedName: Melhoria de Velocidade 25x
+    LocalizedDescription: Aumenta a velocidade de movimento em 25 vezes
   - language: 1
-    LocalizedName: Speed Boost 3x
-    LocalizedDescription: Increases the movement speed in 3x
+    LocalizedName: Speed Boost 25x
+    LocalizedDescription: Increases the movement speed in 25x
   multiplier: 3
