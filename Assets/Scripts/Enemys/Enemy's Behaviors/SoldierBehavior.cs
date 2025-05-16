@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SoldierBehavior : MonoBehaviour//, IDamageable
+public class SoldierBehavior : MonoBehaviour, IDamageable
 {
     [SerializeField] private enum State { Idle ,Chase, Circle, Retreat }
     [SerializeField] private State currentState;
@@ -204,5 +204,15 @@ public class SoldierBehavior : MonoBehaviour//, IDamageable
         int stateID = circleSpeed == 0 ? 1 : 2;
         
         anim.SetInteger("StateID", stateID);
+    }
+
+    public void SetStun(bool hasToStun = true)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 1)
+    {
+        throw new System.NotImplementedException();
     }
 }

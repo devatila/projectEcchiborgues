@@ -18,11 +18,25 @@ public class NewPerkManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        SubscribingEvents();
+    }
+    void SubscribingEvents()
+    {
+        RaidManager instance = RaidManager.instance;
+        if (instance != null)
+        {
+            instance.OnEndSubRaid += ShowPerkSelection;
+            instance.OnEndSubRaid += UpdatePerksStats;
+        }
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            ShowPerkSelection();
+            //ShowPerkSelection();
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -127,6 +141,19 @@ public class NewPerkManager : MonoBehaviour
         var perks = GetRandomPerks(3);
         PerkOptionsManager.instance.SetupOptions(perks.ToArray());
     }
+
+    void UpdatePerksStats()
+    {
+        for (int i = perkList.Count - 1; i >= 0; i--)
+        {
+            var perk = perkList[i];
+            perk.Update();
+
+            if (perk.IsExpired)
+                RemovePerk(perk);
+        }
+    }
+
 
 
 }

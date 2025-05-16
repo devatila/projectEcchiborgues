@@ -6,6 +6,7 @@ public class RechargeEffect : MonoBehaviour
 {
     private PlayerInventory inventory;
     public Transform leftHandTransform;
+    public bool isPositioned;
 
     public GameObject lastObject { get; set; }
 
@@ -53,5 +54,6 @@ public class RechargeEffect : MonoBehaviour
         lastObject.transform.localRotation = Quaternion.identity;
 
         lastObject = null;
+        isPositioned = true;
     }
 }

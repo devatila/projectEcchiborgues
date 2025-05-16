@@ -16,6 +16,12 @@ public abstract class PerkSO : ScriptableObject
     public abstract PerkBase CreatePerkInstance();
     public abstract Type GetPerkType();
 
+    public bool hasValidateTime;
+
+    [Tooltip("Numero de Ordas que este perk irá durar. Para funcionar, a opção 'hasValidateTime' tem que estar ativada")]
+    public int wavesDuration = 0;
+
+    #region LocalizationMethods
     public string GetLocalizedName(LanguageCode languageCode)
     {
         LocalizationPerkText text = localizedTexts.Find(t => t.language == languageCode);
@@ -27,6 +33,7 @@ public abstract class PerkSO : ScriptableObject
         LocalizationPerkText text = localizedTexts.Find(t => t.language == languageCode);
         return text != null ? text.LocalizedDescription : "Error: Description Not Found";
     }
+    #endregion
 }
 
 [System.Serializable]

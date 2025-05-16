@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine;
 public class RaidManager : MonoBehaviour
 {
     public static RaidManager instance;
+
+    public event Action OnEndSubRaid;
+    public event Action OnEndAllRaids;
 
     public int day; // Dia atual da Raid
     private int dayIndex; // Índice ajustado (day - 1)
@@ -65,22 +69,25 @@ public class RaidManager : MonoBehaviour
 
             // Espera até que todos os inimigos dessa Raid estejam mortos
             yield return new WaitUntil(() => EnemiesAlive.Count == 0);
-            Debug.Log($"Raid {raidIndex + 1} completed!");
-            Debug.Log("Select your desired Perk");
-            // PearkSelecter() // Aqui seria a função que chamaria a janelinha de pearks, essa função ja fará aleatóriamente a seleção
+            
             if (raidIndex < dayRaids.Length - 1)
             {
+                Debug.Log($"Raid {raidIndex + 1} completed!");
+                Debug.Log("Select your desired Perk");
+                OnEndSubRaid?.Invoke(); // Chamado para atualizar perks por duração de wave e outros bonus
+
                 float timer = perkTime;
                 while (timer > 0)
                 {
                     Debug.Log($"Next raid starting in: {timer} seconds, the actual raidIndex is: {raidIndex}.");
-                    timer -= Time.deltaTime; // Decrementa o timer de acordo com o tempo real de jogo
-                    yield return null; // Aguarda o próximo frame
+                    timer -= 1; // Decrementa o timer de acordo com o tempo real de jogo
+                    yield return new WaitForSeconds(1); // Aguarda o próximo frame
                 }
             }
         }
 
         Debug.Log("All raids for the day completed!");
+        OnEndAllRaids?.Invoke();
     }
     private void SpawnSubRaid(OnRaidPerformance subRaid)
     {
@@ -91,7 +98,7 @@ public class RaidManager : MonoBehaviour
             GameObject chosenEnemy = ChooseEnemy(subRaid.desiredEnemies);
             
             // Seleciona um ponto de spawn aleatório entre os pontos fixos definidos
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
 
             // Spawna o inimigo no local escolhido
             GameObject spawnedEnemy = Instantiate(chosenEnemy, spawnPoint.position, Quaternion.identity);
@@ -123,7 +130,7 @@ public class RaidManager : MonoBehaviour
         }
 
         // Escolhe um valor aleatório dentro do intervalo total de probabilidades
-        int randomValue = Random.Range(0, totalProbability);
+        int randomValue = UnityEngine.Random.Range(0, totalProbability);
 
         // Percorre os inimigos para determinar qual foi selecionado com base na probabilidade
         int cumulative = 0;

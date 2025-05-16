@@ -61,7 +61,8 @@ public class Gun_Attributes : MonoBehaviour
     public int customID { get; private set; }
     public ParticleSystem flameThrowerVFX;
     private GameObject ftTransform;
-    private RechargeEffect m_RechargeEffect;
+    public RechargeEffect m_RechargeEffect { get; set; }
+    private CustomProjectileForGunManager c;
 
     private void Awake()
     {
@@ -69,7 +70,8 @@ public class Gun_Attributes : MonoBehaviour
     }
     private void Start()
     {
-        if(flameThrowerVFX != null)
+        c = GetComponent<CustomProjectileForGunManager>();
+        if (flameThrowerVFX != null)
         {
             ftTransform = new GameObject("FT Transform");
             ftTransform.transform.parent = flameThrowerVFX.transform.parent;
@@ -80,7 +82,7 @@ public class Gun_Attributes : MonoBehaviour
             flameThrowerVFX.transform.localScale = Vector3.one;
         }
 
-        var c = GetComponent<CustomProjectileForGunManager>();
+        
         if (c != null)
         {
             m_RechargeEffect = GetComponentInParent<RechargeEffect>();
@@ -107,6 +109,8 @@ public class Gun_Attributes : MonoBehaviour
     {
         isReloading = true;
         g_Shoot.isReloading = true;
+        if(m_RechargeEffect != null) m_RechargeEffect.isPositioned = false;
+
         animPlayer.ReloadGun(reloadTime);
         StartCoroutine(Reloader(reloadTime));
     }
@@ -134,13 +138,13 @@ public class Gun_Attributes : MonoBehaviour
         Debug.Log("Parando de Recarregar");
     }
 
-    void CheckCustomProjAndHidingIt() // Eu e meus nomes de milhões....
+    public void CheckCustomProjAndHidingIt() // Eu e meus nomes de milhões....
     {
-        var c = GetComponent<CustomProjectileForGunManager>();
+        
         if(c != null)
         {
             if(m_RechargeEffect.lastObject != null) m_RechargeEffect.lastObject.SetActive(false);
-            else
+            else if (m_RechargeEffect.isPositioned)
             {
                 StopAllCoroutines();
                 if (OnReload != null)

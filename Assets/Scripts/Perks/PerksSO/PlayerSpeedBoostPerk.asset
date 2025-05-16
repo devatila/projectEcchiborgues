@@ -21,4 +21,6 @@ MonoBehaviour:
   - language: 1
     LocalizedName: Speed Boost 3x
     LocalizedDescription: Increases the movement speed in 3x
+  hasValidateTime: 0
+  wavesDuration: 0
   multiplier: 3

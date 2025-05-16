@@ -33,10 +33,13 @@ public class HandThrowableScript : MonoBehaviour
 
     public int NinjaStarsAmmount = 10;
 
+    private PlayerInventory player;
+
     private void Start()
     {
         cam = Camera.main; //Camera principal
         animPlayer = GetComponent<AnimPlayer>();
+        player = GetComponent<PlayerInventory>();
 
         GetAmmount = new Dictionary<ThroableObjects, System.Func<int>>
         {
@@ -122,6 +125,8 @@ public class HandThrowableScript : MonoBehaviour
 
     private void Throw()
     {
+        player.equippedGunAttributes.stopReloadGun();
+
         if (GetAmmount[thorwableEquipped]() <= 0)
         {
             Debug.LogWarning("Sem Arremessável disponivel ou Arremessável Equipado inválido");

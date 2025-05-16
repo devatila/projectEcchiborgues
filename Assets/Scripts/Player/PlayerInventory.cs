@@ -81,6 +81,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
     private bool canCollect = false;
     [SerializeField] private bool isCollected;
+    public Gun_Attributes equippedGunAttributes;
 
     // Start is called before the first frame update
     void Awake()
@@ -283,7 +284,9 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         gunEquipped.SetActive(true);
 
         // Adiciona o evento de recarregamento da nova arma
-        gunEquipped.GetComponent<Gun_Attributes>().OnReload += ReloadDesiredGun;
+        Gun_Attributes ga = gunEquipped.GetComponent<Gun_Attributes>();
+        ga.OnReload += ReloadDesiredGun;
+        equippedGunAttributes = ga;
         
 
     }
@@ -459,6 +462,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         gun.transform.rotation = gunPosition.rotation;
 
         gunEquipped = gun;
+        equippedGunAttributes = ga;
         gunEquipped.SetActive(true);
         //gunEquipped.GetComponent<AlignParentToChild>().GetFixedPosition(gunPosition, facingRight);
 

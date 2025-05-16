@@ -25,7 +25,7 @@ public class PerkOptionsManager : MonoBehaviour
     public void SetupOptions(PerkSO[] perks)
     {
         BackGround.enabled = true;
-        for (int i = 0; i < perkOptionUIs.Length; i++)
+        for (int i = 0; i < perks.Length; i++)
         {
             perkOptionUIs[i].gameObject.SetActive(true);
             perkOptionUIs[i].Setup(perks[i], LanguageCode.En);

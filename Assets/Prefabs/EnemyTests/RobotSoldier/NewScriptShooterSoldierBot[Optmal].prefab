@@ -627,7 +627,6 @@ MonoBehaviour:
   retreatDistance: 2.31
   circleRadius: 8.5
   circleSpeed: 4
-  health: 1500
-  damageAttack: 30
+  health: 750
   anim: {fileID: 186482413877317913}
   positionTracker: {fileID: 4436844542367274742}

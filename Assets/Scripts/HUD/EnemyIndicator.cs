@@ -43,6 +43,7 @@ public class EnemyIndicator : MonoBehaviour
     void UpdateIndicator(RectTransform indicator, Transform enemy)
     {
         Vector3 screenPos = mainCamera.WorldToScreenPoint(enemy.position);
+        EnemyBase enemyControl = enemy.GetComponent<EnemyBase>();
 
         // Verifica se o inimigo está na tela
         bool isOffScreen = screenPos.x <= 0 || screenPos.x >= Screen.width || screenPos.y <= 0 || screenPos.y >= Screen.height;
@@ -64,7 +65,7 @@ public class EnemyIndicator : MonoBehaviour
             indicator.anchoredPosition = indicatorPos;
 
             // Usa o "PontoCentral" ao invés da posição do inimigo
-            Transform enemyCenter = enemy.GetComponent<EnemyBase>().centralPosition;
+            Transform enemyCenter = enemyControl != null ? enemyControl.centralPosition : enemy.transform;
             Vector3 direction = enemyCenter.position - mainCamera.transform.position;
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
