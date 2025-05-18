@@ -4,10 +4,10 @@ using UnityEngine;
 public class PlayerSpeedBoostPerk : PerkBase
 {
     private float multiplier;
-    private Player_Movement Player;
+    private PlayerPerkManager Player;
     private float defaultSpeed;
     private bool isActive;
-    public PlayerSpeedBoostPerk(Player_Movement Player, float multiplier)
+    public PlayerSpeedBoostPerk(PlayerPerkManager Player, float multiplier)
     {
         this.multiplier = multiplier;
         this.Player = Player;
@@ -16,14 +16,13 @@ public class PlayerSpeedBoostPerk : PerkBase
     {
         isActive = true;
         Debug.Log("Perk de aumentar a velocidade acionado");
-        defaultSpeed = Player.ACTUAL_SPEED;
-        Player.ACTUAL_SPEED *= multiplier;
+        Player.SetMovementMultiplier(multiplier);
         
     }
 
     public override void OnRemove()
     {
-        Player.ACTUAL_SPEED = defaultSpeed;
+        Player.ResetMovementMultiplier();
         isActive = false;
     }
     public override bool IsExpired => !isActive;

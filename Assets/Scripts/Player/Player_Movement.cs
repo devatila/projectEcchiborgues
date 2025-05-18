@@ -104,5 +104,10 @@ public class Player_Movement : MonoBehaviour
         canMove = true;
         ACTUAL_SPEED = WALK_SPEED;
     }
+
+    public void SetMultiplierMovement(float effector)
+    {
+        ACTUAL_SPEED = WALK_SPEED * effector;
+    }
     
 }

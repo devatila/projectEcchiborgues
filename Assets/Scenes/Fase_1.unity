@@ -36803,6 +36803,7 @@ GameObject:
   - component: {fileID: 1197051475}
   - component: {fileID: 1197051476}
   - component: {fileID: 1197051477}
+  - component: {fileID: 1197051478}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -37089,6 +37090,28 @@ MonoBehaviour:
   thorwableEquipped: 0
   equippedIndex: 0
   NinjaStarsAmmount: 10
+--- !u!114 &1197051478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197051467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5a1f1b1bc6eeda418dc247d03a8b4f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerGeneralDamageMultiplier: 1
+  playerMovementMultiplier: 1
+  playerTakeableDamagerMultiplier: 1
+  playerGunSpreadGeneralMultiplier: 1
+  playerThrowableGeneralMultiplier: 1
+  arDamageMultiplier: 1
+  subDamageMultiplier: 1
+  shotgunDamageMultiplier: 1
+  pistolDamageMultiplier: 1
+  flamethrowerDamageMultiplier: 1
 --- !u!1 &1200824795
 GameObject:
   m_ObjectHideFlags: 0
