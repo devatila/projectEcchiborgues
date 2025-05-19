@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
+ï»¿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 //using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
+public class PlayerInventory : MonoBehaviour // Todos devem TEMER este cÃ³digo
 {
     public delegate void StopReloadOnSwitch();
     public event StopReloadOnSwitch OnStopRelaod;
@@ -58,7 +56,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
     public GameObject gunWindowAttributes;
 
-    [Header("Itens de Inventário")]
+    [Header("Itens de InventÃ¡rio")]
     public int metalCash;
 
     private bool facingRight;
@@ -82,10 +80,30 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     private bool canCollect = false;
     [SerializeField] private bool isCollected;
     public Gun_Attributes equippedGunAttributes;
+    public PlayerGunMultipliers playerGunMultipliers { get; set; }
+    public Dictionary<ammoTypeOfGunEquipped, Func<float>> GunsMultipliers;
+    public float GeneralGunsDamageMultiplier = 1f;
+
+    public class AmmoMultipliers
+    {
+        public Func<float> Damage;
+        public Func<float> FireRate;
+        public Func<float> Spread;
+        public Func<float> ReloadSpeed;
+    }
+
+    // 1) mapa arma â†’ struct de multiplicadores
+    private Dictionary<ammoTypeOfGunEquipped, PlayerGunMultipliers.GunMultipliers> gunStructMap;
+
+    // 2) mapa arma â†’ lambdas de multiplicadores
+    private Dictionary<ammoTypeOfGunEquipped, AmmoMultipliers> multipliersByAmmo;
+
+
 
     // Start is called before the first frame update
     void Awake()
     {
+        playerGunMultipliers = new PlayerGunMultipliers();
         canSwitchWeapon = true;
         isVisible = false;
         animPlayer = GetComponent<AnimPlayer>();
@@ -96,11 +114,11 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         }
         catch
         {
-            Debug.Log("Não tem Singleton aqui");
+            Debug.Log("NÃ£o tem Singleton aqui");
             if(objectsFromSingleton.Length == 0) objectsFromSingleton = null;
         }
 
-        // Verificação de null e tamanho
+        // VerificaÃ§Ã£o de null e tamanho
         if (objectsFromSingleton != null && objectsFromSingleton.Length > 0)
         {
             //Debug.Log((objectsFromSingleton.Length > 1 ? objectsFromSingleton[1] == null : "Sem segundo objeto"));
@@ -117,19 +135,25 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
                     }
                     else
                     {
-                        Debug.LogError($"Falha ao instanciar o objeto no índice {i}");
+                        Debug.LogError($"Falha ao instanciar o objeto no Ã­ndice {i}");
                     }
                 }
                 else
                 {
-                    Debug.LogWarning($"Objeto no índice {i} é null");
+                    Debug.LogWarning($"Objeto no Ã­ndice {i} Ã© null");
                 }
             }
         }
         else
         {
-            Debug.LogWarning("Array objectsFromSingleton é null ou está vazio");
+            Debug.LogWarning("Array objectsFromSingleton Ã© null ou estÃ¡ vazio");
         }
+
+        // Inicializa gunStructMap a partir de playerGunMultipliers
+        BuildGunStructMap();
+        // Gera multipliersByAmmo a partir do struct map
+        BuildMultipliersMap();
+
     }
 
     private void Start()
@@ -194,9 +218,9 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         Debug.Log(maxMag);
 
         if (gun.typeOfAmmo != AmmoType)
-            return; // Se o tipo de munição da arma não for o mesmo do jogador, não recarrega
+            return; // Se o tipo de muniÃ§Ã£o da arma nÃ£o for o mesmo do jogador, nÃ£o recarrega
 
-        // Determina qual variável de munição usar
+        // Determina qual variÃ¡vel de muniÃ§Ã£o usar
         ref int ammoAmount = ref GetAmmoRef(gun.typeOfAmmo);
 
         // Recarrega a arma
@@ -206,7 +230,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         OnReloaded?.Invoke(gun.actual_magazine, ammoAmount);
     }
 
-    // Método auxiliar para retornar a referência correta da munição
+    // MÃ©todo auxiliar para retornar a referÃªncia correta da muniÃ§Ã£o
     private ref int GetAmmoRef(ammoTypeOfGunEquipped type)
     {
         switch (type)
@@ -226,17 +250,78 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
             case ammoTypeOfGunEquipped.FlameThrower:
                 return ref flamethrowerAmmount;
             default:
-                throw new ArgumentOutOfRangeException(nameof(type), $"Tipo de munição desconhecido: {type}");
+                throw new ArgumentOutOfRangeException(nameof(type), $"Tipo de muniÃ§Ã£o desconhecido: {type}");
         }
     }
 
+    public void SetGunMultipliersByTypeOfGun(PlayerGunMultipliers multipliers)
+    {
+        playerGunMultipliers = multipliers;
+
+        if (equippedGunAttributes == null) return;
+
+        // 1) Atualiza o struct map
+        BuildGunStructMap();
+        // 2) Recria as lambdas
+        BuildMultipliersMap();
+
+        // Aplica se houver uma arma equipada
+        Debug.Log($"O dano causado pelo tipo de arma equipada:{equippedGunAttributes.typeOfAmmo} antes era de {equippedGunAttributes.gunDamage}");
+        float allGunsM = playerGunMultipliers.allGunsMultiplier;
+        float damageM = multipliersByAmmo[AmmoType].Damage();
+
+        // Eu chamo isso de RESOLVEDOR DE PROBLEMAS // Area de Dano
+        equippedGunAttributes.gunDamage = Mathf.RoundToInt(equippedGunAttributes.weaponDataSO.gunDamage * damageM * allGunsM);
+        Debug.Log($"O dano causado pela arma:{equippedGunAttributes.typeOfAmmo} AGORA Ã© de {equippedGunAttributes.gunDamage}");
+
+        // Area de ReloadTime
+        // ...
+    }
+
+    private void BuildGunStructMap()
+    {
+        gunStructMap = new Dictionary<ammoTypeOfGunEquipped, PlayerGunMultipliers.GunMultipliers>
+        {
+            { ammoTypeOfGunEquipped.AR,                playerGunMultipliers.ArMultipliers },
+            { ammoTypeOfGunEquipped.Sub,               playerGunMultipliers.SubMultipliers },
+            { ammoTypeOfGunEquipped.Shotgun,           playerGunMultipliers.ShotgunMultipliers },
+            { ammoTypeOfGunEquipped.Pistol,            playerGunMultipliers.PistolMultipliers },
+            { ammoTypeOfGunEquipped.Granade_Launcher,  playerGunMultipliers.GranadeLauncherMultipliers },
+            { ammoTypeOfGunEquipped.FlameThrower,      playerGunMultipliers.FlameThrowerMultipliers },
+            { ammoTypeOfGunEquipped.Rocket_Launcher,   playerGunMultipliers.RocketLauncherMultipliers },
+        };
+
+        Debug.Log("Chamando");
+    }
+
+    private void BuildMultipliersMap()
+    {
+        multipliersByAmmo = gunStructMap.ToDictionary(
+            kvp => kvp.Key,
+            kvp => new AmmoMultipliers
+            {
+                Damage = () => kvp.Value.damageMultiplier,
+                FireRate = () => kvp.Value.firerateMultiplier,
+                ReloadSpeed = () => kvp.Value.reloadTimeMultiplier,
+                Spread = () => kvp.Value.spreadMultiplier
+            }
+        );
+    }
+
+
+    public void ResetGunEquippedGunAttributes()
+    {
+        Debug.Log("Resetou");
+        equippedGunAttributes.GetSOdata(equippedGunAttributes.weaponDataSO);
+        Debug.Log($"Dano da arma equipada resetada para {equippedGunAttributes.gunDamage}");
+    }
 
     void SetReloadValues(Gun_Attributes gunDesired, ref int desiredTypeAmmount, int ammountToReload)
     {
-        int quantidadeParaRecarregar = Mathf.Min(desiredTypeAmmount, ammountToReload); // Pega o mínimo entre o necessário e o disponível
+        int quantidadeParaRecarregar = Mathf.Min(desiredTypeAmmount, ammountToReload); // Pega o mÃ­nimo entre o necessÃ¡rio e o disponÃ­vel
 
-        gunDesired.actual_magazine += quantidadeParaRecarregar; // Adiciona a munição ao pente
-        desiredTypeAmmount -= quantidadeParaRecarregar; // Remove a munição usada do total disponível
+        gunDesired.actual_magazine += quantidadeParaRecarregar; // Adiciona a muniÃ§Ã£o ao pente
+        desiredTypeAmmount -= quantidadeParaRecarregar; // Remove a muniÃ§Ã£o usada do total disponÃ­vel
     }
 
 
@@ -251,7 +336,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         }
 
         //
-        // Incrementa o índice da arma
+        // Incrementa o Ã­ndice da arma
         weaponIndex = (weaponIndex + 1) % weaponsOnHold.Count;
         Debug.Log(weaponIndex);
 
@@ -267,6 +352,8 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         
         OnSwapWeapon();
         if(OnCanSwapWeapon != null && isVisible) OnCanSwapWeapon();
+
+        SetGunMultipliersByTypeOfGun(playerGunMultipliers);
     }
     private void SwitchOffEquippedGun()
     {
@@ -288,6 +375,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         ga.OnReload += ReloadDesiredGun;
         equippedGunAttributes = ga;
         
+
 
     }
     #endregion
@@ -385,7 +473,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
     private void OnCollectableEnter(ICollectable collectable)
     {
-        Debug.Log("Coletável entrou no alcance!");
+        Debug.Log("ColetÃ¡vel entrou no alcance!");
         currentCollectable = collectable;
         gunWindowAttributes.SetActive(true);
         canCollect = true;
@@ -396,7 +484,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
     private void OnCollectableExit()
     {
-        Debug.Log("Coletável saiu do alcance!");
+        Debug.Log("ColetÃ¡vel saiu do alcance!");
         canCollect = false;
         gunWindowAttributes.SetActive(false);
         currentCollectable = null;
@@ -404,7 +492,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
     private void OnBuyableEnter(IBuyableInScene buyable)
     {
-        Debug.Log("Comprável entrou no alcance!");
+        Debug.Log("ComprÃ¡vel entrou no alcance!");
         currentBuyable = buyable;
         currentBuyable.ShowStatsAndInfos();
 
@@ -416,7 +504,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
     private void OnBuyableExit()
     {
-        Debug.Log("Comprável saiu do alcance!");
+        Debug.Log("ComprÃ¡vel saiu do alcance!");
         currentBuyable = null;
     }
 
@@ -473,9 +561,9 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
         
         animPlayer.AttachShotgun(1, ga.isShotgun);
-
+        SetGunMultipliersByTypeOfGun(playerGunMultipliers);
         //animPlayer.AnimSwitchGun();
-        
+
         if (!facingRight) gunPosition.localScale = new Vector3(gunPosition.localScale.x * -1, gunPosition.localScale.y, gunPosition.localScale.z);
     }
 
@@ -518,7 +606,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     {
         metalCash += valueToAdd;
         Debug.Log("Ganhou");
-        if (OnChangeCash != null) OnChangeCash(metalCash); //Evento de quando o player obtiver Cash...Se necessário, apenas criar msm
+        if (OnChangeCash != null) OnChangeCash(metalCash); //Evento de quando o player obtiver Cash...Se necessÃ¡rio, apenas criar msm
     }
     public void DecreaseCash(int valueToDescrease)
     {
@@ -582,8 +670,8 @@ public interface IDamageable
     /// <summary>
     /// Aplica um tipo de efeito determinado ao inimigo
     /// </summary>
-    /// <param name="newState">Tipo de efeito que será aplicado</param>
-    /// <param name="duration">Duração do efeito que será aplicado</param>
+    /// <param name="newState">Tipo de efeito que serÃ¡ aplicado</param>
+    /// <param name="duration">DuraÃ§Ã£o do efeito que serÃ¡ aplicado</param>
     /// <param name="DOTtime">Se houver, determina o intervalo a cada dano tomado dentro do efeito (Apenas Fire)(Recomendavel ser 1f)</param>
     void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 1f);
 }

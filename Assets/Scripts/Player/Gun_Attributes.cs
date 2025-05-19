@@ -174,7 +174,7 @@ public class Gun_Attributes : MonoBehaviour
             }
         }
     }
-    void GetSOdata(WeaponDataSO WeaponSO)
+    public void GetSOdata(WeaponDataSO WeaponSO)
     {
         if (weaponDataSO == null) return;
         gunSprite                             = WeaponSO.gunSprite;

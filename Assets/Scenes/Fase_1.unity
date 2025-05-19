@@ -36997,8 +36997,7 @@ MonoBehaviour:
   rocketLauncherAmmount: 5
   flamethrowerAmmount: 200
   weaponIndex: 0
-  objectsFromSingleton:
-  - {fileID: 3159513242499228312, guid: 79a12a013065dc3418b0724240ffbb3b, type: 3}
+  objectsFromSingleton: []
   weaponsOnHold: []
   CollectRange: 0.92
   CollectableLayer:
@@ -37013,6 +37012,7 @@ MonoBehaviour:
   dropPosition: {fileID: 1085825875}
   isCollected: 0
   equippedGunAttributes: {fileID: 0}
+  GeneralGunsDamageMultiplier: 1
 --- !u!114 &1197051474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37102,16 +37102,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a1f1b1bc6eeda418dc247d03a8b4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerGeneralDamageMultiplier: 1
   playerMovementMultiplier: 1
   playerTakeableDamagerMultiplier: 1
   playerGunSpreadGeneralMultiplier: 1
   playerThrowableGeneralMultiplier: 1
-  arDamageMultiplier: 1
-  subDamageMultiplier: 1
-  shotgunDamageMultiplier: 1
-  pistolDamageMultiplier: 1
-  flamethrowerDamageMultiplier: 1
+  playerGunMultipliers:
+    allGunsMultiplier: 0.3
+    arDamageMultiplier: 1
+    subDamageMultiplier: 1
+    shotgunDamageMultiplier: 1
+    pistolDamageMultiplier: 1
+    flamethrowerDamageMultiplier: 1
+    granadeLauncherDamageMultiplier: 1
 --- !u!1 &1200824795
 GameObject:
   m_ObjectHideFlags: 0
