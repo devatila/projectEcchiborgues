@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static PlayerGunMultipliers;
+using static PlayerInventory;
 
 public class PlayerPerkManager : MonoBehaviour
 {
@@ -33,6 +36,8 @@ public class PlayerPerkManager : MonoBehaviour
     private void Start()
     {
         GetBasicsReferences();
+        playerGunMultipliers.BuildGunStructMap();
+        playerGunMultipliers.BuildMultiplierSetters();
     }
 
     private void GetBasicsReferences()
@@ -44,21 +49,25 @@ public class PlayerPerkManager : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
     } // O nome ja é autoexplicativo...certo?
 
-    public void SetMovementMultiplier(float multiplier) { playerMovementMultiplier = multiplier; UpdatePlayerMovement(); }
+    #region PlayerBasicsMultipliers
+
+    public void SetMovementMultiplier(float multiplier)             { playerMovementMultiplier *= (1 + multiplier); UpdatePlayerMovement(); }
     public void ResetMovementMultiplier() { playerMovementMultiplier = 1f; UpdatePlayerMovement(); }
     private void UpdatePlayerMovement() => playerMovement.SetMultiplierMovement(playerMovementMultiplier);
 
-    public void SetGeneralDamageMultiplier(float multiplier) => playerGunMultipliers.allGunsMultiplier = multiplier;
+    public void SetGeneralDamageMultiplier(float multiplier)        => playerGunMultipliers.allGunsMultiplier *= (1 + multiplier);
     public void ResetGeneralDamageMultiplier() => playerGunMultipliers.allGunsMultiplier = 1f;
 
-    public void SetTakeableDamageMultiplier(float multiplier) => playerTakeableDamagerMultiplier = multiplier;
+    public void SetTakeableDamageMultiplier(float multiplier)       => playerTakeableDamagerMultiplier *= (1 + multiplier);
     public void ResetTakeableDamageMultiplier() => playerTakeableDamagerMultiplier = 1f;
 
-    public void SetSpreadEffectorMultiplier(float multiplier) => playerGunSpreadGeneralMultiplier = multiplier;
+    public void SetSpreadEffectorMultiplier(float multiplier)       => playerGunSpreadGeneralMultiplier *= (1 + multiplier);
     public void ResetSpreadEffectorMultiplier() => playerGunSpreadGeneralMultiplier = 1f;
 
-    public void SetGeneralThrowablesDamagerMultiplier(float multiplier) => playerThrowableGeneralMultiplier = multiplier;
+    public void SetGeneralThrowablesDamagerMultiplier(float multiplier) => playerThrowableGeneralMultiplier *= (1 + multiplier);
     public void ResetGeneralThrowablesDamagerMultiplier() => playerThrowableGeneralMultiplier = 1f;
+
+    #endregion
 
     public void SetGunsMultipliers()
     {
@@ -133,11 +142,79 @@ public class PlayerGunMultipliers
     public GunMultipliers GranadeLauncherMultipliers    = new GunMultipliers();
     public GunMultipliers RocketLauncherMultipliers     = new GunMultipliers();
     public GunMultipliers FlameThrowerMultipliers       = new GunMultipliers();
+
+    private Dictionary<ammoTypeOfGunEquipped, GunMultipliers> gunStructMap;
+    private Dictionary<GunMultiplierType, Action<GunMultipliers, float>> multiplierSetters;
+
+    public enum GunMultiplierType
+    {
+        Damage,
+        Spread,
+        ReloadTime,
+        FireRate
+    }
     public void ResetValues()
     {
         ArMultipliers.ResetAllMultipliers(); SubMultipliers.ResetAllMultipliers(); ShotgunMultipliers.ResetAllMultipliers(); PistolMultipliers.ResetAllMultipliers();
         GranadeLauncherMultipliers.ResetAllMultipliers(); RocketLauncherMultipliers.ResetAllMultipliers(); FlameThrowerMultipliers.ResetAllMultipliers();
     }
+    public void BuildGunStructMap()
+    {
+        gunStructMap = new Dictionary<ammoTypeOfGunEquipped, GunMultipliers>
+        {
+            { ammoTypeOfGunEquipped.AR,                ArMultipliers },
+            { ammoTypeOfGunEquipped.Sub,               SubMultipliers },
+            { ammoTypeOfGunEquipped.Shotgun,           ShotgunMultipliers },
+            { ammoTypeOfGunEquipped.Pistol,            PistolMultipliers },
+            { ammoTypeOfGunEquipped.Granade_Launcher,  GranadeLauncherMultipliers },
+            { ammoTypeOfGunEquipped.FlameThrower,      FlameThrowerMultipliers },
+            { ammoTypeOfGunEquipped.Rocket_Launcher,   RocketLauncherMultipliers },
+        };
+
+    }
+
+    public void BuildMultiplierSetters()
+    {
+        multiplierSetters = new Dictionary<GunMultiplierType, Action<PlayerGunMultipliers.GunMultipliers, float>>()
+        {
+            { GunMultiplierType.Damage,     (gm, v) => gm.damageMultiplier      *= (1 + v) },
+            { GunMultiplierType.Spread,     (gm, v) => gm.spreadMultiplier      *= (1 + v) },
+            { GunMultiplierType.ReloadTime, (gm, v) => gm.reloadTimeMultiplier  *= (1 + v) },
+            { GunMultiplierType.FireRate,   (gm, v) => gm.firerateMultiplier    *= (1 + v) },
+        };
+    }
+
+    /// <summary>
+    /// Define o valor de um multiplicador específico para uma arma.
+    /// </summary>
+    /// <param name="ammo">Tipo de arma (enum).</param>
+    /// <param name="which">Qual multiplicador (enum).</param>
+    /// <param name="value">O novo valor a ser aplicado.</param>
+    public void SetGunMultiplier(
+        ammoTypeOfGunEquipped ammo,
+        GunMultiplierType which,
+        float value
+    )
+    {
+        // 1) Encontra o struct de multiplicadores daquela arma
+        if (!gunStructMap.TryGetValue(ammo, out var gm))
+        {
+            Debug.LogError($"[PerkManager] arma '{ammo}' não configurada no gunStructMap!");
+            return;
+        }
+        
+        // 2) Encontra o “setter” correspondente
+        if (!multiplierSetters.TryGetValue(which, out var setter))
+        {
+            Debug.LogError($"[PerkManager] não há setter para {which}!");
+            return;
+        }
+
+        // 3) Aplica!
+        setter(gm, value);
+        Debug.Log($"[{ammo}] {which} multipliers set to {value}");
+    }
+
 
     [System.Serializable]
     public class GunMultipliers

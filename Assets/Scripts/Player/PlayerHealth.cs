@@ -13,6 +13,14 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     private int maxHealth;
     public Image lifeBar;
 
+    [Space()]
+
+    public int armor;
+    public int maxArmor;
+
+    [Space()]
+    public float damageMultiplier = 1;
+
     private GameObject hudHealth;
     private AnimPlayer playerAnim;
 
@@ -59,7 +67,7 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 
     public void TakeDamage(int damageValue)
     {
-        health -= damageValue;
+        health -= Mathf.RoundToInt(damageValue * damageMultiplier);
         health = Mathf.Clamp(health, 0, maxHealth);
         lifeBar.fillAmount = (float)health / (float)maxHealth;
         if(lifeBar.fillAmount < 0.5f && CurrentLifeState == lifeStates.Fine)
@@ -109,6 +117,11 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
             yield return null;
         }
         lifeBar.color = endColor;
+    }
+
+    void LifeRegeneration()
+    {
+        // Lógica de regeneração de vida
     }
 
     void PlayerDead()

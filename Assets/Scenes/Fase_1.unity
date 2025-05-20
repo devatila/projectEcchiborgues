@@ -37027,6 +37027,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3000
   lifeBar: {fileID: 1073997290}
+  armor: 0
+  maxArmor: 1500
+  damageMultiplier: 3
 --- !u!114 &1197051475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37107,13 +37110,42 @@ MonoBehaviour:
   playerGunSpreadGeneralMultiplier: 1
   playerThrowableGeneralMultiplier: 1
   playerGunMultipliers:
-    allGunsMultiplier: 0.3
-    arDamageMultiplier: 1
-    subDamageMultiplier: 1
-    shotgunDamageMultiplier: 1
-    pistolDamageMultiplier: 1
-    flamethrowerDamageMultiplier: 1
-    granadeLauncherDamageMultiplier: 1
+    allGunsMultiplier: 1
+    ArMultipliers:
+      damageMultiplier: 1
+      spreadMultiplier: 1
+      reloadTimeMultiplier: 1
+      firerateMultiplier: 1
+    SubMultipliers:
+      damageMultiplier: 1
+      spreadMultiplier: 1
+      reloadTimeMultiplier: 1
+      firerateMultiplier: 1
+    ShotgunMultipliers:
+      damageMultiplier: 1
+      spreadMultiplier: 1
+      reloadTimeMultiplier: 1
+      firerateMultiplier: 1
+    PistolMultipliers:
+      damageMultiplier: 1
+      spreadMultiplier: 1
+      reloadTimeMultiplier: 1
+      firerateMultiplier: 1
+    GranadeLauncherMultipliers:
+      damageMultiplier: 1
+      spreadMultiplier: 1
+      reloadTimeMultiplier: 1
+      firerateMultiplier: 1
+    RocketLauncherMultipliers:
+      damageMultiplier: 1
+      spreadMultiplier: 1
+      reloadTimeMultiplier: 1
+      firerateMultiplier: 1
+    FlameThrowerMultipliers:
+      damageMultiplier: 1
+      spreadMultiplier: 1
+      reloadTimeMultiplier: 1
+      firerateMultiplier: 1
 --- !u!1 &1200824795
 GameObject:
   m_ObjectHideFlags: 0
@@ -54921,7 +54953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2076027984
 MonoBehaviour:
   m_ObjectHideFlags: 0

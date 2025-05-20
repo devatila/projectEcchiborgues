@@ -18,8 +18,8 @@ MonoBehaviour:
   gunDamage: 102
   cadency: 0.07
   minSpread: 0.2
-  maxSpread: 0.8
-  decreaseSpreadSpeed: 0.1
+  maxSpread: 1.6
+  decreaseSpreadSpeed: 0.6
   SpreadForce: 0.1
   actualSpread: 0
   reloadable: 1

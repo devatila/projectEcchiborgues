@@ -104,6 +104,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     void Awake()
     {
         playerGunMultipliers = new PlayerGunMultipliers();
+        playerGunMultipliers.ResetValues();
         canSwitchWeapon = true;
         isVisible = false;
         animPlayer = GetComponent<AnimPlayer>();
@@ -266,16 +267,85 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         BuildMultipliersMap();
 
         // Aplica se houver uma arma equipada
-        Debug.Log($"O dano causado pelo tipo de arma equipada:{equippedGunAttributes.typeOfAmmo} antes era de {equippedGunAttributes.gunDamage}");
+        Debug.Log($"Stats Antes: dmg = {equippedGunAttributes.gunDamage}, rld = {equippedGunAttributes.reloadTime}, sprd = {equippedGunAttributes.maxSpread}, frt = {equippedGunAttributes.cadency}");
         float allGunsM = playerGunMultipliers.allGunsMultiplier;
         float damageM = multipliersByAmmo[AmmoType].Damage();
 
+        //Area de dano
+        ApplyStats(
+            am => am.Damage(),
+            (attr, v) => attr.gunDamage = v,
+            attr => attr.weaponDataSO.gunDamage,
+            1f,
+            roundResult: true
+            );
+
+        //Area de Reload
+        ApplyStats(
+            am => am.ReloadSpeed(),
+            (attr, v) => attr.reloadTime = v,
+            attr => attr.weaponDataSO.reloadTime,
+            1f
+            );
+
+        //Area de Spread
+        ApplyStats(
+            am => am.Spread(),
+            (attr, v) => attr.maxSpread = v,
+            attr => attr.weaponDataSO.maxSpread,
+            1f
+            );
+
+        //Area de Firerate
+        ApplyStats(
+            am => am.FireRate(),
+            (attr, v) => attr.cadency = v,
+            attr => attr.weaponDataSO.cadency,
+            1f
+            );
+        // ...
+        Debug.Log($"Stats Depois: dmg = {equippedGunAttributes.gunDamage}, rld = {equippedGunAttributes.reloadTime}, sprd = {equippedGunAttributes.maxSpread}, frt = {equippedGunAttributes.cadency}");
+
+    }
+    void OldWay()
+    {
+        /*
         // Eu chamo isso de RESOLVEDOR DE PROBLEMAS // Area de Dano
         equippedGunAttributes.gunDamage = Mathf.RoundToInt(equippedGunAttributes.weaponDataSO.gunDamage * damageM * allGunsM);
-        Debug.Log($"O dano causado pela arma:{equippedGunAttributes.typeOfAmmo} AGORA é de {equippedGunAttributes.gunDamage}");
+        //Debug.Log($"O dano causado pela arma:{equippedGunAttributes.typeOfAmmo} AGORA é de {equippedGunAttributes.gunDamage}");
 
         // Area de ReloadTime
-        // ...
+        float reloadM = multipliersByAmmo[AmmoType].ReloadSpeed();
+        equippedGunAttributes.reloadTime = equippedGunAttributes.weaponDataSO.reloadTime * reloadM;
+
+        // Area de Spread
+        float spreadM = multipliersByAmmo[AmmoType].Spread();
+        equippedGunAttributes.maxSpread = equippedGunAttributes.weaponDataSO.maxSpread * spreadM;
+
+        // Area de Firerate
+        float firerateM = multipliersByAmmo[AmmoType].FireRate();
+        equippedGunAttributes.cadency = equippedGunAttributes.weaponDataSO.cadency * firerateM; // Nesse caso. Quanto menor < 1 (= 100%), maior é o firerate
+        */
+    }
+    private void ApplyStats<T>(
+        Func<AmmoMultipliers, float> getter,
+        Action<Gun_Attributes, T> setter,
+        Func<Gun_Attributes, T> originalValueProvider,
+        float allGunsM,
+        bool roundResult = false
+        )
+    {
+        float m = getter(multipliersByAmmo[AmmoType]);
+        float original = Convert.ToSingle(originalValueProvider(equippedGunAttributes));
+        float result = original * m * (roundResult ? allGunsM : 1f);
+
+        if (roundResult)
+        {
+            setter(equippedGunAttributes, (T)(object)Mathf.RoundToInt(result));
+        }else
+        {
+            setter(equippedGunAttributes, (T)(object)result);
+        }
     }
 
     private void BuildGunStructMap()
@@ -291,7 +361,6 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
             { ammoTypeOfGunEquipped.Rocket_Launcher,   playerGunMultipliers.RocketLauncherMultipliers },
         };
 
-        Debug.Log("Chamando");
     }
 
     private void BuildMultipliersMap()
