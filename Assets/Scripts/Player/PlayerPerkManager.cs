@@ -49,7 +49,7 @@ public class PlayerPerkManager : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
     } // O nome ja é autoexplicativo...certo?
 
-    #region PlayerBasicsMultipliers
+    #region PlayerBasicsMultipliersForApplyingInInspector
 
     public void SetMovementMultiplier(float multiplier)             { playerMovementMultiplier *= (1 + multiplier); UpdatePlayerMovement(); }
     public void ResetMovementMultiplier() { playerMovementMultiplier = 1f; UpdatePlayerMovement(); }
@@ -93,11 +93,12 @@ public class PlayerPerkManager : MonoBehaviour
 
     public void ApplyAllMultipliers()
     {
-        SetMovementMultiplier(playerMovementMultiplier);
-        SetGeneralDamageMultiplier(playerGunMultipliers.allGunsMultiplier);
-        SetTakeableDamageMultiplier(playerTakeableDamagerMultiplier);
-        SetSpreadEffectorMultiplier(playerGunSpreadGeneralMultiplier);
-        SetGeneralThrowablesDamagerMultiplier(playerThrowableGeneralMultiplier);
+        UpdatePlayerMovement();
+        //SetMovementMultiplier(playerMovementMultiplier);
+        //SetGeneralDamageMultiplier(playerGunMultipliers.allGunsMultiplier);
+        //SetTakeableDamageMultiplier(playerTakeableDamagerMultiplier);
+        //SetSpreadEffectorMultiplier(playerGunSpreadGeneralMultiplier);
+        //SetGeneralThrowablesDamagerMultiplier(playerThrowableGeneralMultiplier);
         SetGunsMultipliers();
     }
 

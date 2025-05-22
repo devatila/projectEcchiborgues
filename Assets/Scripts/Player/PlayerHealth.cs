@@ -1,5 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -23,6 +25,77 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 
     private GameObject hudHealth;
     private AnimPlayer playerAnim;
+
+    [Space()]
+    public bool canRegenerate = false;  // Se ativado, habilita o fator de regeneração do player
+    public float regenAmount = 15f;     // Vida adicionada a cada tick
+    public float regenInterval = 0.5f;    // Tempo entre cada tick
+    private bool isRegenerationg = false;
+    private Coroutine regenCoroutine;
+
+    #region RegenerationCycle
+    /// <summary>
+    /// Altera os valores básicos do sistema de regeneração de vida
+    /// </summary>
+    /// <param name="newRegenAmount">Quanto de vida será adicionada em cada Tick</param>
+    /// <param name="newRegenInterval">O tempo, em segundos, entre cada Tick ser executado</param>
+    /// <param name="autoActivateRegeneration">Auto ativa o sistema de regeneração se estiver True</param>
+    public void SetRegenerationValues(float newRegenAmount, float newRegenInterval = 1f, bool autoActivateRegeneration = true)
+    {
+        regenAmount = newRegenAmount;
+        regenInterval = newRegenInterval;
+
+        if (autoActivateRegeneration ) EnableRegeneration();
+    }
+
+    public void ResetRegenerationValues()
+    {
+        regenAmount = 15f;
+        regenInterval = 0.5f;
+    }
+    public void EnableRegeneration()
+    {
+        canRegenerate = true;
+        TryStartRegen();
+    }
+
+    public void DisableRegeneration()
+    {
+        canRegenerate = false;
+
+        if(regenCoroutine != null) StopCoroutine(regenCoroutine);
+
+        isRegenerationg = false;
+    }
+
+    public void TryStartRegen()
+    {
+        if (!canRegenerate || isRegenerationg || health >= maxHealth)
+            return;
+
+        if (regenCoroutine == null) regenCoroutine = StartCoroutine(RegenCoroutine());
+        else
+        {
+            StopCoroutine(regenCoroutine);
+            regenCoroutine = StartCoroutine(RegenCoroutine());
+        }
+    }
+
+    private IEnumerator RegenCoroutine()
+    {
+        isRegenerationg = true;
+
+        while (health < maxHealth && canRegenerate)
+        {
+            GetHeal(Mathf.RoundToInt(regenAmount));
+            yield return new WaitForSeconds(regenInterval);
+        }
+
+        isRegenerationg = false;
+        regenCoroutine = null;
+    }
+
+    #endregion
 
     public enum lifeStates
     {
@@ -67,14 +140,39 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 
     public void TakeDamage(int damageValue)
     {
-        health -= Mathf.RoundToInt(damageValue * damageMultiplier);
+        if (health <= 0) return; // Não tem pq fazer o player tomar dano quando ele já esta m0rto ¯\_(ツ)_/¯
+
+        int totalDamage = Mathf.RoundToInt(damageValue * damageMultiplier);
+        if (armor > 0)
+        {
+            int diference = 0;
+            if (totalDamage > armor)
+            {
+                diference = totalDamage - armor;
+                Debug.Log("Passou do total da armadura, o dano repassado para a vida será de " + diference);
+                DecreaseHealth(diference);
+            }
+            armor = Mathf.Max(0, armor - totalDamage);
+        }
+        else
+        {
+            DecreaseHealth(totalDamage);
+        }
+        playerAnim.PlayDamageAnimation();
+        TryStartRegen();
+
+    }
+    
+    void DecreaseHealth(int damageValue)
+    {
+        health -= Mathf.RoundToInt(damageValue);
         health = Mathf.Clamp(health, 0, maxHealth);
         lifeBar.fillAmount = (float)health / (float)maxHealth;
-        if(lifeBar.fillAmount < 0.5f && CurrentLifeState == lifeStates.Fine)
+        if (lifeBar.fillAmount < 0.5f && CurrentLifeState == lifeStates.Fine)
         {
             CurrentLifeState = lifeStates.Caution;
             Debug.Log(CurrentLifeState);
-        } 
+        }
         else if (lifeBar.fillAmount < 0.25f && currentLifeState == lifeStates.Caution)
         {
             CurrentLifeState = lifeStates.Danger;
@@ -85,7 +183,6 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
         {
             OnDeath();
         }
-        playerAnim.PlayDamageAnimation();
     }
 
     public void GetHeal(int healValue)
@@ -105,6 +202,11 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
         }
     }
 
+    public void GetArmor(int armorValue)
+    {
+        armor += armorValue;
+    }
+
     public IEnumerator ChangeColor(Color endColor, float duration)
     {
         Color startColor = lifeBar.color;
@@ -121,13 +223,32 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 
     void LifeRegeneration()
     {
-        // L�gica de regenera��o de vida
+        // Lógica de regeneração de vida
     }
 
     void PlayerDead()
     {
         hudHealth.SetActive(false);
         TypewriterEffectTMP.stopAll();
+    }
+}
+
+
+[CustomEditor(typeof(PlayerHealth))]
+class PlayerHealthEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        PlayerHealth ph = (PlayerHealth)target;
+
+        DrawDefaultInspector();
+
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Activate Regeneration"))
+        {
+            ph.EnableRegeneration();
+        }
     }
 }
 
