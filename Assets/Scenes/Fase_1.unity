@@ -23108,7 +23108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &550345622
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37149,6 +37149,10 @@ MonoBehaviour:
       spreadMultiplier: 1
       reloadTimeMultiplier: 1
       firerateMultiplier: 1
+  effectStatesProbabilites:
+    FireEffectProbability: 0.195
+    StunEffectProbability: 0
+    SlowEffectProbability: 0
 --- !u!1 &1200824795
 GameObject:
   m_ObjectHideFlags: 0
@@ -38376,6 +38380,7 @@ MonoBehaviour:
   useAttackRangeAsStoppingDistance: 0
   attackRange: 2.87
   attackRangeOffset: {x: 0, y: 0}
+  takeDamageMultiplier: 0
   centralPosition: {fileID: 617968851}
   targetLayer: VisibleBound
   attackZones:
@@ -40841,6 +40846,7 @@ MonoBehaviour:
   useAttackRangeAsStoppingDistance: 0
   attackRange: 2.37
   attackRangeOffset: {x: 0, y: 0}
+  takeDamageMultiplier: 0
   centralPosition: {fileID: 642547738}
   targetLayer: VisibleBound
   attackZones:
@@ -52075,6 +52081,7 @@ MonoBehaviour:
   useAttackRangeAsStoppingDistance: 0
   attackRange: 2.87
   attackRangeOffset: {x: 0, y: 0}
+  takeDamageMultiplier: 0
   centralPosition: {fileID: 263952166}
   targetLayer: VisibleBound
   attackZones:
@@ -54956,7 +54963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2076027984
 MonoBehaviour:
   m_ObjectHideFlags: 0

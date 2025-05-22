@@ -10,12 +10,14 @@ public class DogBotAttacks : EnemyAttack
     public Coroutine actualCoroutine;
     private EnemyBase m_enemy;
     public int currentProbability;
+    private string enemyName;
 
-    public DogBotAttacks(EnemyAttackTypes.DogBot type, int damage, EnemyBase enemy)
+    public DogBotAttacks(EnemyAttackTypes.DogBot type, int damage, EnemyBase enemy, string name)
     {
         attackType = type;
         m_damage = damage;
         m_enemy = enemy;
+        enemyName = name;
     }
     public EnemyAttackTypes.DogBot CurrentAttackType;
 
@@ -59,7 +61,7 @@ public class DogBotAttacks : EnemyAttack
     {
         isRunning = true;
         
-        Debug.Log($"DogBot fez uma MORDIDA causando {m_damage} de dano! {actualCoroutine != null}");
+        Debug.Log($"{enemyName} fez uma MORDIDA causando {m_damage} de dano! {actualCoroutine != null}");
 
         yield return new WaitForSeconds(delayBetweenAttacks);
 
@@ -76,7 +78,7 @@ public class DogBotAttacks : EnemyAttack
         canAttack = false;
         for (int i = 0; i < 3; i++)
         {
-            Debug.Log("Atacando com MORDIDA TRIPLA, o ataque index é de: " + (i + 1));
+            Debug.Log($"{enemyName} Atacando com MORDIDA TRIPLA, o ataque index é de: " + (i + 1));
             yield return new WaitForSeconds(delayBetweenAttacks / 4); 
         }
         // Debug.Log("Todos os ataques triplos performados");

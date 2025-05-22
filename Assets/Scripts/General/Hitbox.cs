@@ -44,6 +44,6 @@ public class Hitbox : MonoBehaviour, IDamageable
 
     public void ApplyNaturalState(NaturalStates newState, float duration, float DOTtime = 1f)
     {
-        throw new System.NotImplementedException();
+        m_Enemy.NewApplyNaturalState(newState, duration, DOTtime);
     }
 }

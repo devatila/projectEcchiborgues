@@ -13,6 +13,7 @@ public class DogBot : EnemyBase
     private DogBotAttacks currentAttack;
     private Dictionary<EnemyAttackTypes.DogBot, DogBotAttacks> dogBotAttackCache = new();
     private Dictionary<string, DogBotAttacks> attackCache = new Dictionary<string, DogBotAttacks>();
+    private string objectName;
 
     
 
@@ -20,6 +21,7 @@ public class DogBot : EnemyBase
     {
         base.Start();
         // Configura as zonas de ataque (exemplo)
+        objectName = this.gameObject.name;
         EnemyAttackZone[] zones = GetComponentsInChildren<EnemyAttackZone>();
 
         // Zona 1: Bite e TripleBite (raio menor)
@@ -39,9 +41,9 @@ public class DogBot : EnemyBase
         }
 
         // Inicializa o cache de ataques
-        attackCache["Bite"] = new DogBotAttacks(EnemyAttackTypes.DogBot.Bite, 10, this);
-        attackCache["TripleBite"] = new DogBotAttacks(EnemyAttackTypes.DogBot.TripleBite, 20, this);
-        attackCache["Dash"] = new DogBotAttacks(EnemyAttackTypes.DogBot.Dash, 15, this);
+        attackCache["Bite"] = new DogBotAttacks(EnemyAttackTypes.DogBot.Bite, 10, this, objectName);
+        attackCache["TripleBite"] = new DogBotAttacks(EnemyAttackTypes.DogBot.TripleBite, 20, this, objectName);
+        attackCache["Dash"] = new DogBotAttacks(EnemyAttackTypes.DogBot.Dash, 15, this, objectName);
 
 
 
@@ -80,7 +82,7 @@ public class DogBot : EnemyBase
     {
         if (!dogBotAttackCache.TryGetValue(attackType, out var cachedAttack))
         {
-            cachedAttack = new DogBotAttacks(attackType, damage, this);
+            cachedAttack = new DogBotAttacks(attackType, damage, this, objectName);
             dogBotAttackCache[attackType] = cachedAttack;
         }
 

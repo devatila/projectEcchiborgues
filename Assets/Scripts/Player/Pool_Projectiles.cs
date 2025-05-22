@@ -11,6 +11,7 @@ public class Pool_Projectiles : MonoBehaviour
     private List<GameObject> pool;
     private List<GameObject> poolFlashes;
     private List<GameObject> poolCapsules = new List<GameObject>();
+    private List<Projectile> poolProjectile = new List<Projectile>();
     public List<GameObject> guns;
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class Pool_Projectiles : MonoBehaviour
             GameObject obj = Instantiate(projectilePrefab); 
             obj.SetActive(false);
             pool.Add(obj);
+            poolProjectile.Add(obj.GetComponent<Projectile>());
 
             GameObject fx = Instantiate(feixe);
             fx.SetActive(false);
@@ -54,6 +56,19 @@ public class Pool_Projectiles : MonoBehaviour
                 obj.SetActive(true);
                 return obj;
 
+            }
+        }
+        return null;
+    }
+
+    public Projectile GetProjectile()
+    {
+        foreach (Projectile prjt in poolProjectile)
+        {
+            if (!prjt.gameObject.activeInHierarchy)
+            {
+                prjt.gameObject.SetActive(true);
+                return prjt;
             }
         }
         return null;

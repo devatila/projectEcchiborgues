@@ -224,10 +224,10 @@ public class Gun_Shoot : MonoBehaviour
 
             case false:
                 
-                GameObject projectile = projectilesPool.GetObject();
+                Projectile projectile = projectilesPool.GetProjectile();
                 SetupProjectile(projectile, randomPosition);
 
-                CreateTrajectory(projectile, randomPosition);
+                CreateTrajectory(projectile.gameObject, randomPosition);
                 break;
         }
 
@@ -271,11 +271,12 @@ public class Gun_Shoot : MonoBehaviour
         }
     }
 
-    private void SetupProjectile(GameObject projectile, Vector3 position)
+    private void SetupProjectile(Projectile projectile, Vector3 position)
     {
+        projectile.GetStatesPercentages(_gunAttributes.statesPercentage);
         projectile.transform.position = position;
         projectile.transform.rotation = Quaternion.identity;
-        projectile.GetComponent<Projectile>().damage = _gunAttributes.gunDamage;
+        projectile.damage = _gunAttributes.gunDamage;
     }
 
     private void CreateTrajectory(GameObject projectile, Vector3 position)
@@ -306,18 +307,18 @@ public class Gun_Shoot : MonoBehaviour
         for (int i = 1; i <= _gunAttributes.shotgunFragmentsQuantitative; i++)
         {
             Vector3 randomPosition = GetRandomPositionInCircle(_gunAttributes.actualSpread);
-            GameObject projectile = projectilesPool.GetObject();
+            Projectile projectile = projectilesPool.GetProjectile();
             
             SetupProjectile(projectile, randomPosition);
 
-            CreateTrajectory(projectile, randomPosition);
+            CreateTrajectory(projectile.gameObject, randomPosition);
 
             AdjustShotgunDamage(projectile, randomPosition);
         }
         PlayShootEffects(true);
     }
 
-    private void AdjustShotgunDamage(GameObject projectile, Vector3 randomPosition)
+    private void AdjustShotgunDamage(Projectile projectile, Vector3 randomPosition)
     {
         float distance = Vector3.Distance(transform.position, randomPosition);
         int damage = _gunAttributes.gunDamage / _gunAttributes.shotgunFragmentsQuantitative;
@@ -328,7 +329,7 @@ public class Gun_Shoot : MonoBehaviour
             damage = (int)Mathf.Max(damage * 0.5f, damage - (int)(extraDistance * _gunAttributes.damageReductionRate));
         }
 
-        projectile.GetComponent<Projectile>().damage = damage;
+        projectile.damage = damage;
     }
 
     private void UpdateMagazine()

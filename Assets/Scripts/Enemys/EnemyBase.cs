@@ -29,6 +29,9 @@ public class EnemyBase : MonoBehaviour, IDamageable
     [SerializeField] protected float attackRange;
     [SerializeField] protected Vector2 attackRangeOffset;
 
+    [Space()]
+    [SerializeField] protected float takeDamageMultiplier;
+
     public bool isPlayerOnAttackRange { get; set; }
 
     protected EnemyBasicsAttributes EnemyBasics = new EnemyBasicsAttributes();

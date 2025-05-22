@@ -125,7 +125,7 @@ public class HandThrowableScript : MonoBehaviour
 
     private void Throw()
     {
-        player.equippedGunAttributes.stopReloadGun();
+        if (player.equippedGunAttributes != null) player.equippedGunAttributes.stopReloadGun();
 
         if (GetAmmount[thorwableEquipped]() <= 0)
         {

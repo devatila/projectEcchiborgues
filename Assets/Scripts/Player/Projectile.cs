@@ -9,11 +9,15 @@ public class Projectile : MonoBehaviour
     public int damage;
     public float lifetime;
     private GameObject gobj;
-    [SerializeField] private GameObject GunPrefab;
+
+    [Space()]
+
+    [SerializeField] private StatesPercentage states;
+
     void Start()
     {
-        GunPrefab = GameObject.FindGameObjectWithTag("PoolManager");
-        pool = GunPrefab.GetComponent<Pool_Projectiles>();
+        states = new StatesPercentage();
+        pool = FindObjectOfType<Pool_Projectiles>();
         gobj = this.gameObject;
     }
 
@@ -34,6 +38,7 @@ public class Projectile : MonoBehaviour
         if (dmg != null && collision.gameObject.layer == LayerMask.NameToLayer("Hitbox"))
         {
             dmg.TakeDamage(damage);
+            CheckAndApplyStates(dmg);
         }
 
         IThrowable throwable = collision.GetComponent<IThrowable>();
@@ -41,6 +46,39 @@ public class Projectile : MonoBehaviour
         {
             throwable.OnHitObject();
         }
+    }
+
+    void CheckAndApplyStates(IDamageable dmg)
+    {
+        // Chance to apply Fire effect
+        if (Random.value < states.FireEffectProbability)
+        {
+            dmg.ApplyNaturalState(NaturalStates.Fire, 5f);
+        }
+        // Chance to apply Stun (Electric) effect
+        if (Random.value < states.StunEffectProbability)
+        {
+            dmg.ApplyNaturalState(NaturalStates.Eletric, 5f);
+        }
+        // Chance to apply Slow (Cold) effect
+        if (Random.value < states.SlowEffectProbability)
+        {
+            // dmg.ApplyNaturalState(NaturalStates.Cold, slowDuration);
+        }
+    }
+
+    public void GetStatesPercentages(StatesPercentage newStates)
+    {
+        states = newStates;
+    }
+
+    [System.Serializable]
+    public class StatesPercentage
+    {
+        [Header("Effect Probabilities (0 to 1)")]
+        [Range(0f, 1f)] public float FireEffectProbability = 0f;
+        [Range(0f, 1f)] public float StunEffectProbability = 0f;
+        [Range(0f, 1f)] public float SlowEffectProbability = 0f;
     }
 
 }

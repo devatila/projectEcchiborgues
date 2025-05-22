@@ -84,6 +84,8 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     public Dictionary<ammoTypeOfGunEquipped, Func<float>> GunsMultipliers;
     public float GeneralGunsDamageMultiplier = 1f;
 
+    public Projectile.StatesPercentage GeneralStatesBulletPercentages { get; set; }
+
     public class AmmoMultipliers
     {
         public Func<float> Damage;
@@ -159,6 +161,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
     private void Start()
     {
+        GeneralStatesBulletPercentages = new Projectile.StatesPercentage();
         canCollect = false;
 
         buySystem = FindObjectOfType<UI_BuySystem>();
@@ -260,6 +263,8 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         playerGunMultipliers = multipliers;
 
         if (equippedGunAttributes == null) return;
+
+        equippedGunAttributes.statesPercentage = GeneralStatesBulletPercentages;
 
         // 1) Atualiza o struct map
         BuildGunStructMap();

@@ -1,9 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.TerrainTools;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour, IPlayableCharacter
@@ -204,7 +201,7 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 
     public void GetArmor(int armorValue)
     {
-        armor += armorValue;
+        armor = Mathf.Min(maxArmor, armor + armorValue);
     }
 
     public IEnumerator ChangeColor(Color endColor, float duration)

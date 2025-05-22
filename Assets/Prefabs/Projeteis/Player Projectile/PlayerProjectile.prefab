@@ -100,8 +100,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 90
-  lifetime: 0.02
-  GunPrefab: {fileID: 0}
+  lifetime: 0.05
+  states:
+    FireEffectProbability: 0
+    StunEffectProbability: 0
+    SlowEffectProbability: 0
 --- !u!70 &4576493998372846139
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

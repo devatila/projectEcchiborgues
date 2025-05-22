@@ -64,6 +64,9 @@ public class Gun_Attributes : MonoBehaviour
     public RechargeEffect m_RechargeEffect { get; set; }
     private CustomProjectileForGunManager c;
 
+    private Projectile projectileComponent;
+    public Projectile.StatesPercentage statesPercentage;
+
     private void Awake()
     {
         GetSOdata(weaponDataSO);
@@ -94,7 +97,7 @@ public class Gun_Attributes : MonoBehaviour
         {
             customID = projectile.GetComponent<CustomProjectileScript>().customID;
         }
-        animPlayer = FindObjectOfType<AnimPlayer>();
+        animPlayer = GetComponentInParent<AnimPlayer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         g_Shoot = GetComponent<Gun_Shoot>();
         if(spriteRenderer != null) spriteRenderer.sprite = gunSprite;
@@ -103,6 +106,21 @@ public class Gun_Attributes : MonoBehaviour
         playerInventory = transform.parent.parent.parent.parent.parent.parent.parent.GetComponentInParent<PlayerInventory>();
         //projectile.GetComponent<Projectile>().damage = gunDamage;
         playerInventory.OnStopRelaod += stopReloadGun;
+
+        GetProjectileReferences();
+    }
+
+    void GetProjectileReferences()
+    {
+        if (projectile == null) return;
+
+        projectileComponent = projectile.GetComponent<Projectile>();
+        statesPercentage = new Projectile.StatesPercentage();
+    }
+    public void SetProjectileStates(Projectile.StatesPercentage newState)
+    {
+        if (projectile == null) return;
+        statesPercentage = newState;
     }
 
     public void Reload()

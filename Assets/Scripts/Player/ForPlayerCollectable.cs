@@ -79,7 +79,7 @@ public class ForPlayerCollectable : MonoBehaviour, ICollectable
         {
             // Obter o tipo de munição da arma equipada
             PlayerInventory.ammoTypeOfGunEquipped equippedAmmoType =
-                pInventory.gunEquipped.GetComponent<Gun_Attributes>().typeOfAmmo;
+                pInventory.equippedGunAttributes != null ? pInventory.equippedGunAttributes.typeOfAmmo : PlayerInventory.ammoTypeOfGunEquipped.AR;
 
             // Definir pesos dinamicamente
             var probabilities = new Dictionary<PlayerInventory.ammoTypeOfGunEquipped, int>();

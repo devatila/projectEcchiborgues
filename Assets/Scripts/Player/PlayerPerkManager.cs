@@ -20,7 +20,7 @@ public class PlayerPerkManager : MonoBehaviour
     [Header("Multiplicadores Específicos")]
     //No quesito Armas
     public PlayerGunMultipliers playerGunMultipliers;
-
+    public Projectile.StatesPercentage effectStatesProbabilites;
     [Space()]
     //No Quesito Arremessaveis
 
@@ -71,7 +71,13 @@ public class PlayerPerkManager : MonoBehaviour
 
     public void SetGunsMultipliers()
     {
+        UpdateBulletSpecialEffects();
         playerInventory.SetGunMultipliersByTypeOfGun(playerGunMultipliers);
+    }
+
+    public void UpdateBulletSpecialEffects()
+    {
+        playerInventory.GeneralStatesBulletPercentages = effectStatesProbabilites;
     }
 
     public void ResetGunsEquipped()
