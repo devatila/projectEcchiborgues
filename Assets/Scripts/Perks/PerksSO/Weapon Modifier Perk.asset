@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5161f1cdce7f9a643a79595792ae23a8, type: 3}
+  m_Name: Weapon Modifier Perk
+  m_EditorClassIdentifier: 
+  perkName: ARdamageBoost05
+  perkSprite: {fileID: 0}
+  localizedTexts:
+  - language: 0
+    LocalizedName: "Ca\xE7ador de Indio"
+    LocalizedDescription: Aumenta em 50% o dano da AR
+  hasValidateTime: 0
+  wavesDuration: 0
+  affectAllWeapons: 0
+  gunTypeToAffect: 0
+  gunMultipliers:
+    damageMultiplier: 0.5
+    spreadMultiplier: -0.2
+    reloadTimeMultiplier: -0.5
+    firerateMultiplier: -0.3
+  statesPercentage:
+    FireEffectProbability: 0.1
+    StunEffectProbability: 0
+    SlowEffectProbability: 0

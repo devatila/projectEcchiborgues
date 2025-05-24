@@ -9,14 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4b90e452694915469841fd008d00dd8, type: 3}
-  m_Name: WaveBasedPerk
+  m_Script: {fileID: 11500000, guid: 19e503223a32ac04bbba171f169485fe, type: 3}
+  m_Name: SmgDamageBoostPerk100
   m_EditorClassIdentifier: 
-  perkName: WaveBased
+  perkName: SubDamageBoost2x
   perkSprite: {fileID: 0}
   localizedTexts:
   - language: 0
-    LocalizedName: Perk de Teste
-    LocalizedDescription: Tem Validade de uma orda
-  hasValidateTime: 1
-  wavesDuration: 1
+    LocalizedName: Rajada Potente
+    LocalizedDescription: Aumenta o dano causado pelas SMGs em 100%.
+  hasValidateTime: 0
+  wavesDuration: 0
+  damageMultiplier: 1

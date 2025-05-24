@@ -28,7 +28,7 @@ public class PerkOptionsManager : MonoBehaviour
         for (int i = 0; i < perks.Length; i++)
         {
             perkOptionUIs[i].gameObject.SetActive(true);
-            perkOptionUIs[i].Setup(perks[i], LanguageCode.En);
+            perkOptionUIs[i].Setup(perks[i], LanguageCode.Pt);
         }
     }
 

@@ -36,7 +36,7 @@ public class NewPerkManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            //ShowPerkSelection();
+            ShowPerkSelection();
         }
         if (Input.GetKeyDown(KeyCode.O))
         {

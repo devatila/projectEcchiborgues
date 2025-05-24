@@ -83,6 +83,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     public PlayerGunMultipliers playerGunMultipliers { get; set; }
     public Dictionary<ammoTypeOfGunEquipped, Func<float>> GunsMultipliers;
     public float GeneralGunsDamageMultiplier = 1f;
+    public float GeneralGunsSpreadMultiplier = 1f;
 
     public Projectile.StatesPercentage GeneralStatesBulletPercentages { get; set; }
 
@@ -258,13 +259,18 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         }
     }
 
-    public void SetGunMultipliersByTypeOfGun(PlayerGunMultipliers multipliers)
+    public void SetGunMultipliersByTypeOfGun(PlayerGunMultipliers multipliers, Projectile.StatesPercentage projEffects)
     {
         playerGunMultipliers = multipliers;
+        GeneralGunsDamageMultiplier = playerGunMultipliers.allGunsMultiplier;
+        GeneralGunsSpreadMultiplier = playerGunMultipliers.allGunsSpreadMultiplier;
+
+        GeneralStatesBulletPercentages = projEffects;
+        Debug.Log(equippedGunAttributes == null);
 
         if (equippedGunAttributes == null) return;
 
-        equippedGunAttributes.statesPercentage = GeneralStatesBulletPercentages;
+        
 
         // 1) Atualiza o struct map
         BuildGunStructMap();
@@ -281,7 +287,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
             am => am.Damage(),
             (attr, v) => attr.gunDamage = v,
             attr => attr.weaponDataSO.gunDamage,
-            1f,
+            GeneralGunsDamageMultiplier,
             roundResult: true
             );
 
@@ -298,7 +304,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
             am => am.Spread(),
             (attr, v) => attr.maxSpread = v,
             attr => attr.weaponDataSO.maxSpread,
-            1f
+            GeneralGunsSpreadMultiplier
             );
 
         //Area de Firerate
@@ -309,6 +315,8 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
             1f
             );
         // ...
+        equippedGunAttributes.SetProjectileStates(GeneralStatesBulletPercentages);
+
         Debug.Log($"Stats Depois: dmg = {equippedGunAttributes.gunDamage}, rld = {equippedGunAttributes.reloadTime}, sprd = {equippedGunAttributes.maxSpread}, frt = {equippedGunAttributes.cadency}");
 
     }
@@ -342,7 +350,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     {
         float m = getter(multipliersByAmmo[AmmoType]);
         float original = Convert.ToSingle(originalValueProvider(equippedGunAttributes));
-        float result = original * m * (roundResult ? allGunsM : 1f);
+        float result = original * m * allGunsM; //(roundResult ? allGunsM : 1f);
 
         if (roundResult)
         {
@@ -427,7 +435,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         OnSwapWeapon();
         if(OnCanSwapWeapon != null && isVisible) OnCanSwapWeapon();
 
-        SetGunMultipliersByTypeOfGun(playerGunMultipliers);
+        SetGunMultipliersByTypeOfGun(playerGunMultipliers, GeneralStatesBulletPercentages);
     }
     private void SwitchOffEquippedGun()
     {
@@ -635,7 +643,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
         
         animPlayer.AttachShotgun(1, ga.isShotgun);
-        SetGunMultipliersByTypeOfGun(playerGunMultipliers);
+        SetGunMultipliersByTypeOfGun(playerGunMultipliers, GeneralStatesBulletPercentages);
         //animPlayer.AnimSwitchGun();
 
         if (!facingRight) gunPosition.localScale = new Vector3(gunPosition.localScale.x * -1, gunPosition.localScale.y, gunPosition.localScale.z);

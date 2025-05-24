@@ -12,7 +12,6 @@ public class PlayerPerkManager : MonoBehaviour
     [Header("Multiplicadores Gerais")]
     public float playerMovementMultiplier           = 1f; // Multiplicador de velocidade de movimento do player
     public float playerTakeableDamagerMultiplier    = 1f; // Multiplicador geral de dano recebido pelo player
-    public float playerGunSpreadGeneralMultiplier   = 1f; // Multiplicador geral de spread causado de armas do player
     public float playerThrowableGeneralMultiplier   = 1f; // Multiplicador geral do dano causado por todos os arremessáveis
 
     [Space()]
@@ -53,6 +52,7 @@ public class PlayerPerkManager : MonoBehaviour
 
     public void SetMovementMultiplier(float multiplier)             { playerMovementMultiplier *= (1 + multiplier); UpdatePlayerMovement(); }
     public void ResetMovementMultiplier() { playerMovementMultiplier = 1f; UpdatePlayerMovement(); }
+    public void RemoveMovementMultiplier(float multiplier) { playerMovementMultiplier /= (1 + multiplier); UpdatePlayerMovement(); }
     private void UpdatePlayerMovement() => playerMovement.SetMultiplierMovement(playerMovementMultiplier);
 
     public void SetGeneralDamageMultiplier(float multiplier)        => playerGunMultipliers.allGunsMultiplier *= (1 + multiplier);
@@ -61,18 +61,17 @@ public class PlayerPerkManager : MonoBehaviour
     public void SetTakeableDamageMultiplier(float multiplier)       => playerTakeableDamagerMultiplier *= (1 + multiplier);
     public void ResetTakeableDamageMultiplier() => playerTakeableDamagerMultiplier = 1f;
 
-    public void SetSpreadEffectorMultiplier(float multiplier)       => playerGunSpreadGeneralMultiplier *= (1 + multiplier);
-    public void ResetSpreadEffectorMultiplier() => playerGunSpreadGeneralMultiplier = 1f;
 
     public void SetGeneralThrowablesDamagerMultiplier(float multiplier) => playerThrowableGeneralMultiplier *= (1 + multiplier);
     public void ResetGeneralThrowablesDamagerMultiplier() => playerThrowableGeneralMultiplier = 1f;
 
     #endregion
 
+    // Basicamente é como um Atualizador dos atributos das armas
     public void SetGunsMultipliers()
     {
-        UpdateBulletSpecialEffects();
-        playerInventory.SetGunMultipliersByTypeOfGun(playerGunMultipliers);
+        //UpdateBulletSpecialEffects();
+        playerInventory.SetGunMultipliersByTypeOfGun(playerGunMultipliers, effectStatesProbabilites); // acho que não ta fun
     }
 
     public void UpdateBulletSpecialEffects()
@@ -92,7 +91,6 @@ public class PlayerPerkManager : MonoBehaviour
         ResetMovementMultiplier();
         ResetGeneralDamageMultiplier();
         ResetTakeableDamageMultiplier();
-        ResetSpreadEffectorMultiplier();
         ResetGeneralThrowablesDamagerMultiplier();
         ResetGunsEquipped();
     }
@@ -140,6 +138,7 @@ public class PlayerPerkManagerEditor : Editor
 public class PlayerGunMultipliers
 {
     public float allGunsMultiplier = 1f;
+    public float allGunsSpreadMultiplier = 1f;
 
     // inicializa todos
     public GunMultipliers ArMultipliers                 = new GunMultipliers();
@@ -152,6 +151,7 @@ public class PlayerGunMultipliers
 
     private Dictionary<ammoTypeOfGunEquipped, GunMultipliers> gunStructMap;
     private Dictionary<GunMultiplierType, Action<GunMultipliers, float>> multiplierSetters;
+    private Dictionary<GunMultiplierType, Action<GunMultipliers, float>> divisorSetters;
 
     public enum GunMultiplierType
     {
@@ -189,6 +189,14 @@ public class PlayerGunMultipliers
             { GunMultiplierType.ReloadTime, (gm, v) => gm.reloadTimeMultiplier  *= (1 + v) },
             { GunMultiplierType.FireRate,   (gm, v) => gm.firerateMultiplier    *= (1 + v) },
         };
+
+        divisorSetters = new Dictionary<GunMultiplierType, Action<GunMultipliers, float>>()
+        {
+            {GunMultiplierType.Damage,      (gm, v) => gm.damageMultiplier      /= (1 + v) },
+            {GunMultiplierType.Spread,      (gm, v) => gm.spreadMultiplier      /= (1 + v) },
+            {GunMultiplierType.ReloadTime,  (gm, v) => gm.reloadTimeMultiplier  /= (1 + v) },
+            {GunMultiplierType.FireRate,    (gm, v) => gm.firerateMultiplier    /= (1 + v) },
+        };
     }
 
     /// <summary>
@@ -212,6 +220,37 @@ public class PlayerGunMultipliers
         
         // 2) Encontra o “setter” correspondente
         if (!multiplierSetters.TryGetValue(which, out var setter))
+        {
+            Debug.LogError($"[PerkManager] não há setter para {which}!");
+            return;
+        }
+
+        // 3) Aplica!
+        setter(gm, value);
+        Debug.Log($"[{ammo}] {which} multipliers set to {value}");
+    }
+
+    /// <summary>
+    /// Remove o valor de um multiplicador em porcentagem específico para uma arma.
+    /// </summary>
+    /// <param name="ammo">Tipo de arma (enum).</param>
+    /// <param name="which">Qual multiplicador (enum).</param>
+    /// <param name="value">O valor a ser removido.</param>
+    public void RemoveGunMultiplier(
+        ammoTypeOfGunEquipped ammo,
+        GunMultiplierType which,
+        float value
+    )
+    {
+        // 1) Encontra o struct de multiplicadores daquela arma
+        if (!gunStructMap.TryGetValue(ammo, out var gm))
+        {
+            Debug.LogError($"[PerkManager] arma '{ammo}' não configurada no gunStructMap!");
+            return;
+        }
+
+        // 2) Encontra o “setter” correspondente
+        if (!divisorSetters.TryGetValue(which, out var setter))
         {
             Debug.LogError($"[PerkManager] não há setter para {which}!");
             return;

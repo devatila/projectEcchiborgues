@@ -22,7 +22,7 @@ public class PlayerSpeedBoostPerk : PerkBase
 
     public override void OnRemove()
     {
-        Player.ResetMovementMultiplier();
+        Player.RemoveMovementMultiplier(multiplier);
         isActive = false;
     }
     public override bool IsExpired => !isActive;

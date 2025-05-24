@@ -25453,11 +25453,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availablePerks:
   - {fileID: 11400000, guid: 9bf3b41d6043ef34d979bf31730a7338, type: 2}
-  - {fileID: 11400000, guid: 6980d76948eb8364a9150a22d8302f2d, type: 2}
-  - {fileID: 11400000, guid: 26b4b33c16e1d4e40a1037f451c4e41b, type: 2}
+  - {fileID: 11400000, guid: 1947546bda09ce946bc53e9b8df4c020, type: 2}
   - {fileID: 11400000, guid: 14cf197eac7810b4e82f4ba40586380a, type: 2}
-  - {fileID: 11400000, guid: 14cf197eac7810b4e82f4ba40586380a, type: 2}
-  - {fileID: 11400000, guid: 14cf197eac7810b4e82f4ba40586380a, type: 2}
+  - {fileID: 11400000, guid: 22428fa1bc60cdb4ab7e2b5af9c4c1ae, type: 2}
+  - {fileID: 11400000, guid: 6cc18c1f07337cb42aa3f615e0bd1c81, type: 2}
 --- !u!1 &668036657
 GameObject:
   m_ObjectHideFlags: 0
@@ -37013,6 +37012,7 @@ MonoBehaviour:
   isCollected: 0
   equippedGunAttributes: {fileID: 0}
   GeneralGunsDamageMultiplier: 1
+  GeneralGunsSpreadMultiplier: 1
 --- !u!114 &1197051474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37110,10 +37110,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovementMultiplier: 1
   playerTakeableDamagerMultiplier: 1
-  playerGunSpreadGeneralMultiplier: 1
   playerThrowableGeneralMultiplier: 1
   playerGunMultipliers:
     allGunsMultiplier: 1
+    allGunsSpreadMultiplier: 1
     ArMultipliers:
       damageMultiplier: 1
       spreadMultiplier: 1
@@ -37150,7 +37150,7 @@ MonoBehaviour:
       reloadTimeMultiplier: 1
       firerateMultiplier: 1
   effectStatesProbabilites:
-    FireEffectProbability: 0.195
+    FireEffectProbability: 0
     StunEffectProbability: 0
     SlowEffectProbability: 0
 --- !u!1 &1200824795
@@ -54963,7 +54963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2076027984
 MonoBehaviour:
   m_ObjectHideFlags: 0

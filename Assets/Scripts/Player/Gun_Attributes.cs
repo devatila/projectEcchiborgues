@@ -115,7 +115,6 @@ public class Gun_Attributes : MonoBehaviour
         if (projectile == null) return;
 
         projectileComponent = projectile.GetComponent<Projectile>();
-        statesPercentage = new Projectile.StatesPercentage();
     }
     public void SetProjectileStates(Projectile.StatesPercentage newState)
     {
