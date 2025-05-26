@@ -42,6 +42,15 @@ public class NewPerkManager : MonoBehaviour
         {
             RemovePerkByName("SpeedBoost3x");
         }
+
+        if (perkList.Count > 0)
+        {
+            float time = Time.deltaTime;
+            foreach (var perk in perkList)
+            {
+                perk.Update(time);
+            }
+        }
     }
 
     public void ApplyPerkByName(string perkName)

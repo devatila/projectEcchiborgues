@@ -30,8 +30,8 @@ public class WeaponModifierPerk : PerkBase
     {
         if (applyToAllWeapons)
         {
-            player.playerGunMultipliers.allGunsMultiplier *= (1 + Multipliers.damageMultiplier);
-            player.playerGunMultipliers.allGunsSpreadMultiplier *= (1 + Multipliers.spreadMultiplier);
+            player.playerGunMultipliers.allGunsMultiplier += Multipliers.damageMultiplier;
+            player.playerGunMultipliers.allGunsSpreadMultiplier += Multipliers.spreadMultiplier;
         }
         else
         {
@@ -52,8 +52,8 @@ public class WeaponModifierPerk : PerkBase
     {
         if (applyToAllWeapons)
         {
-            player.playerGunMultipliers.allGunsMultiplier /= (1 + Multipliers.damageMultiplier);
-            player.playerGunMultipliers.allGunsSpreadMultiplier /= (1 + Multipliers.spreadMultiplier);
+            player.playerGunMultipliers.allGunsMultiplier -= Multipliers.damageMultiplier;
+            player.playerGunMultipliers.allGunsSpreadMultiplier -= Multipliers.spreadMultiplier;
         }
         else
         {

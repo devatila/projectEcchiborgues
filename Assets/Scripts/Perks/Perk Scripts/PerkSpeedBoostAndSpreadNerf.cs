@@ -20,15 +20,15 @@ public class PerkSpeedBoostAndSpreadNerf : PerkBase
     public override void OnApply()
     {
         player.SetMovementMultiplier(speedMultiplier);
-        player.playerGunMultipliers.allGunsSpreadMultiplier *= (1 + spreadMultiplier);
+        player.playerGunMultipliers.allGunsSpreadMultiplier += spreadMultiplier;
         player.SetGunsMultipliers();
     }
 
     public override void OnRemove()
     {
         isActive = false;
-        player.RemoveMovementMultiplier(speedMultiplier);
-        player.playerGunMultipliers.allGunsSpreadMultiplier /= (1 + spreadMultiplier);
+        player.SetMovementMultiplier(-speedMultiplier);
+        player.playerGunMultipliers.allGunsSpreadMultiplier -= spreadMultiplier;
         player.SetGunsMultipliers();
     }
 

@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using static PlayerGunMultipliers;
 using static PlayerInventory;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerPerkManager : MonoBehaviour
 {
@@ -50,19 +51,18 @@ public class PlayerPerkManager : MonoBehaviour
 
     #region PlayerBasicsMultipliersForApplyingInInspector
 
-    public void SetMovementMultiplier(float multiplier)             { playerMovementMultiplier *= (1 + multiplier); UpdatePlayerMovement(); }
+    public void SetMovementMultiplier(float value)             { playerMovementMultiplier += value; UpdatePlayerMovement(); }
     public void ResetMovementMultiplier() { playerMovementMultiplier = 1f; UpdatePlayerMovement(); }
-    public void RemoveMovementMultiplier(float multiplier) { playerMovementMultiplier /= (1 + multiplier); UpdatePlayerMovement(); }
     private void UpdatePlayerMovement() => playerMovement.SetMultiplierMovement(playerMovementMultiplier);
 
-    public void SetGeneralDamageMultiplier(float multiplier)        => playerGunMultipliers.allGunsMultiplier *= (1 + multiplier);
+    public void SetGeneralDamageMultiplier(float value)        => playerGunMultipliers.allGunsMultiplier += value;
     public void ResetGeneralDamageMultiplier() => playerGunMultipliers.allGunsMultiplier = 1f;
 
-    public void SetTakeableDamageMultiplier(float multiplier)       => playerTakeableDamagerMultiplier *= (1 + multiplier);
+    public void SetTakeableDamageMultiplier(float value)       => playerTakeableDamagerMultiplier += value;
     public void ResetTakeableDamageMultiplier() => playerTakeableDamagerMultiplier = 1f;
 
 
-    public void SetGeneralThrowablesDamagerMultiplier(float multiplier) => playerThrowableGeneralMultiplier *= (1 + multiplier);
+    public void SetGeneralThrowablesDamagerMultiplier(float value) => playerThrowableGeneralMultiplier += value;
     public void ResetGeneralThrowablesDamagerMultiplier() => playerThrowableGeneralMultiplier = 1f;
 
     #endregion
@@ -184,18 +184,18 @@ public class PlayerGunMultipliers
     {
         multiplierSetters = new Dictionary<GunMultiplierType, Action<PlayerGunMultipliers.GunMultipliers, float>>()
         {
-            { GunMultiplierType.Damage,     (gm, v) => gm.damageMultiplier      *= (1 + v) },
-            { GunMultiplierType.Spread,     (gm, v) => gm.spreadMultiplier      *= (1 + v) },
-            { GunMultiplierType.ReloadTime, (gm, v) => gm.reloadTimeMultiplier  *= (1 + v) },
-            { GunMultiplierType.FireRate,   (gm, v) => gm.firerateMultiplier    *= (1 + v) },
+            { GunMultiplierType.Damage,     (gm, v) => gm.damageMultiplier      += v },
+            { GunMultiplierType.Spread,     (gm, v) => gm.spreadMultiplier      += v },
+            { GunMultiplierType.ReloadTime, (gm, v) => gm.reloadTimeMultiplier  += v },
+            { GunMultiplierType.FireRate,   (gm, v) => gm.firerateMultiplier    += v },
         };
 
         divisorSetters = new Dictionary<GunMultiplierType, Action<GunMultipliers, float>>()
         {
-            {GunMultiplierType.Damage,      (gm, v) => gm.damageMultiplier      /= (1 + v) },
-            {GunMultiplierType.Spread,      (gm, v) => gm.spreadMultiplier      /= (1 + v) },
-            {GunMultiplierType.ReloadTime,  (gm, v) => gm.reloadTimeMultiplier  /= (1 + v) },
-            {GunMultiplierType.FireRate,    (gm, v) => gm.firerateMultiplier    /= (1 + v) },
+            {GunMultiplierType.Damage,      (gm, v) => gm.damageMultiplier      -= v },
+            {GunMultiplierType.Spread,      (gm, v) => gm.spreadMultiplier      -= v },
+            {GunMultiplierType.ReloadTime,  (gm, v) => gm.reloadTimeMultiplier  -= v },
+            {GunMultiplierType.FireRate,    (gm, v) => gm.firerateMultiplier    -= v },
         };
     }
 

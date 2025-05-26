@@ -23,7 +23,7 @@ public class PerkSmgDamageBoost : PerkBase
     public override void OnRemove()
     {
         isActive = false;
-        player.playerGunMultipliers.RemoveGunMultiplier(PlayerInventory.ammoTypeOfGunEquipped.Sub, PlayerGunMultipliers.GunMultiplierType.Damage, damageMultiplier);
+        player.playerGunMultipliers.SetGunMultiplier(PlayerInventory.ammoTypeOfGunEquipped.Sub, PlayerGunMultipliers.GunMultiplierType.Damage, -damageMultiplier);
         player.SetGunsMultipliers();
     }
 
