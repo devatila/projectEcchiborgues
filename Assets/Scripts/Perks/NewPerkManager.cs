@@ -156,7 +156,7 @@ public class NewPerkManager : MonoBehaviour
         for (int i = perkList.Count - 1; i >= 0; i--)
         {
             var perk = perkList[i];
-            perk.Update();
+            perk.UpdateWaveCount();
 
             if (perk.IsExpired)
                 RemovePerk(perk);

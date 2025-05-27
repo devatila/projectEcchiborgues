@@ -21,15 +21,15 @@ public class PlayerPerkManager : MonoBehaviour
     //No quesito Armas
     public PlayerGunMultipliers playerGunMultipliers;
     public Projectile.StatesPercentage effectStatesProbabilites;
-    [Space()]
+    
     //No Quesito Arremessaveis
 
 
     // Referencias do player [MANTER PRIVADO NO INSPECTOR]
-    private PlayerInventory     playerInventory;
-    private Player_Movement     playerMovement;
-    private HandThrowableScript playerThrowableScript;
-    private PlayerHealth        playerHealth;
+    public PlayerInventory     playerInventory {  get; set; }
+    public Player_Movement     playerMovement { get; set; }
+    public HandThrowableScript playerThrowableScript { get; set; }
+    public PlayerHealth        playerHealth { get; set; }
 
     // Incrementar uma func que aumenta ou diminui a vida total do player
 

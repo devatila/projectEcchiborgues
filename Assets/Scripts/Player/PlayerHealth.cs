@@ -30,6 +30,8 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     private bool isRegenerationg = false;
     private Coroutine regenCoroutine;
 
+    private int startMaxHealth;
+
     #region RegenerationCycle
     /// <summary>
     /// Altera os valores básicos do sistema de regeneração de vida
@@ -129,6 +131,7 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     private void Start()
     {
         maxHealth = health;
+        startMaxHealth = maxHealth;
         lifeBar.fillAmount = (float)health / (float)maxHealth;
         hudHealth = lifeBar.transform.parent.parent.parent.gameObject;
         OnDeath += PlayerDead;
@@ -159,7 +162,18 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
         TryStartRegen();
 
     }
-    
+
+    public void SetMaxHealth(int multiplier)
+    {
+        maxHealth += startMaxHealth * multiplier;
+        // UpdateLifeBarLarge();
+    }
+    public void RemoveMaxHealthMultiplier(int multiplier)
+    {
+        maxHealth += startMaxHealth / multiplier;
+        // UpdateLifeBarLarge();
+    }
+
     void DecreaseHealth(int damageValue)
     {
         health -= Mathf.RoundToInt(damageValue);

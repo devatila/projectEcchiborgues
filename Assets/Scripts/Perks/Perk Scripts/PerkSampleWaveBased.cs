@@ -10,6 +10,8 @@ public class PerkSampleWaveBased : PerkBase
     public PerkSampleWaveBased (int maxWaves)
     {
         this.maxWaves = maxWaves;
+        if (this.maxWaves > 0) hasWaveDuration = true;
+        else hasWaveDuration = false;
     }
 
     public override void OnApply()
@@ -23,8 +25,9 @@ public class PerkSampleWaveBased : PerkBase
         Debug.Log("Perk com Validade de Turno Removido");
     }
 
-    public override void Update(float deltaTime = 0)
+    public override void UpdateWaveCount()
     {
+        if (hasWaveDuration)
         waveCount++;
     }
 
