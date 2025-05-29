@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565514a8b08d4954ca80060327d0478a, type: 3}
+  m_Name: RollSequence
+  m_EditorClassIdentifier: 
+  perkName: SequenceRoll1
+  perkSprite: {fileID: 0}
+  localizedTexts:
+  - language: 0
+    LocalizedName: Adrenalina Sequencial
+    LocalizedDescription: "Cada inimigo derrotado aumenta seu dano em 5% por 5 segundos.
+      Elimina\xE7\xF5es adicionais dentro desse tempo renovam a dura\xE7\xE3o e aumentam
+      o b\xF4nus, at\xE9 um m\xE1ximo de 50%."
+  hasValidateTime: 0
+  wavesDuration: 0
+  statToChange: 0
+  valuePerKill: 0.05
+  maxValue: 0.5
+  duration: 5

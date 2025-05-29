@@ -9,6 +9,7 @@ public class RaidManager : MonoBehaviour
 
     public event Action OnEndSubRaid;
     public event Action OnEndAllRaids;
+    public event Action OnEnemyDeath;
 
     public int day; // Dia atual da Raid
     private int dayIndex; // Índice ajustado (day - 1)
@@ -118,6 +119,7 @@ public class RaidManager : MonoBehaviour
     public void RemoveEnemyOnDeath(GameObject enemy)
     {
         EnemiesAlive.Remove(enemy);
+        OnEnemyDeath?.Invoke();
     }
 
     private GameObject ChooseEnemy(EnemyTypeAndProbability[] enemies)

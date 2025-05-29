@@ -21,14 +21,14 @@ MonoBehaviour:
   - onRaidPerformances:
     - awaitsEveryoneIsDead: 0
       delayToSpawn: 3
-      howMany: 3
+      howMany: 10
       doesThemComeFromTheAir: 0
       desiredEnemies:
       - probability: 86
         enemyIndex: 0
     - awaitsEveryoneIsDead: 1
       delayToSpawn: 5
-      howMany: 2
+      howMany: 10
       doesThemComeFromTheAir: 0
       desiredEnemies:
       - probability: 100

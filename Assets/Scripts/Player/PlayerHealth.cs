@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,8 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 {
     public delegate void deathEvent();
     public event deathEvent OnDeath;
+
+    public event Action OnPlayerHit;
 
     public int health;
     private int maxHealth;
@@ -160,7 +163,7 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
         }
         playerAnim.PlayDamageAnimation();
         TryStartRegen();
-
+        OnPlayerHit?.Invoke();
     }
 
     public void SetMaxHealth(int multiplier)
@@ -217,6 +220,11 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     {
         armor = Mathf.Min(maxArmor, armor + armorValue);
     }
+
+    public int GetActualHealth() => health;
+    public int GetActualArmor() => armor;
+    public int GetActualMaxHealth() => maxHealth;
+    public int GetActualMaxArmor() => maxArmor;
 
     public IEnumerator ChangeColor(Color endColor, float duration)
     {

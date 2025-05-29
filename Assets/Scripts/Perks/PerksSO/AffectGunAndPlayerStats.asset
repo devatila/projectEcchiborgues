@@ -24,7 +24,7 @@ MonoBehaviour:
   affectAllWeapons: 0
   gunTypeToAffect: 0
   gunMultipliers:
-    damageMultiplier: 1
-    spreadMultiplier: 1
-    reloadTimeMultiplier: 1
-    firerateMultiplier: 1
+    damageMultiplier: 0
+    spreadMultiplier: 0
+    reloadTimeMultiplier: 0
+    firerateMultiplier: 0
