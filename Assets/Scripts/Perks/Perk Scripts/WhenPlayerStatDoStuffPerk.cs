@@ -43,7 +43,8 @@ public class WhenPlayerStatDoStuffPerk : PerkBase
 
     private void OnPlayerGetHit()
     {
-        
+        if (alreadyExectuedInThisWave && oneTimeForWave) return;
+
         if (player == null)
         {
             Debug.LogWarning("Referencia do PlayerPerkManager não foi instanciada corretamente. Verificar pontos de chamadas");
@@ -67,10 +68,12 @@ public class WhenPlayerStatDoStuffPerk : PerkBase
                 break;
         }
         // Faço assim para que este mesmo perk possa reaparecer posteriormente
-        if (hasAlreadyExecuted)
+        if (removeOnExecute)
         {
             OnRemove();
         }
+
+        alreadyExectuedInThisWave = true;
     }
 
     private void ApplyStuffs() // To sem ideia de nome perdão

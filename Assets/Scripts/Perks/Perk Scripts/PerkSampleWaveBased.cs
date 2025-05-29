@@ -5,7 +5,6 @@ using UnityEngine;
 public class PerkSampleWaveBased : PerkBase
 {
     private int waveCount;
-    private int maxWaves;
 
     public PerkSampleWaveBased (int maxWaves)
     {
