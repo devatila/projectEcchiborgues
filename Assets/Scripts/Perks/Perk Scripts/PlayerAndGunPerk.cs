@@ -15,7 +15,9 @@ public class PlayerAndGunPerk : PerkBase
 
     private PlayerPerkManager player;
 
-    public PlayerAndGunPerk(float playerSpeed,
+    public PlayerAndGunPerk(
+        PerkSO perkso,
+        float playerSpeed,
         int playerMaxHealthMultiplier,
         float playerReductionDamage,
         int armorToGain,
@@ -23,6 +25,7 @@ public class PlayerAndGunPerk : PerkBase
         PlayerInventory.ammoTypeOfGunEquipped gunTypeToAffect,
         PlayerGunMultipliers.GunMultipliers gunMultipliers,
         PlayerPerkManager player)
+        : base(perkso)
     {
         this.playerSpeed = playerSpeed;
         this.playerMaxHealthMultiplier = playerMaxHealthMultiplier;

@@ -26,3 +26,5 @@ MonoBehaviour:
   gainHealthValue: 0
   gainArmorValue: 0
   gainDamageValue: 0.5
+  oncePerWave: 0
+  removeEffectWhenValueIsOverThanMinimum: 1

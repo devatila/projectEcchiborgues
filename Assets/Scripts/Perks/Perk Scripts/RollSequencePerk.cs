@@ -14,12 +14,13 @@ public class RollSequencePerk : PerkBase
     private PlayerPerkManager player;
 
     public RollSequencePerk(
+        PerkSO perkso,
         PlayerPerkManager player,
         RollSequencePerkSO.PlayerStatsToChange choosenStat,
         float valuePerKill,
         float maxValue,
         float duration
-        )
+        ) : base(perkso)
     {
         this.player = player;
         this.choosenStat = choosenStat;

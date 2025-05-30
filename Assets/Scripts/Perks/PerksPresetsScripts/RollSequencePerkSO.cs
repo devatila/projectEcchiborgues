@@ -18,7 +18,7 @@ public class RollSequencePerkSO : PerkSO
     public override PerkBase CreatePerkInstance()
     {
         PlayerPerkManager player = FindObjectOfType<PlayerPerkManager>();
-        return new RollSequencePerk(player, statToChange, valuePerKill, maxValue, duration);
+        return new RollSequencePerk(this, player, statToChange, valuePerKill, maxValue, duration);
     }
 
     public override Type GetPerkType()

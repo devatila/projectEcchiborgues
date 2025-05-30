@@ -12,12 +12,13 @@ public class WeaponModifierPerk : PerkBase
 
     public WeaponModifierPerk 
         (
+        PerkSO perkso,
         PlayerPerkManager player,
         Projectile.StatesPercentage projectileEffects,
         bool applyToAllWeapons,
         PlayerInventory.ammoTypeOfGunEquipped gunTypeToAffect,
         PlayerGunMultipliers.GunMultipliers Multipliers
-        )
+        ) : base( perkso )
     {
         this.player = player;
         this.projectileEffects = projectileEffects;

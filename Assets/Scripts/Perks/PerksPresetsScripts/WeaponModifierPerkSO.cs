@@ -19,7 +19,7 @@ public class WeaponModifierPerkSO : PerkSO
     public override PerkBase CreatePerkInstance()
     {
         PlayerPerkManager player = FindObjectOfType<PlayerPerkManager>();
-        return new WeaponModifierPerk(player, statesPercentage, affectAllWeapons, gunTypeToAffect, gunMultipliers);
+        return new WeaponModifierPerk(this, player, statesPercentage, affectAllWeapons, gunTypeToAffect, gunMultipliers);
     }
 
     public override Type GetPerkType()

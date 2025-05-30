@@ -6,9 +6,8 @@ public class PerkSmgDamageBoost : PerkBase
 {
     private float damageMultiplier;
     private PlayerPerkManager player;
-    private bool isActive;
 
-    public PerkSmgDamageBoost (PlayerPerkManager player, float multiplicador)
+    public PerkSmgDamageBoost (PerkSO perkso, PlayerPerkManager player, float multiplicador) : base(perkso)
     {
         this.player = player;
         this.damageMultiplier = multiplicador;
@@ -26,6 +25,4 @@ public class PerkSmgDamageBoost : PerkBase
         player.playerGunMultipliers.SetGunMultiplier(PlayerInventory.ammoTypeOfGunEquipped.Sub, PlayerGunMultipliers.GunMultiplierType.Damage, -damageMultiplier);
         player.SetGunsMultipliers();
     }
-
-    public override bool IsExpired => !isActive;
 }

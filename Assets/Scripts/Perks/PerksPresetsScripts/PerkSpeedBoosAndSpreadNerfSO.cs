@@ -14,7 +14,7 @@ public class PerkSpeedBoosAndSpreadNerfSO : PerkSO
     public override PerkBase CreatePerkInstance()
     {
         PlayerPerkManager player = FindObjectOfType<PlayerPerkManager>();
-        return new PerkSpeedBoostAndSpreadNerf(speedMultiplier, spreadMultiplier, player);
+        return new PerkSpeedBoostAndSpreadNerf(this, speedMultiplier, spreadMultiplier, player);
     }
 
     public override Type GetPerkType()

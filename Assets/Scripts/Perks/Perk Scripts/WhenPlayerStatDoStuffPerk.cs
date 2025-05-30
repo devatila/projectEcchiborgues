@@ -10,18 +10,23 @@ public class WhenPlayerStatDoStuffPerk : PerkBase
     private float gainHealthValue;
     private float gainArmorValue;
     private float gainDamageValue;
-
-    private bool hasAlreadyExecuted;
-
     private PlayerPerkManager player;
 
+    private bool oncePerWave;
+    private bool removeEffectWhenValueIsOverThanMinimum;
+
+    private bool isEffectActive;
+
     public WhenPlayerStatDoStuffPerk(
+        PerkSO perkso,
         PlayerStatType choosenType,
         int valuteToWatch,
         float gainHealthValue,
         float gainArmorValue,
         float gainDamageValue,
-        PlayerPerkManager player)
+        PlayerPerkManager player,
+        bool oncePerWave,
+        bool removeEffectWhenValueIsOverThanMinimum) : base(perkso)
     {
         this.choosenType = choosenType;
         this.valuteToWatch = valuteToWatch / 100f;
@@ -29,6 +34,10 @@ public class WhenPlayerStatDoStuffPerk : PerkBase
         this.gainArmorValue = gainArmorValue;
         this.gainDamageValue = gainDamageValue;
         this.player = player;
+        this.oncePerWave = oncePerWave;
+        this.removeEffectWhenValueIsOverThanMinimum = removeEffectWhenValueIsOverThanMinimum;
+
+        oneTimeForWave = oncePerWave;
     }
 
     public override void OnApply()
@@ -56,14 +65,24 @@ public class WhenPlayerStatDoStuffPerk : PerkBase
                 int actualLife = player.playerHealth.GetActualHealth();
                 if (actualLife < player.playerHealth.GetActualMaxHealth() * valuteToWatch)
                 {
+                    if (isEffectActive) return;
                     ApplyStuffs();
+                }
+                else if (removeEffectWhenValueIsOverThanMinimum && isEffectActive)
+                {
+                    DeactivateApplyChanges();
                 }
                 break;
             case PlayerStatType.Armor:
                 int actualArmor = player.playerHealth.GetActualArmor();
                 if (actualArmor < player.playerHealth.GetActualMaxHealth() * valuteToWatch)
                 {
+                    if (isEffectActive) return;
                     ApplyStuffs();
+                }
+                else if (removeEffectWhenValueIsOverThanMinimum && isEffectActive)
+                {
+                    DeactivateApplyChanges();
                 }
                 break;
         }
@@ -73,7 +92,6 @@ public class WhenPlayerStatDoStuffPerk : PerkBase
             OnRemove();
         }
 
-        alreadyExectuedInThisWave = true;
     }
 
     private void ApplyStuffs() // To sem ideia de nome perdão
@@ -82,11 +100,14 @@ public class WhenPlayerStatDoStuffPerk : PerkBase
         player.playerHealth.GetArmor(Mathf.RoundToInt(player.playerHealth.GetActualMaxArmor() * gainArmorValue));
         player.playerGunMultipliers.allGunsMultiplier += gainDamageValue;
         if (gainDamageValue != 0) player.SetGunsMultipliers();
-        hasAlreadyExecuted = true;
+        alreadyExectuedInThisWave = true;
+        isEffectActive = true;
     }
 
     private void DeactivateApplyChanges()
     {
-
+        player.playerGunMultipliers.allGunsMultiplier -= gainDamageValue;
+        if (gainDamageValue != 0) player.SetGunsMultipliers();
+        isEffectActive = false;
     }
 }

@@ -14,7 +14,7 @@ public class SpeedBoostPerkSO : PerkSO
             Debug.LogError($"Componente {player.GetType().Name} não encontrado, Esta classe esta devidamente referenciada no objeto player?");
             return null;
         }
-        return new PlayerSpeedBoostPerk(player, multiplier);
+        return new PlayerSpeedBoostPerk(this, player, multiplier);
     }
 
     public override Type GetPerkType()

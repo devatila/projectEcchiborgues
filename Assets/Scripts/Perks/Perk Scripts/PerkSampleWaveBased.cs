@@ -6,7 +6,7 @@ public class PerkSampleWaveBased : PerkBase
 {
     private int waveCount;
 
-    public PerkSampleWaveBased (int maxWaves)
+    public PerkSampleWaveBased (PerkSO perkso,int maxWaves) : base (perkso)
     {
         this.maxWaves = maxWaves;
         if (this.maxWaves > 0) hasWaveDuration = true;

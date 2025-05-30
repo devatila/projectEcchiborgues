@@ -22,13 +22,17 @@ public class WhenPlayerStatDoStuffPerkSO : PerkSO
     public float gainArmorValue;
     public float gainDamageValue;
 
+    [Space()]
+    public bool oncePerWave;
+    public bool removeEffectWhenValueIsOverThanMinimum;
     // "Chuvas de arroz e tudo depoissssh"
 
 
     public override PerkBase CreatePerkInstance()
     {
         PlayerPerkManager player = FindObjectOfType<PlayerPerkManager>();
-        return new WhenPlayerStatDoStuffPerk(whatStatShouldWatch, valuePointToTrigger, gainHealthValue, gainArmorValue, gainDamageValue, player);
+        return new WhenPlayerStatDoStuffPerk(this, whatStatShouldWatch, valuePointToTrigger, gainHealthValue, gainArmorValue, gainDamageValue, player,
+            oncePerWave, removeEffectWhenValueIsOverThanMinimum);
     }
 
     public override Type GetPerkType()

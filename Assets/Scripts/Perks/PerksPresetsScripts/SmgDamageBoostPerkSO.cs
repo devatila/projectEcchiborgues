@@ -9,7 +9,7 @@ public class SmgDamageBoostPerkSO : PerkSO
     public override PerkBase CreatePerkInstance()
     {
         PlayerPerkManager player = FindAnyObjectByType<PlayerPerkManager>();
-        return new PerkSmgDamageBoost(player, damageMultiplier);
+        return new PerkSmgDamageBoost(this, player, damageMultiplier);
     }
 
     public override Type GetPerkType()

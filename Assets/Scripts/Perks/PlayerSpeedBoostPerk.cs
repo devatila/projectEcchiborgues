@@ -1,4 +1,5 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSpeedBoostPerk : PerkBase
@@ -6,8 +7,7 @@ public class PlayerSpeedBoostPerk : PerkBase
     private float multiplier;
     private PlayerPerkManager Player;
     private float defaultSpeed;
-    private bool isActive;
-    public PlayerSpeedBoostPerk(PlayerPerkManager Player, float multiplier)
+    public PlayerSpeedBoostPerk(PerkSO perkso, PlayerPerkManager Player, float multiplier) : base(perkso)
     {
         this.multiplier = multiplier;
         this.Player = Player;
@@ -25,5 +25,4 @@ public class PlayerSpeedBoostPerk : PerkBase
         Player.SetMovementMultiplier(-multiplier);
         isActive = false;
     }
-    public override bool IsExpired => !isActive;
 }

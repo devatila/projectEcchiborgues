@@ -8,7 +8,7 @@ public class WaveBasedSamplePerkSO : PerkSO
 {
     public override PerkBase CreatePerkInstance()
     {
-        return new PerkSampleWaveBased(wavesDuration);
+        return new PerkSampleWaveBased(this, wavesDuration);
     }
 
     public override Type GetPerkType()

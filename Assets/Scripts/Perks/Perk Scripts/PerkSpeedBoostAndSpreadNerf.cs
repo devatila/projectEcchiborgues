@@ -8,9 +8,8 @@ public class PerkSpeedBoostAndSpreadNerf : PerkBase
     private float speedMultiplier;
     private float spreadMultiplier;
     private PlayerPerkManager player;
-    private bool isActive;
 
-    public PerkSpeedBoostAndSpreadNerf(float speedMultiplier, float spreadMultiplier, PlayerPerkManager player)
+    public PerkSpeedBoostAndSpreadNerf(PerkSO perkso, float speedMultiplier, float spreadMultiplier, PlayerPerkManager player) : base(perkso)
     {
         this.speedMultiplier = speedMultiplier;
         this.spreadMultiplier = spreadMultiplier;
@@ -31,6 +30,4 @@ public class PerkSpeedBoostAndSpreadNerf : PerkBase
         player.playerGunMultipliers.allGunsSpreadMultiplier -= spreadMultiplier;
         player.SetGunsMultipliers();
     }
-
-    public override bool IsExpired => !isActive;
 }
