@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5161f1cdce7f9a643a79595792ae23a8, type: 3}
+  m_Name: PistolDmgBoost1
+  m_EditorClassIdentifier: 
+  perkName: PistolDmgBoos1
+  perkSprite: {fileID: 0}
+  localizedTexts:
+  - language: 0
+    LocalizedName: Pistola Armada
+    LocalizedDescription: As pistolas causam 100% a mais de dano
+  hasValidateTime: 0
+  wavesDuration: 0
+  affectAllWeapons: 0
+  gunTypeToAffect: 3
+  gunMultipliers:
+    damageMultiplier: 1
+    spreadMultiplier: 0
+    reloadTimeMultiplier: 0
+    firerateMultiplier: 0
+  statesPercentage:
+    FireEffectProbability: 0
+    StunEffectProbability: 0
+    SlowEffectProbability: 0

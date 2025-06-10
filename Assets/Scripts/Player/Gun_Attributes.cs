@@ -67,6 +67,8 @@ public class Gun_Attributes : MonoBehaviour
     private Projectile projectileComponent;
     public Projectile.StatesPercentage statesPercentage;
 
+    public bool isEnableBallisticReverie; // Perk Devaneio Ballistico // Os valores sempre serão 50% 
+
     private void Awake()
     {
         GetSOdata(weaponDataSO);

@@ -14,11 +14,15 @@ public class Projectile : MonoBehaviour
 
     [SerializeField] private StatesPercentage states;
 
+    private Explosion explosionComponent;
+
     void Start()
     {
         states = new StatesPercentage();
         pool = FindObjectOfType<Pool_Projectiles>();
         gobj = this.gameObject;
+
+        explosionComponent = GetComponent<Explosion>();
     }
 
     private void OnEnable()
@@ -39,12 +43,21 @@ public class Projectile : MonoBehaviour
         {
             dmg.TakeDamage(damage);
             CheckAndApplyStates(dmg);
+            CheckAndTriggerExplosion();
         }
 
         IThrowable throwable = collision.GetComponent<IThrowable>();
         if(throwable != null)
         {
             throwable.OnHitObject();
+        }
+    }
+
+    void CheckAndTriggerExplosion()
+    {
+        if (Random.value < states.ExplosionProbability)
+        {
+            if (explosionComponent != null) explosionComponent.TriggerExplosionManual(200);
         }
     }
 
@@ -79,6 +92,8 @@ public class Projectile : MonoBehaviour
         [Range(0f, 1f)] public float FireEffectProbability = 0f;
         [Range(0f, 1f)] public float StunEffectProbability = 0f;
         [Range(0f, 1f)] public float SlowEffectProbability = 0f;
+        [Header("Explosion Probability")]
+        [Range(0f, 1f)] public float ExplosionProbability  = 0f;
     }
 
 }

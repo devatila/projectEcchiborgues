@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -7266994952207793202}
   - component: {fileID: 4576493998372846139}
   - component: {fileID: -8935945824035464028}
+  - component: {fileID: 9074350166526147400}
   m_Layer: 12
   m_Name: PlayerProjectile
   m_TagString: Untagged
@@ -105,6 +106,7 @@ MonoBehaviour:
     FireEffectProbability: 0
     StunEffectProbability: 0
     SlowEffectProbability: 0
+    ExplosionProbability: 0
 --- !u!70 &4576493998372846139
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -167,3 +169,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &9074350166526147400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608496128203275144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8addcc01c929f634692599ddced777a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionRadius: 3
+  explosionForce: 5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0

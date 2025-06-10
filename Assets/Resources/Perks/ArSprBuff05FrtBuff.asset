@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5161f1cdce7f9a643a79595792ae23a8, type: 3}
+  m_Name: ArSprBuff05FrtBuff
+  m_EditorClassIdentifier: 
+  perkName: ArSprBuff05FrtBuff
+  perkSprite: {fileID: 0}
+  localizedTexts:
+  - language: 0
+    LocalizedName: Atirador Profissional
+    LocalizedDescription: Diminui 40% do spread dos seus Rifles de Assalto e aumenta
+      a cadencia delas em 40%
+  hasValidateTime: 0
+  wavesDuration: 0
+  affectAllWeapons: 0
+  gunTypeToAffect: 0
+  gunMultipliers:
+    damageMultiplier: 0
+    spreadMultiplier: -0.5
+    reloadTimeMultiplier: 0
+    firerateMultiplier: -0.4
+  statesPercentage:
+    FireEffectProbability: 0
+    StunEffectProbability: 0
+    SlowEffectProbability: 0

@@ -21,7 +21,9 @@ public class PlayerToGunPerkSO : PerkSO
 
     public override PerkBase CreatePerkInstance()
     {
-        throw new NotImplementedException();
+        PlayerPerkManager player = FindObjectOfType<PlayerPerkManager>();
+        return new PlayerAndGunPerk(this, playerSpeed, playerMaxHealthMultiplier, playerReductionDamage,armorToGain, affectAllWeapons,
+            gunTypeToAffect, gunMultipliers, player);
     }
 
     public override Type GetPerkType()

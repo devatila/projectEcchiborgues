@@ -9,10 +9,12 @@ public class PS_EmitterTest : MonoBehaviour
     public bool isEquipped;
 
     public float effectProbability;
+    private Gun_Attributes gAttr;
     // Start is called before the first frame update
     void Start()
     {
         pSystem.Stop();
+        gAttr = GetComponent<Gun_Attributes>();
     }
 
     // Update is called once per frame
@@ -33,7 +35,7 @@ public class PS_EmitterTest : MonoBehaviour
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.TakeDamage(1);
+            damageable.TakeDamage(gAttr.gunDamage);
         }
         IStateable stateable = other.GetComponent<IStateable>();
         if (stateable != null)

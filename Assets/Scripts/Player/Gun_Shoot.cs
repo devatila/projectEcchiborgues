@@ -335,6 +335,18 @@ public class Gun_Shoot : MonoBehaviour
     private void UpdateMagazine()
     {
         if (CheckHasFT()) return;
+
+        // Método que verifica se o perk de não consumir munição está ativo e executa seu efeito se a probabilidade bater
+        if(_gunAttributes.isEnableBallisticReverie)
+        {
+            if(UnityEngine.Random.Range(0,2) == 0) // 0 inclusivo, 2 exclusivo, ou seja, entre 0 e 1.
+            {
+                Debug.Log("A sorte bateu e a bala não foi consumida"); // Tirar isso após os testes
+                return;
+                // Retorna pq...se não for para consumir munição, o melhor lugar para parar é aqui
+            }
+        }
+
         _gunAttributes.actual_magazine--;
         OnShootUpdate?.Invoke(_gunAttributes.actual_magazine);
         // CheckNeedReloadAFterShoot();

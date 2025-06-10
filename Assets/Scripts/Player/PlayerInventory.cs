@@ -101,6 +101,8 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     // 2) mapa arma → lambdas de multiplicadores
     private Dictionary<ammoTypeOfGunEquipped, AmmoMultipliers> multipliersByAmmo;
 
+    public bool isEnableBallisticReverie;
+
 
 
     // Start is called before the first frame update
@@ -270,7 +272,7 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
 
         if (equippedGunAttributes == null) return;
 
-        
+        equippedGunAttributes.isEnableBallisticReverie = isEnableBallisticReverie;
 
         // 1) Atualiza o struct map
         BuildGunStructMap();

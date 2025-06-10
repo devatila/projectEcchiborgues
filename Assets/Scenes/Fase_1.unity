@@ -15757,7 +15757,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 0bc136f58a206814fb1e5ef044b4b12c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25452,14 +25452,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availablePerks:
-  - {fileID: 11400000, guid: 9bf3b41d6043ef34d979bf31730a7338, type: 2}
-  - {fileID: 11400000, guid: 1947546bda09ce946bc53e9b8df4c020, type: 2}
-  - {fileID: 11400000, guid: 14cf197eac7810b4e82f4ba40586380a, type: 2}
-  - {fileID: 11400000, guid: 22428fa1bc60cdb4ab7e2b5af9c4c1ae, type: 2}
-  - {fileID: 11400000, guid: 6cc18c1f07337cb42aa3f615e0bd1c81, type: 2}
-  - {fileID: 11400000, guid: 2c017e22ea651dd459c9bb0925d1d773, type: 2}
-  - {fileID: 11400000, guid: 814652d38cf49d94f8d8f4c24751b3a4, type: 2}
-  - {fileID: 11400000, guid: cde7c3eadadf7ea4092e52fd76d3d522, type: 2}
+  - {fileID: 11400000, guid: b33fbd2392a71f542a8206f2111db227, type: 2}
+  - {fileID: 11400000, guid: 051cda1e79c5eda4c83afcd10d1a37c9, type: 2}
+  - {fileID: 11400000, guid: 9fed335527c025e47a4cdaec959c4c68, type: 2}
+  - {fileID: 11400000, guid: 895f081e3375d6347b52b4be96883b4c, type: 2}
+  - {fileID: 11400000, guid: 35b75ef3a91e05443af4841ba282ea0a, type: 2}
+  - {fileID: 11400000, guid: bc078db91e8205e4e8cbdc32f9666900, type: 2}
+  - {fileID: 11400000, guid: f44505a895fe7784285b821ddc3c2d25, type: 2}
+  - {fileID: 11400000, guid: e88ecef30595f87419c66b2ab17c4ea3, type: 2}
+  - {fileID: 11400000, guid: c32fca5fd0ca7ad40a2347fdc2082201, type: 2}
+  - {fileID: 11400000, guid: 4d092017d3e9f9b48a79d973f0f66042, type: 2}
+  - {fileID: 11400000, guid: cb5bd35f420cb27499055a804e8c6949, type: 2}
+  - {fileID: 11400000, guid: d7cb6f2a232ee7c45b2c513878905679, type: 2}
+  - {fileID: 11400000, guid: e8141c502385f7e45b6fec183c58d7d4, type: 2}
+  - {fileID: 11400000, guid: b00debd39807b544ead268d7e6078d71, type: 2}
+  - {fileID: 11400000, guid: e4d6d4d1832303d459a8680a2a0db639, type: 2}
+  - {fileID: 11400000, guid: f9229c3399200ec44b9c095994d3d12e, type: 2}
+  - {fileID: 11400000, guid: 9ffdea85156013848bdc8c59ad3086f2, type: 2}
+  - {fileID: 11400000, guid: 19dd60c8fd8d94842bcda3c22e2b0899, type: 2}
+  - {fileID: 11400000, guid: a5753b0f98ebf6743a6b1952d468d644, type: 2}
+  - {fileID: 11400000, guid: 25db338f2170f1b4d9febfff20210be8, type: 2}
+  - {fileID: 11400000, guid: a8f58efd5a8a61e4faa7217792570f9a, type: 2}
 --- !u!1 &668036657
 GameObject:
   m_ObjectHideFlags: 0
@@ -37016,6 +37029,7 @@ MonoBehaviour:
   equippedGunAttributes: {fileID: 0}
   GeneralGunsDamageMultiplier: 1
   GeneralGunsSpreadMultiplier: 1
+  isEnableBallisticReverie: 0
 --- !u!114 &1197051474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37156,6 +37170,8 @@ MonoBehaviour:
     FireEffectProbability: 0
     StunEffectProbability: 0
     SlowEffectProbability: 0
+    ExplosionProbability: 0
+  isEnableBallisticReverie: 0
 --- !u!1 &1200824795
 GameObject:
   m_ObjectHideFlags: 0

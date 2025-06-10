@@ -21,6 +21,7 @@ public class PlayerPerkManager : MonoBehaviour
     //No quesito Armas
     public PlayerGunMultipliers playerGunMultipliers;
     public Projectile.StatesPercentage effectStatesProbabilites;
+    public bool isEnableBallisticReverie;
     
     //No Quesito Arremessaveis
 
@@ -71,7 +72,14 @@ public class PlayerPerkManager : MonoBehaviour
     public void SetGunsMultipliers()
     {
         //UpdateBulletSpecialEffects();
-        playerInventory.SetGunMultipliersByTypeOfGun(playerGunMultipliers, effectStatesProbabilites); // acho que não ta fun
+        playerInventory.SetGunMultipliersByTypeOfGun(playerGunMultipliers, effectStatesProbabilites);
+    }
+
+    public void SetBallisticReverie(bool value)
+    {
+        isEnableBallisticReverie = value;
+        playerInventory.isEnableBallisticReverie = isEnableBallisticReverie;
+        if (playerInventory.equippedGunAttributes != null) playerInventory.equippedGunAttributes.isEnableBallisticReverie = value;
     }
 
     public void UpdateBulletSpecialEffects()
@@ -97,6 +105,7 @@ public class PlayerPerkManager : MonoBehaviour
 
     public void ApplyAllMultipliers()
     {
+        playerInventory.isEnableBallisticReverie = isEnableBallisticReverie;
         UpdatePlayerMovement();
         //SetMovementMultiplier(playerMovementMultiplier);
         //SetGeneralDamageMultiplier(playerGunMultipliers.allGunsMultiplier);

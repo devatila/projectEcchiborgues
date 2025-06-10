@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5161f1cdce7f9a643a79595792ae23a8, type: 3}
+  m_Name: ExplosiveBullets
+  m_EditorClassIdentifier: 
+  perkName: ExplosiveBullets002
+  perkSprite: {fileID: 0}
+  localizedTexts:
+  - language: 0
+    LocalizedName: Balas Explosivas
+    LocalizedDescription: Seus disparos podem explodir ao atingir um inimigo.
+  hasValidateTime: 0
+  wavesDuration: 0
+  affectAllWeapons: 1
+  gunTypeToAffect: 0
+  gunMultipliers:
+    damageMultiplier: 0
+    spreadMultiplier: 0
+    reloadTimeMultiplier: 0
+    firerateMultiplier: 0
+  statesPercentage:
+    FireEffectProbability: 0
+    StunEffectProbability: 0
+    SlowEffectProbability: 0
+    ExplosionProbability: 0.02

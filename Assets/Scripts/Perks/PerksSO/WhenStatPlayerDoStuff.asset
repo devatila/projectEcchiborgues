@@ -22,7 +22,7 @@ MonoBehaviour:
   hasValidateTime: 0
   wavesDuration: 0
   whatStatShouldWatch: 0
-  valuePointToTrigger: 20
+  valuePointToTrigger: 0
   gainHealthValue: 0
   gainArmorValue: 0
   gainDamageValue: 0.5
