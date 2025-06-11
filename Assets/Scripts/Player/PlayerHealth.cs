@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     public event deathEvent OnDeath;
 
     public event Action OnPlayerHit;
+    public event Action OnPlayerHealthZero;
 
     public int health;
     private int maxHealth;
@@ -34,6 +35,7 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     private Coroutine regenCoroutine;
 
     private int startMaxHealth;
+    private int lifeCount;
 
     #region RegenerationCycle
     /// <summary>
@@ -44,23 +46,23 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     /// <param name="autoActivateRegeneration">Auto ativa o sistema de regeneração se estiver True</param>
     public void SetRegenerationValues(float newRegenAmount, float newRegenInterval = 1f, bool autoActivateRegeneration = true)
     {
-        regenAmount = newRegenAmount;
-        regenInterval = newRegenInterval;
+        regenAmount += newRegenAmount;
+        regenInterval += newRegenInterval;
 
         if (autoActivateRegeneration ) EnableRegeneration();
+        else DisableRegeneration();
     }
 
     public void ResetRegenerationValues()
     {
         regenAmount = 15f;
-        regenInterval = 0.5f;
+        regenInterval = 1f;
     }
     public void EnableRegeneration()
     {
         canRegenerate = true;
         TryStartRegen();
     }
-
     public void DisableRegeneration()
     {
         canRegenerate = false;
@@ -163,6 +165,9 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
         }
         playerAnim.PlayDamageAnimation();
         TryStartRegen();
+
+        
+
         OnPlayerHit?.Invoke();
     }
 
@@ -195,7 +200,15 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 
         if (health <= 0)
         {
-            OnDeath();
+            if (lifeCount > 0)
+            {
+                OnPlayerHealthZero?.Invoke();
+            }
+            else
+            {
+                OnDeath?.Invoke();
+            }
+            
         }
     }
 
@@ -226,6 +239,9 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     public int GetActualMaxHealth() => maxHealth;
     public int GetActualMaxArmor() => maxArmor;
 
+    public bool HasExtraLifes => lifeCount > 0;
+    public void AddLifeCount(int count = 1) => lifeCount += count;
+
     public IEnumerator ChangeColor(Color endColor, float duration)
     {
         Color startColor = lifeBar.color;
@@ -247,8 +263,13 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
 
     void PlayerDead()
     {
-        hudHealth.SetActive(false);
-        TypewriterEffectTMP.stopAll();
+        if (lifeCount <= 0)
+        {
+            hudHealth.SetActive(false);
+            TypewriterEffectTMP.stopAll();
+        }
+        else
+            lifeCount--;
     }
 }
 

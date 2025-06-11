@@ -25473,6 +25473,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a5753b0f98ebf6743a6b1952d468d644, type: 2}
   - {fileID: 11400000, guid: 25db338f2170f1b4d9febfff20210be8, type: 2}
   - {fileID: 11400000, guid: a8f58efd5a8a61e4faa7217792570f9a, type: 2}
+  - {fileID: 11400000, guid: 91b48e052721df94db23c7f7cf2c1653, type: 2}
 --- !u!1 &668036657
 GameObject:
   m_ObjectHideFlags: 0
@@ -37044,7 +37045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3000
   lifeBar: {fileID: 1073997290}
-  armor: 1500
+  armor: 0
   maxArmor: 1500
   damageMultiplier: 20
   canRegenerate: 0
