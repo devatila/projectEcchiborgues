@@ -37,6 +37,9 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     private int startMaxHealth;
     private int lifeCount;
 
+    public float ghostDamageProb = 0; // a probabilidade do player "negar" o dano tomado // desconsiderar o nome de milhões
+
+
     #region RegenerationCycle
     /// <summary>
     /// Altera os valores básicos do sistema de regeneração de vida
@@ -147,6 +150,8 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     {
         if (health <= 0) return; // Não tem pq fazer o player tomar dano quando ele já esta m0rto ¯\_(ツ)_/¯
 
+        if (CheckDamageGhostDownCool()) return; // Se o dano é negado...não tem pq continuar
+
         int totalDamage = Mathf.RoundToInt(damageValue * damageMultiplier);
         if (armor > 0)
         {
@@ -169,6 +174,13 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
         
 
         OnPlayerHit?.Invoke();
+    }
+
+    bool CheckDamageGhostDownCool()
+    {
+        bool shouldReturn = UnityEngine.Random.value < ghostDamageProb;
+        Debug.Log(shouldReturn);
+        return shouldReturn;
     }
 
     public void SetMaxHealth(int multiplier)
@@ -238,6 +250,11 @@ public class PlayerHealth : MonoBehaviour, IPlayableCharacter
     public int GetActualArmor() => armor;
     public int GetActualMaxHealth() => maxHealth;
     public int GetActualMaxArmor() => maxArmor;
+
+    // Isso garante que sempre fique igual ou acima de zero se a somatoria dos valores der negativo...
+    // E...uma probabilidade negativa é...enfim não quero cometer crimes.
+    public void AddGhostDamageProb(float value) => ghostDamageProb = Mathf.Max(ghostDamageProb + value, 0); 
+    
 
     public bool HasExtraLifes => lifeCount > 0;
     public void AddLifeCount(int count = 1) => lifeCount += count;

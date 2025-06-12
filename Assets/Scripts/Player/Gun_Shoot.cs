@@ -292,8 +292,36 @@ public class Gun_Shoot : MonoBehaviour
         float distance = direction.magnitude;
 
         trajectory.transform.right = direction.normalized;
-        trajectory.transform.localScale = new Vector3(distance * 0.1f * -1, 0.09f, 1f);
+
+        //trajectory.transform.localScale = new Vector3(distance * 0.1f * -1, 0.09f, 1f);
+        StartScaleLerp(distance, 0.02f, trajectory);
     }
+
+
+    public void StartScaleLerp(float distance, float duration, GameObject Trajectory)
+    {
+        StartCoroutine(LerpScaleX(distance * 0.1f * -1, duration, Trajectory));
+    }
+
+    private IEnumerator LerpScaleX(float targetX, float duration, GameObject trajectory)
+    {
+        float time = 0f;
+        Vector3 initialScale = trajectory.transform.localScale;
+        float startX = 0f;
+
+        while (time < duration)
+        {
+            float t = time / duration;
+            float newX = Mathf.Lerp(startX, targetX, t);
+            trajectory.transform.localScale = new Vector3(newX, 0.09f, 1f);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // Garante que no final o valor seja exato
+        trajectory.transform.localScale = new Vector3(targetX, 0.09f, 1f);
+    }
+
 
     private void PlayShootEffects(bool isRechargeable)
     {
