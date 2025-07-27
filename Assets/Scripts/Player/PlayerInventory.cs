@@ -166,12 +166,18 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
     {
         GeneralStatesBulletPercentages = new Projectile.StatesPercentage();
         canCollect = false;
-
-        buySystem = FindObjectOfType<UI_BuySystem>();
-        buySystem.OnBuyItem += BuyingTraps;
+        TryGetBuySystem();
 
         gunWindowAttributes.SetActive(false);
         pMovement = GetComponent<Player_Movement>();
+    }
+
+    private void TryGetBuySystem()
+    {
+        if (buySystem != null) return;
+        buySystem = FindObjectOfType<UI_BuySystem>();
+        if (buySystem == null) return;
+        buySystem.OnBuyItem += BuyingTraps;
     }
 
     public event Action OnBuildPlaced;
@@ -283,6 +289,12 @@ public class PlayerInventory : MonoBehaviour // Todos devem TEMER este código
         Debug.Log($"Stats Antes: dmg = {equippedGunAttributes.gunDamage}, rld = {equippedGunAttributes.reloadTime}, sprd = {equippedGunAttributes.maxSpread}, frt = {equippedGunAttributes.cadency}");
         float allGunsM = playerGunMultipliers.allGunsMultiplier;
         float damageM = multipliersByAmmo[AmmoType].Damage();
+
+        if (equippedGunAttributes.weaponDataSO == null)
+        {
+            Debug.LogWarning("O prefab dessa arma não possui um WeaponSO referenciado. Ajustar isso o quanto antes");
+            return;
+        }
 
         //Area de dano
         ApplyStats(

@@ -23,6 +23,8 @@ public class RaidManager : MonoBehaviour
     public List<GameObject> EnemiesAlive = new List<GameObject>(); // Lista de inimigos atualmente vivos
     public float perkTime = 30f;
 
+    private Coroutine RaidCoroutine;
+
     private void Awake()
     {
         instance = this;
@@ -30,17 +32,79 @@ public class RaidManager : MonoBehaviour
 
     private void Start()
     {
+        #region [Descontinuado]
         // Inicializa o índice de dia para garantir que está correto com base no array
-        dayIndex = Mathf.Max(day - 1, 0);
-        if (raidPresetsSO[dayIndex].startEvent.GetPersistentEventCount() > 0) //Esse IF não deve ser chamado UNITY pls ;-; apenas se definido algo
-        {
-            raidPresetsSO[dayIndex].startEvent.Invoke();
-            return;
-        }
-        StartCoroutine(ExecuteRaid(dayIndex));
+        //dayIndex = Mathf.Max(day - 1, 0);
+        //if (raidPresetsSO[dayIndex].startEvent.GetPersistentEventCount() > 0) //Esse IF não deve ser chamado UNITY pls ;-; apenas se definido algo
+        //{
+        //    raidPresetsSO[dayIndex].startEvent.Invoke();
+        //    return;
+        //}
+        //StartCoroutine(ExecuteRaid(dayIndex));
+        #endregion
+
     }
 
-    private IEnumerator ExecuteRaid(int dayIndex)
+    public void StartRaid(RaidPresetsSO raidPreset)
+    {
+        // Se houver alguma raid acontecendo por algum motivo e outra se iniciar, vai forçar a parar e começar do zero
+        if (RaidCoroutine != null) StopExecutingRaid();
+
+        RaidCoroutine = StartCoroutine(ExecuteRaid(raidPreset));
+    }
+
+    public void StopExecutingRaid()
+    {
+        if (RaidCoroutine != null) StopCoroutine(RaidCoroutine);
+        RaidCoroutine = null;
+    }
+
+    private IEnumerator ExecuteRaid(RaidPresetsSO raidPreset)
+    {
+        // Percorre cada `PerRaidPerformance` na lista de raids para o dia atual
+        PerRaidPerformance[] allRaidsPresets = raidPreset.subRaidsPerformance;
+        for (raidIndex = 0; raidIndex < allRaidsPresets.Length; raidIndex++)
+        {
+            Debug.Log($"Starting Raid {raidIndex + 1} on Day {day}");
+            PerRaidPerformance currentRaid = allRaidsPresets[raidIndex];
+
+            // Executa cada `OnRaidPerformance` (sub-horda) dentro dessa raid
+            foreach (OnRaidPerformance subRaid in currentRaid.onRaidPerformances)
+            {
+                if (subRaid.awaitsEveryoneIsDead)
+                {
+                    yield return new WaitUntil(() => EnemiesAlive.Count == 0);
+                }
+                yield return new WaitForSeconds(subRaid.delayToSpawn); // Aguarda o delay especificado
+                SpawnSubRaid(subRaid, raidPreset); // Chama o método para spawnar os inimigos
+            }
+
+
+            // Espera até que todos os inimigos dessa Raid estejam mortos
+            yield return new WaitUntil(() => EnemiesAlive.Count == 0);
+
+            if (raidIndex < allRaidsPresets.Length - 1)
+            {
+                Debug.Log($"Raid {raidIndex + 1} completed!");
+                Debug.Log("Select your desired Perk");
+                OnEndSubRaid?.Invoke(); // Chamado para atualizar perks por duração de wave e outros bonus
+
+                float timer = perkTime;
+                while (timer > 0)
+                {
+                    Debug.Log($"Next raid starting in: {timer} seconds, the actual raidIndex is: {raidIndex}.");
+                    timer -= 1; // Decrementa o timer de acordo com o tempo real de jogo
+                    yield return new WaitForSeconds(1); // Aguarda o próximo segundo
+                }
+            }
+        }
+
+        Debug.Log("All Raids of the Region has been executed!");
+        OnEndAllRaids?.Invoke();
+        RaidCoroutine = null;
+    }
+
+    private IEnumerator ExecuteDayRaid(int dayIndex)
     {
         // Verifica se o dia e o índice são válidos para evitar erros de referência
         if (dayIndex >= raidPresetsSO.Length)
@@ -50,7 +114,7 @@ public class RaidManager : MonoBehaviour
         }
 
         // Percorre cada `PerRaidPerformance` na lista de raids para o dia atual
-        PerRaidPerformance[] dayRaids = raidPresetsSO[dayIndex].raidsOfTheDay;
+        PerRaidPerformance[] dayRaids = raidPresetsSO[dayIndex].subRaidsPerformance;
         for (raidIndex = 0; raidIndex < dayRaids.Length; raidIndex++)
         {
             Debug.Log($"Starting Raid {raidIndex + 1} on Day {day}");
@@ -90,25 +154,25 @@ public class RaidManager : MonoBehaviour
         Debug.Log("All raids for the day completed!");
         OnEndAllRaids?.Invoke();
     }
-    private void SpawnSubRaid(OnRaidPerformance subRaid)
+    private void SpawnSubRaid(OnRaidPerformance subRaid, RaidPresetsSO raidPreset = null)
     {
         
         for (int i = 0; i < subRaid.howMany; i++)
         {
             // Escolhe um inimigo com base na probabilidade definida
-            GameObject chosenEnemy = ChooseEnemy(subRaid.desiredEnemies);
+            GameObject chosenEnemy = ChooseEnemyByPreset(subRaid.desiredEnemies, raidPreset);
             
             // Seleciona um ponto de spawn aleatório entre os pontos fixos definidos
             Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
 
             // Spawna o inimigo no local escolhido
-            GameObject spawnedEnemy = Instantiate(chosenEnemy, spawnPoint.position, Quaternion.identity);
+            GameObject spawnedEnemy = EnemyOnSceneManager.instance.GetEnemy(chosenEnemy); 
+            //Instantiate(chosenEnemy, spawnPoint.position, Quaternion.identity); // Metodo Antigo
             EnemiesAlive.Add(spawnedEnemy);
-            EnemyIndicator.instance.OnSpawningEnemies(spawnedEnemy);
+            EnemyIndicator.instance?.OnSpawningEnemies(spawnedEnemy);
 
             Debug.Log($"Spawned {chosenEnemy.name} at {spawnPoint.position}");
 
-             // blz vou só fechar as coisas okidoki
         }
         
     }
@@ -147,5 +211,31 @@ public class RaidManager : MonoBehaviour
 
         // Caso algo dê errado, retorna o primeiro inimigo como fallback
         return raidPresetsSO[dayIndex].enemiesToSpawn[0];
+    }
+    private GameObject ChooseEnemyByPreset(EnemyTypeAndProbability[] enemies, RaidPresetsSO raidPreset)
+    {
+        // Calcula a soma total das probabilidades
+        int totalProbability = 0;
+        foreach (var enemy in enemies)
+        {
+            totalProbability += enemy.probability;
+        }
+
+        // Escolhe um valor aleatório dentro do intervalo total de probabilidades
+        int randomValue = UnityEngine.Random.Range(0, totalProbability);
+
+        // Percorre os inimigos para determinar qual foi selecionado com base na probabilidade
+        int cumulative = 0;
+        foreach (var enemy in enemies)
+        {
+            cumulative += enemy.probability;
+            if (randomValue < cumulative)
+            {
+                return raidPreset.enemiesToSpawn[enemy.enemyIndex];
+            }
+        }
+
+        // Caso algo dê errado, retorna o primeiro inimigo como fallback
+        return raidPreset.enemiesToSpawn[0];
     }
 }

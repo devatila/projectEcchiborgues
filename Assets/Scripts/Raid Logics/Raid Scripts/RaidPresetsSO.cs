@@ -13,7 +13,7 @@ public class RaidPresetsSO : ScriptableObject
     public GameObject[] enemiesToSpawn; // Inimigos que vão spawnar neste dia
     
     [Header("Quantidade de Raids do Dia")]
-    public PerRaidPerformance[] raidsOfTheDay; //Famosa tatica pra reaproveitar cenario, "os fins não justificam os meios" - quem, não sei.
+    public PerRaidPerformance[] subRaidsPerformance; //Famosa tatica pra reaproveitar cenario, "os fins não justificam os meios" - quem, não sei.
     
     [Space()]
     

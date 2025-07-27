@@ -17,48 +17,25 @@ MonoBehaviour:
       m_Calls: []
   enemiesToSpawn:
   - {fileID: 3493864131247642199, guid: 9662470afb061b049a6e754c7c6aafd1, type: 3}
-  raidsOfTheDay:
+  subRaidsPerformance:
   - onRaidPerformances:
     - awaitsEveryoneIsDead: 0
       delayToSpawn: 3
-      howMany: 10
-      doesThemComeFromTheAir: 0
-      desiredEnemies:
-      - probability: 86
-        enemyIndex: 0
-    - awaitsEveryoneIsDead: 1
-      delayToSpawn: 5
-      howMany: 10
+      howMany: 3
       doesThemComeFromTheAir: 0
       desiredEnemies:
       - probability: 100
         enemyIndex: 0
-  - onRaidPerformances:
     - awaitsEveryoneIsDead: 0
       delayToSpawn: 3
-      howMany: 7
+      howMany: 3
       doesThemComeFromTheAir: 0
       desiredEnemies:
       - probability: 100
         enemyIndex: 0
-  - onRaidPerformances:
     - awaitsEveryoneIsDead: 0
       delayToSpawn: 3
-      howMany: 5
-      doesThemComeFromTheAir: 0
-      desiredEnemies:
-      - probability: 100
-        enemyIndex: 0
-    - awaitsEveryoneIsDead: 0
-      delayToSpawn: 5
-      howMany: 8
-      doesThemComeFromTheAir: 0
-      desiredEnemies:
-      - probability: 100
-        enemyIndex: 0
-    - awaitsEveryoneIsDead: 0
-      delayToSpawn: 10
-      howMany: 4
+      howMany: 3
       doesThemComeFromTheAir: 0
       desiredEnemies:
       - probability: 100
