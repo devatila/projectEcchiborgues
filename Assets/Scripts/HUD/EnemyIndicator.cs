@@ -1,9 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-
 public class EnemyIndicator : MonoBehaviour
 {
     // Vou transformar isso em singleton, me perdoe os principios do encapsulamento mas esse crime vai acontecer.

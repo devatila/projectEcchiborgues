@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,11 +18,14 @@ public class RaidManager : MonoBehaviour
 
     [Header("Raid Configuration")]
     public RaidPresetsSO[] raidPresetsSO; // Array de Scriptable Objects de Raid
-    public Transform[] spawnPoints; // Pontos de spawn fixos para essa fase
+    public Transform[] spawnPoints; // Pontos de spawn fixos para essa raid
 
     [Header("Runtime Data")]
     public List<GameObject> EnemiesAlive = new List<GameObject>(); // Lista de inimigos atualmente vivos
     public float perkTime = 30f;
+
+    [SerializeField] private CinemachineConfiner2D cinemachineConfiner2D;
+    private Collider2D defaultConfinerArea;
 
     private Coroutine RaidCoroutine;
 
@@ -32,6 +36,8 @@ public class RaidManager : MonoBehaviour
 
     private void Start()
     {
+        defaultConfinerArea = cinemachineConfiner2D?.m_BoundingShape2D;
+        OnEndAllRaids += SetDefaultBoundArea;
         #region [Descontinuado]
         // Inicializa o índice de dia para garantir que está correto com base no array
         //dayIndex = Mathf.Max(day - 1, 0);
@@ -45,10 +51,19 @@ public class RaidManager : MonoBehaviour
 
     }
 
-    public void StartRaid(RaidPresetsSO raidPreset)
+    /// <summary>
+    /// Inicia uma raid determinada
+    /// </summary>
+    /// <param name="raidPreset">ScriptableObject das informações basicas de raid</param>
+    /// <param name="spawnPoints">Pontos de Spawn para esta raid</param>
+    /// <param name="colliderArea">Limites de visualização da camera do player</param>
+    public void StartRaid(RaidPresetsSO raidPreset, Transform[] spawnPoints = null, PolygonCollider2D colliderArea = null)
     {
         // Se houver alguma raid acontecendo por algum motivo e outra se iniciar, vai forçar a parar e começar do zero
         if (RaidCoroutine != null) StopExecutingRaid();
+        if (colliderArea != null) cinemachineConfiner2D.m_BoundingShape2D = colliderArea;
+        else Debug.LogWarning("colliderArea de camera não atribuido");
+
 
         RaidCoroutine = StartCoroutine(ExecuteRaid(raidPreset));
     }
@@ -237,5 +252,10 @@ public class RaidManager : MonoBehaviour
 
         // Caso algo dê errado, retorna o primeiro inimigo como fallback
         return raidPreset.enemiesToSpawn[0];
+    }
+
+    void SetDefaultBoundArea()
+    {
+        cinemachineConfiner2D.m_BoundingShape2D = defaultConfinerArea;
     }
 }
