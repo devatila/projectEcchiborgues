@@ -12,7 +12,7 @@ public class RaidExecutor : MonoBehaviour
         if (hasExecuted || !collision.CompareTag("Player")) return; // Previne de executar a mesma raid uma vez que ja foi executada
 
         //GameController.SetPolyCollider(polygonCollider)
-        RaidManager.instance.StartRaid(RaidPreset, spawnPositions, cameraColliderArea); 
+        RaidManager.instance.StartRaid(RaidPreset, spawnPositions, cameraColliderArea); // eu atila admito que gosto de lolis vsfdr
         hasExecuted = true;
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Day Raid Preset", menuName = "Project Classes/New Raid Preset Data")]
 public class RaidPresetsSO : ScriptableObject
 {
-    [Header("Evento Antes da Raid")]
-    public UnityEvent startEvent; // Evento que sera chamado ao inicio do dia | Seja ele cutscene ou qualquer coisa do tipo
+    [Header("Eventos da Raid")]
+    public RaidEventsClass raidEvents; // Todas os eventos da raid devem estar aqui
     
     [Space()]
     
@@ -15,11 +15,6 @@ public class RaidPresetsSO : ScriptableObject
     [Header("Quantidade de Raids do Dia")]
     public PerRaidPerformance[] subRaidsPerformance; //Famosa tatica pra reaproveitar cenario, "os fins não justificam os meios" - quem, não sei.
     
-    [Space()]
-    
-    [Header("Evento Final Pós Raids")]
-    public UnityEvent finishEvent; // Evento que sera chamado ao final do dia | Pode ser outra cutscene ou qualquer coisa do tipo
-                                   // Mas isso não significa o Evento de "Passou de Fase", por exemplo. Isso será feito dentro do RaidManager.cs
 }
 
 [System.Serializable]

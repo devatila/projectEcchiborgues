@@ -78,6 +78,10 @@ public class RaidManager : MonoBehaviour
     {
         // Percorre cada `PerRaidPerformance` na lista de raids para o dia atual
         PerRaidPerformance[] allRaidsPresets = raidPreset.subRaidsPerformance;
+
+        // Executa Eventos da Raid, se houver
+        raidPreset.raidEvents?.OnRaidStart();
+
         for (raidIndex = 0; raidIndex < allRaidsPresets.Length; raidIndex++)
         {
             Debug.Log($"Starting Raid {raidIndex + 1} on Day {day}");
@@ -116,6 +120,10 @@ public class RaidManager : MonoBehaviour
 
         Debug.Log("All Raids of the Region has been executed!");
         OnEndAllRaids?.Invoke();
+
+        // Executa Eventos da Raid, se houver
+        raidPreset.raidEvents?.OnRaidEnd(); // Lembrar de Inscrever essa func no OnEndAllRaids
+
         RaidCoroutine = null;
     }
 

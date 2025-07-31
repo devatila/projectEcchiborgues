@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce12fe322e0acd4ab09daaf49c6f1b5, type: 3}
   m_Name: Day 1
   m_EditorClassIdentifier: 
-  startEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  raidEvents: {fileID: 11400000, guid: 7a05792773d62284f933317959ac3d94, type: 2}
   enemiesToSpawn:
   - {fileID: 3493864131247642199, guid: 9662470afb061b049a6e754c7c6aafd1, type: 3}
   subRaidsPerformance:
@@ -40,6 +38,3 @@ MonoBehaviour:
       desiredEnemies:
       - probability: 100
         enemyIndex: 0
-  finishEvent:
-    m_PersistentCalls:
-      m_Calls: []
